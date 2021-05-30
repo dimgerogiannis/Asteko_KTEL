@@ -1,0 +1,4 @@
+D:\ΕΡΓΑΣΙΑ ΤΕΧΝΟΛΟΓΙΑ ΛΟΓΙΣΜΙΚΟΥ\Project\SoftwareTechnologyProject\Classes\obj\Debug\netcoreapp3.1\Classes.csproj.AssemblyReference.cache
+D:\ΕΡΓΑΣΙΑ ΤΕΧΝΟΛΟΓΙΑ ΛΟΓΙΣΜΙΚΟΥ\Project\SoftwareTechnologyProject\Classes\obj\Debug\netcoreapp3.1\Classes.AssemblyInfoInputs.cache
+D:\ΕΡΓΑΣΙΑ ΤΕΧΝΟΛΟΓΙΑ ΛΟΓΙΣΜΙΚΟΥ\Project\SoftwareTechnologyProject\Classes\obj\Debug\netcoreapp3.1\Classes.AssemblyInfo.cs
+D:\ΕΡΓΑΣΙΑ ΤΕΧΝΟΛΟΓΙΑ ΛΟΓΙΣΜΙΚΟΥ\Project\SoftwareTechnologyProject\Classes\obj\Debug\netcoreapp3.1\Classes.csproj.CoreCompileInputs.cache
