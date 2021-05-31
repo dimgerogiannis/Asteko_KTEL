@@ -362,8 +362,10 @@ namespace ClassesFolder
                 using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
                 connection.Open();
                 var query = @"select busDriverUsername, reason, applicationDate, requestedDate 
-                          from paidleaveapplication;";
+                             from paidleaveapplication
+                             where status = @status";
                 using var cmd = new MySqlCommand(query, connection);
+                cmd.Parameters.AddWithValue("@status", "pending");
                 using MySqlDataReader reader = cmd.ExecuteReader();
 
                 List<PaidLeaveApplication> applications = new List<PaidLeaveApplication>();
@@ -390,85 +392,7 @@ namespace ClassesFolder
                 return null;
             }
         }
-    
-        public void InsertPaidLeaveDatesInDatabase(string username, string wantedDatetime)
-        {
-            try
-            {
-                using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
-                connection.Open();
-
-                var query = @"insert into PaidLeaveDates values (@username, @requestedDate);";
-                using var cmd = new MySqlCommand(query, connection);
-
-                cmd.Parameters.AddWithValue("@username", username);
-                cmd.Parameters.AddWithValue("@requestedDate", DateTime.Parse(wantedDatetime).ToString("yyyy-MM-dd"));
-                cmd.ExecuteNonQuery();
-            }
-            catch (MySqlException)
-            {
-                MessageBox.Show("Προκλήθηκε σφάλμα κατά την σύνδεση με τον server. Η εφαρμογή θα τερματιστεί!",
-                                 "Σφάλμα",
-                                 MessageBoxButtons.OK,
-                                 MessageBoxIcon.Error);
-                Application.Exit();
-            }
-        }
-
-        public void SetPaidLeaveApplcationsStauts(PaidLeaveApplication application)
-        {
-            try
-            {
-                using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
-                connection.Open();
-
-                var query = @"update PaidLeaveApplication
-                          set status = @status
-                          where busDriverUsername = @username and requestedDate = @requestedDate;";
-                using var cmd = new MySqlCommand(query, connection);
-
-                cmd.Parameters.AddWithValue("@status", application.Status == Status.Rejected ? "rejected" : "accepted");
-                cmd.Parameters.AddWithValue("@username", application.ApplicantDriver);
-                cmd.Parameters.AddWithValue("@requestedDate", DateTime.Parse(application.WantedDatetime).ToString("yyyy-MM-dd"));
-                cmd.ExecuteNonQuery();
-            }
-            catch (MySqlException)
-            {
-                MessageBox.Show("Προκλήθηκε σφάλμα κατά την σύνδεση με τον server. Η εφαρμογή θα τερματιστεί!",
-                                 "Σφάλμα",
-                                 MessageBoxButtons.OK,
-                                 MessageBoxIcon.Error);
-                Application.Exit();
-            }
-        }
-
-        public void InsertPaidLeaveApplicationRejectionReason(PaidLeaveApplication application)
-        {
-            try
-            {
-                using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
-                connection.Open();
-
-                var query = @"update PaidLeaveApplication
-                          set rejectionReason = @rejectionReason
-                          where busDriverUsername = @username and requestedDate = @requestedDate;";
-                using var cmd = new MySqlCommand(query, connection);
-
-                cmd.Parameters.AddWithValue("@rejectionReason", application.RejectionReason);
-                cmd.Parameters.AddWithValue("@username", application.ApplicantDriver);
-                cmd.Parameters.AddWithValue("@requestedDate", DateTime.Parse(application.WantedDatetime).ToString("yyyy-MM-dd"));
-                cmd.ExecuteNonQuery();
-            }
-            catch (MySqlException)
-            {
-                MessageBox.Show("Προκλήθηκε σφάλμα κατά την σύνδεση με τον server. Η εφαρμογή θα τερματιστεί!",
-                                 "Σφάλμα",
-                                 MessageBoxButtons.OK,
-                                 MessageBoxIcon.Error);
-                Application.Exit();
-            }
-        }
-    
+        
         public List<Transaction> GetTransactions(string startDate, string endDate)
         {
             try
@@ -509,8 +433,8 @@ namespace ClassesFolder
             {
                 using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
                 connection.Open();
-                var query = @"select * 
-                          from dismissalpetition;";
+                var query = @"select qualityManagerUsername, targetUsername 
+                             from dismissalpetition;";
 
                 using var cmd = new MySqlCommand(query, connection);
                 using MySqlDataReader reader = cmd.ExecuteReader();
@@ -519,7 +443,7 @@ namespace ClassesFolder
 
                 while (reader.Read())
                 {
-                    petitions.Add(new DismissalPetition(reader.GetInt32(0), reader.GetString(1), reader.GetString(2)));
+                    petitions.Add(new DismissalPetition(reader.GetString(0), reader.GetString(1)));
                 }
 
                 return petitions;
@@ -612,5 +536,41 @@ namespace ClassesFolder
             }
         }
     
+        public BusDriver GetBusDriver(string username)
+        {
+            try
+            {
+                using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
+                connection.Open();
+                var statement = @"select name, surname, salary, experience, hireDate, complaintsCounter
+                                  from user 
+                                  inner join Employee on User.username = Employee.username
+                                  inner join BusDriver on User.username = BusDriver.username
+                                  where User.username = @username;";
+                using var cmd = new MySqlCommand(statement, connection);
+
+                cmd.Parameters.AddWithValue("@username", username);
+                using MySqlDataReader reader = cmd.ExecuteReader();
+                reader.Read();
+
+                return new BusDriver(username,
+                                     reader.GetString(0),
+                                     reader.GetString(1),
+                                     "Bus Driver",
+                                     reader.GetDecimal(2),
+                                     reader.GetInt32(3),
+                                     reader.GetString(4),
+                                     reader.GetInt32(5));
+            }
+            catch (MySqlException)
+            {
+                MessageBox.Show("Προκλήθηκε σφάλμα κατά την σύνδεση με τον server. Η εφαρμογή θα τερματιστεί!",
+                                "Σφάλμα",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Error);
+                Application.Exit();
+                return null;
+            }
+        }
     }
 }

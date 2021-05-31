@@ -8,17 +8,20 @@ namespace ClassesFolder
     {
         private ClientComplaintCategory _category;
         private string _clientUsername;
+        private bool _checked;
 
         public string TargetUsername => _targetUsername;
         public string Summary => _summary;
 
         public ClientComplaintCategory Category => _category;
         public string ClientUsername => _clientUsername;
+        public bool Checked => _checked;
 
-        public ClientComplaint(string targetUsername, string summary, ClientComplaintCategory category, string clientUsername) : base(targetUsername, summary)
+        public ClientComplaint(string targetUsername, bool gotChecked, string summary, ClientComplaintCategory category, string clientUsername) : base(targetUsername, summary)
         {
             _category = category;
             _clientUsername = clientUsername;
+            _checked = false;
         }
 
         public void DeleteClientComplaint()
@@ -28,10 +31,37 @@ namespace ClassesFolder
                 using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
                 connection.Open();
                 var query = @"delete from ClientComplaint 
-                        where targetUsername = @targetUsername;";
+                              where targetUsername = @targetUsername;";
 
                 using var cmd = new MySqlCommand(query, connection);
                 cmd.Parameters.AddWithValue("@targetUsername", _targetUsername);
+                cmd.ExecuteNonQuery();
+            }
+            catch (MySqlException)
+            {
+                MessageBox.Show("Προκλήθηκε σφάλμα κατά την σύνδεση με τον server. Η εφαρμογή θα τερματιστεί!",
+                                 "Σφάλμα",
+                                 MessageBoxButtons.OK,
+                                 MessageBoxIcon.Error);
+                Application.Exit();
+            }
+        }
+    
+        public void SetAsChecked()
+        {
+            try
+            {
+                _checked = true;
+                using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
+                connection.Open();
+                var query = @"update ClientComplaint 
+                          set checked = @checked
+                          where targetUsername = @targetUsername and clientUsername = @clientUsername;";
+
+                using var cmd = new MySqlCommand(query, connection);
+                cmd.Parameters.AddWithValue("@targetUsername", _targetUsername);
+                cmd.Parameters.AddWithValue("@checked", true);
+                cmd.Parameters.AddWithValue("@clientUsername", _clientUsername);
                 cmd.ExecuteNonQuery();
             }
             catch (MySqlException)

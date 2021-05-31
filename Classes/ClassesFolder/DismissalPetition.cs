@@ -9,17 +9,14 @@ namespace ClassesFolder
 {
     public class DismissalPetition
     {
-        private int _id;
         private string _qualityManagerUsername;
         private string _targetUsername;
 
-        public int ID => _id;
         public string QualityManagerUsername => _qualityManagerUsername;
         public string TargetUserame => _targetUsername;
 
-        public DismissalPetition(int ID, string qualityManagerUsername, string targetUsername)
+        public DismissalPetition(string qualityManagerUsername, string targetUsername)
         {
-            _id = ID;
             _qualityManagerUsername = qualityManagerUsername;
             _targetUsername = targetUsername;
         }
@@ -31,10 +28,12 @@ namespace ClassesFolder
 
             var query = @"select targetUsername, summary, category, clientUsername 
                          from ClientComplaint
-                         where targetUsername = @targetUsername;";
+                         where targetUsername = @targetUsername and checked = @checked";
 
             using var cmd = new MySqlCommand(query, connection);
             cmd.Parameters.AddWithValue("@targetUsername", _targetUsername);
+            cmd.Parameters.AddWithValue("@checked", false);
+
             using MySqlDataReader reader = cmd.ExecuteReader();
 
             List<ClientComplaint> complaints = new List<ClientComplaint>();
@@ -61,7 +60,7 @@ namespace ClassesFolder
                         break;
                 }
 
-                complaints.Add(new ClientComplaint(reader.GetString(0), reader.GetString(1), category, reader.GetString(3)));
+                complaints.Add(new ClientComplaint(reader.GetString(0), false, reader.GetString(1), category, reader.GetString(3)));
             }
 
             return complaints;

@@ -24,22 +24,22 @@ namespace ClassesFolder
         public string Surname => _surname;
         public string Property => _property;
 
-        public decimal Balance
-        {
-            get { return _balance; }
-            set { _balance = value; }
+        public decimal Balance 
+        { 
+            get { return _balance; } 
+            set { _balance = value; } 
         }
         public bool MonthlyCard => _montlyCard;
         public int Discount => _discount;
-        public List<Ticket> TicketList
-        {
-            get { return _ticketList; }
+        public List<Ticket> TicketList 
+        { 
+            get { return _ticketList; } 
             set { _ticketList = value; }
         }
-        public List<Ticket> UsableTicketList
-        {
-            get { return _usableTicketList; }
-            set { _usableTicketList = value; }
+        public List<Ticket> UsableTicketList 
+        { 
+            get { return _usableTicketList; } 
+            set { _usableTicketList = value; } 
         }
         public List<Reservation> ReservationList => _reservationList;
         public List<Transaction> TransactionList => _transactionList;
@@ -403,8 +403,6 @@ namespace ClassesFolder
             }
         }
 
-
-
         public decimal CalculateTicketPrice(decimal price)
         {
             return price - (_discount / 100.0m * price);
@@ -481,7 +479,7 @@ namespace ClassesFolder
                 Application.Exit();
             }
         }
-
+        
         public void DecrementItinerarySeats(int itineraryID, int oldSeatsNumber)
         {
             try
@@ -584,7 +582,7 @@ namespace ClassesFolder
                 Application.Exit();
             }
         }
-
+    
         public void InsertLastMinuteTravelRequestToDatabase(LastMinuteTravelRequest lastMinuteTravelRequest)
         {
             try
@@ -610,7 +608,7 @@ namespace ClassesFolder
                 Application.Exit();
             }
         }
-
+    
         public bool CheckForDuplicateTicket(string busLineNumber, string travelDatetime)
         {
             try
@@ -675,7 +673,7 @@ namespace ClassesFolder
                 return false;
             }
         }
-
+   
         public bool CheckForDuplicateLastMinuteTravelRequest(string travelBusLine, string travelDatetime)
         {
             try
@@ -707,7 +705,7 @@ namespace ClassesFolder
                 return false;
             }
         }
-
+    
         public void InsertDiscountApplicationInDatabase(DiscountApplication application)
         {
             try
@@ -777,7 +775,7 @@ namespace ClassesFolder
                 return 0;
             }
         }
-
+    
         public bool CheckForDuplicateDiscountApplication()
         {
             try
@@ -807,7 +805,7 @@ namespace ClassesFolder
                 return false;
             }
         }
-
+    
         public void InsertDiscountApplicationFilesInDatabase(int discountApplicationID, List<File> files)
         {
             try
@@ -816,14 +814,20 @@ namespace ClassesFolder
                 {
                     using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
                     connection.Open();
-                    var query = @"insert into file (fileName, file, applicationID) values
-                          (@fileName, @file, @applicationID);";
+                    var query = @"insert into file (fileName, fileSize, file, applicationID) values
+                          (@fileName, @fileSize, @file, @applicationID);";
                     using var cmd = new MySqlCommand(query, connection);
-                    MySqlParameter blobData = new MySqlParameter("@file", MySqlDbType.Blob, files[i].FileContent.Length);
-                    blobData.Value = files[i].FileContent;
-                    cmd.Parameters.AddWithValue("@fileName", files[i].FileName);
-                    cmd.Parameters.AddWithValue("@file", blobData);
-                    cmd.Parameters.AddWithValue("@applicationID", discountApplicationID);
+
+                    cmd.Parameters.Add("@fileName", MySqlDbType.VarChar);
+                    cmd.Parameters.Add("@fileSize", MySqlDbType.Int64);
+                    cmd.Parameters.Add("@file", MySqlDbType.LongBlob);
+                    cmd.Parameters.Add("@applicationID", MySqlDbType.Int32);
+
+                    cmd.Parameters["@fileName"].Value = files[i].FileName;
+                    cmd.Parameters["@fileSize"].Value = files[i].FileContent.Length;
+                    cmd.Parameters["@file"].Value = files[i].FileContent;
+                    cmd.Parameters["@applicationID"].Value = discountApplicationID;
+
                     cmd.ExecuteNonQuery();
                 }
             }
@@ -836,7 +840,7 @@ namespace ClassesFolder
                 Application.Exit();
             }
         }
-
+    
         public List<DiscountApplication> GetDiscountApplicationsFromDatabase()
         {
             try
@@ -918,7 +922,7 @@ namespace ClassesFolder
                 return null;
             }
         }
-
+    
         public void DeleteDiscountApplicationFromDatabase(string applicationDatetime)
         {
             try
@@ -942,7 +946,7 @@ namespace ClassesFolder
                 Application.Exit();
             }
         }
-
+    
         public Itinerary GetLastestItinerary()
         {
             try
@@ -1074,11 +1078,12 @@ namespace ClassesFolder
             {
                 using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
                 connection.Open();
-                var query = @"insert into ClientComplaint (targetUsername, summary, category, clientUsername) values
+                var query = @"insert into ClientComplaint (targetUsername, checked, summary, category, clientUsername) values
                           (@targetUsername, @summary, @category, @clientUsername);";
                 using var cmd = new MySqlCommand(query, connection);
                 cmd.Parameters.AddWithValue("@clientUsername", complaint.ClientUsername);
                 cmd.Parameters.AddWithValue("@targetUsername", complaint.TargetUsername);
+                cmd.Parameters.AddWithValue("@checked", false);
                 cmd.Parameters.AddWithValue("@summary", complaint.Summary);
                 var category = "";
 
@@ -1114,7 +1119,7 @@ namespace ClassesFolder
                 Application.Exit();
             }
         }
-
+    
         public List<Ticket> GetTickets(string lastMonth)
         {
             try
@@ -1223,6 +1228,82 @@ namespace ClassesFolder
                                  MessageBoxIcon.Error);
                 Application.Exit();
                 return -1;
+            }
+        }
+    
+        public int GetDiscountCategoryID(Category category)
+        {
+            try
+            {
+                string cat = "";
+                switch (category)
+                {
+                    case Category.DissabilityIssues:
+                        cat = "dissabilities";
+                        break;
+                    case Category.LowIncome:
+                        cat = "low_income";
+                        break;
+                    case Category.Soldier:
+                        cat = "soldier";
+                        break;
+                    case Category.Student:
+                        cat = "student";
+                        break;
+                }
+
+                using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
+                connection.Open();
+
+                var query = @"select id
+                          from discountcategory
+                          where category = @category;";
+
+                using var cmd = new MySqlCommand(query, connection);
+
+                cmd.Parameters.AddWithValue("@category", cat);
+                using MySqlDataReader reader = cmd.ExecuteReader();
+                reader.Read();
+
+                return reader.GetInt32(0);
+            }
+            catch (MySqlException)
+            {
+                MessageBox.Show("Προκλήθηκε σφάλμα κατά την σύνδεση με τον server. Η εφαρμογή θα τερματιστεί!",
+                                 "Σφάλμα",
+                                 MessageBoxButtons.OK,
+                                 MessageBoxIcon.Error);
+                Application.Exit();
+                return -1;
+            }
+        }
+
+        public void UpdateDiscount(Category category)
+        {
+            try
+            {
+                var id = GetDiscountCategoryID(category);
+
+                using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
+                connection.Open();
+
+                var query = @"update client
+                          set discountID = @discountID
+                          where username = @username;";
+
+                using var cmd = new MySqlCommand(query, connection);
+
+                cmd.Parameters.AddWithValue("@discountID", id);
+                cmd.Parameters.AddWithValue("@username", _username);
+                cmd.ExecuteNonQuery();
+            }
+            catch (MySqlException)
+            {
+                MessageBox.Show("Προκλήθηκε σφάλμα κατά την σύνδεση με τον server. Η εφαρμογή θα τερματιστεί!",
+                                 "Σφάλμα",
+                                 MessageBoxButtons.OK,
+                                 MessageBoxIcon.Error);
+                Application.Exit();
             }
         }
     }

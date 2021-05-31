@@ -13,9 +13,14 @@ namespace ClassesFolder
     {
         private int _complaintCounter;
         private List<string> _paidLeaveDates;
+        private int _yearlyPaidLeaves = 15;
 
         public int ComplaintCounter => _complaintCounter;
-        public List<string> PaidLeaveDates => _paidLeaveDates;
+        public List<string> PaidLeaveDates
+        {
+            get { return _paidLeaveDates; }
+            set { _paidLeaveDates = value; }
+        }
 
         public BusDriver(string username, 
                          string name, 
@@ -29,6 +34,7 @@ namespace ClassesFolder
             _complaintCounter = complaintCounter;
             _paidLeaveDates = new List<string>();
             GetPaidLeaveDates();
+            _yearlyPaidLeaves = 15 - PaidLeaveDates.Count;
         }
 
         public bool HasRemainingPaidLeaves()
@@ -522,5 +528,37 @@ namespace ClassesFolder
                 return null;
             }
         }
+    
+        public void SetAsUnavailable(string date)
+        {
+            _paidLeaveDates.Add(date);
+
+            try
+            {
+                using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
+                connection.Open();
+
+                var query = @"insert into PaidLeaveDates values (@username, @requestedDate);";
+                using var cmd = new MySqlCommand(query, connection);
+
+                cmd.Parameters.AddWithValue("@username", _username);
+                cmd.Parameters.AddWithValue("@requestedDate", DateTime.Parse(date).ToString("yyyy-MM-dd"));
+                cmd.ExecuteNonQuery();
+            }
+            catch (MySqlException)
+            {
+                MessageBox.Show("Προκλήθηκε σφάλμα κατά την σύνδεση με τον server. Η εφαρμογή θα τερματιστεί!",
+                                 "Σφάλμα",
+                                 MessageBoxButtons.OK,
+                                 MessageBoxIcon.Error);
+                Application.Exit();
+            }
+        }
+    
+        public void DecreasePaidYearlyDates()
+        {
+            _yearlyPaidLeaves--;
+        }
+    
     }
 }
