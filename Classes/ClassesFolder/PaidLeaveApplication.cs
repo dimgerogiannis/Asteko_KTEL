@@ -47,6 +47,72 @@ namespace ClassesFolder
             _status = status;
         }
 
+        public void SetAsAccepted()
+        {
+            _status = Status.Accepted;
+
+        }
+
+        public void SetAsRejected()
+        {
+            _status = Status.Rejected;
+
+        }
+
+        public void UpdatePaidLeaveApplcationStatus()
+        {
+            try
+            {
+                using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
+                connection.Open();
+
+                var query = @"update PaidLeaveApplication
+                              set status = @status
+                              where busDriverUsername = @username and requestedDate = @requestedDate;";
+                using var cmd = new MySqlCommand(query, connection);
+
+                cmd.Parameters.AddWithValue("@status", _status == Status.Rejected ? "rejected" : "accepted");
+                cmd.Parameters.AddWithValue("@username", _applicantDriver);
+                cmd.Parameters.AddWithValue("@requestedDate", DateTime.Parse(_wantedDatetime).ToString("yyyy-MM-dd"));
+                cmd.ExecuteNonQuery();
+            }
+            catch (MySqlException)
+            {
+                MessageBox.Show("Προκλήθηκε σφάλμα κατά την σύνδεση με τον server. Η εφαρμογή θα τερματιστεί!",
+                                 "Σφάλμα",
+                                 MessageBoxButtons.OK,
+                                 MessageBoxIcon.Error);
+                Application.Exit();
+            }
+        }
+
+        public void InsertPaidLeaveApplicationRejectionReason()
+        {
+            try
+            {
+                using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
+                connection.Open();
+
+                var query = @"update PaidLeaveApplication
+                              set rejectionReason = @rejectionReason
+                              where busDriverUsername = @username and requestedDate = @requestedDate;";
+                using var cmd = new MySqlCommand(query, connection);
+
+                cmd.Parameters.AddWithValue("@rejectionReason", _rejectionReason);
+                cmd.Parameters.AddWithValue("@username", _applicantDriver);
+                cmd.Parameters.AddWithValue("@requestedDate", DateTime.Parse(_wantedDatetime).ToString("yyyy-MM-dd"));
+                cmd.ExecuteNonQuery();
+            }
+            catch (MySqlException)
+            {
+                MessageBox.Show("Προκλήθηκε σφάλμα κατά την σύνδεση με τον server. Η εφαρμογή θα τερματιστεί!",
+                                 "Σφάλμα",
+                                 MessageBoxButtons.OK,
+                                 MessageBoxIcon.Error);
+                Application.Exit();
+            }
+        }
+
         public void DeletePaidLeaveApplication()
         {
             try

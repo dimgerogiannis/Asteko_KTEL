@@ -14,7 +14,6 @@ namespace ClassesFolder
         private DateTime _endingDate;
         private string _question;
         private Dictionary<string, int> _choices;
-        private Dictionary<string, int> _results;
         private bool _expired;
 
         public string Title => _title;
@@ -22,7 +21,6 @@ namespace ClassesFolder
         public DateTime EndingDate => _endingDate;
         public string Question => _question;
         public Dictionary<string, int> Choices => _choices;
-        public Dictionary<string, int> Results => _results;
         public bool Expired => _expired;
 
         public Poll(string title, 
@@ -61,9 +59,9 @@ namespace ClassesFolder
             }
         }
 
-        public void ExtractStats()
+        public Dictionary<string, int> ExtractStats()
         {
-            _results = new Dictionary<string, int>();
+            Dictionary<string, int> results = new Dictionary<string, int>();
             using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
             connection.Open();
 
@@ -79,8 +77,10 @@ namespace ClassesFolder
 
             while (reader.Read())
             {
-                _results[reader.GetString(0)] = reader.GetInt32(1);
+                results[reader.GetString(0)] = reader.GetInt32(1);
             }
+
+            return results;
         }
 
         public void IncrementPollChoice(int pollChoiceID, string clientUsername)
@@ -91,6 +91,17 @@ namespace ClassesFolder
             using var cmd = new MySqlCommand(query, connection);
             cmd.Parameters.AddWithValue("@pollChoiceID", pollChoiceID);
             cmd.Parameters.AddWithValue("@clientUsername", clientUsername);
+            cmd.ExecuteNonQuery();
+        }
+
+        public void DeletePoll()
+        {
+            using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
+            connection.Open();
+            var query = @"delete from poll
+                          where title = @title";
+            using var cmd = new MySqlCommand(query, connection);
+            cmd.Parameters.AddWithValue("@title", _title);
             cmd.ExecuteNonQuery();
         }
     }
