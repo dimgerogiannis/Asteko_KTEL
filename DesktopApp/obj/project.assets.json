@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\ΕΡΓΑΣΙΑ ΤΕΧΝΟΛΟΓΙΑ ΛΟΓΙΣΜΙΚΟΥ\\Project\\SoftwareTechnologyProject\\DesktopApp\\DesktopApp.csproj",
+      "projectUniqueName": "D:\\SoftwareTechProject\\DesktopApp\\DesktopApp.csproj",
       "projectName": "DesktopApp",
-      "projectPath": "D:\\ΕΡΓΑΣΙΑ ΤΕΧΝΟΛΟΓΙΑ ΛΟΓΙΣΜΙΚΟΥ\\Project\\SoftwareTechnologyProject\\DesktopApp\\DesktopApp.csproj",
+      "projectPath": "D:\\SoftwareTechProject\\DesktopApp\\DesktopApp.csproj",
       "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-      "outputPath": "D:\\ΕΡΓΑΣΙΑ ΤΕΧΝΟΛΟΓΙΑ ΛΟΓΙΣΜΙΚΟΥ\\Project\\SoftwareTechnologyProject\\DesktopApp\\obj\\",
+      "outputPath": "D:\\SoftwareTechProject\\DesktopApp\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config",

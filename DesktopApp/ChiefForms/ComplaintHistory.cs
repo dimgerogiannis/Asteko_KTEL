@@ -15,6 +15,7 @@ namespace ChiefForms
         private Chief _chief;
         private DismissalPetition _petition;
         private List<ClientComplaint> _complaints;
+
         public ComplaintHistory(Chief chief, DismissalPetition petition)
         {
             _chief = chief;
@@ -49,9 +50,9 @@ namespace ChiefForms
 
                 complaintsListview.Items.Add(new ListViewItem(new string[]
                 {
-                    complaint.TargetUsername,
+                    _chief.GetUserFullNameFromDatabase(complaint.TargetUsername),
                     category,
-                    complaint.ClientUsername
+                    _chief.GetUserFullNameFromDatabase(complaint.ClientUsername)
                 }));
             }
 
@@ -66,25 +67,69 @@ namespace ChiefForms
 
         private void FireButton_Click(object sender, EventArgs e)
         {
+            if (DateTime.Today.DayOfWeek != DayOfWeek.Sunday)
+            {
+                MessageBox.Show("Οι απολύσεις οδηγών μπορούν να συμβούν μόνο τις κυριακές.",
+                                "Σφάλμα",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Error);
+
+                return;
+            }
+
             var result = MessageBox.Show("Θέλετε να προχωρήσετε σε απόλυση του οδηγού;",
                                          "Ερώτηση",
                                          MessageBoxButtons.YesNo,
                                          MessageBoxIcon.Question);
             
+            var busDriver = _chief.GetBusDriver(_complaints[0].TargetUsername);
+
             if (result == DialogResult.Yes)
             {
-                _chief.DeleteClientComplaints(_complaints);
-                _chief.DeletePaidLeaveApplications(_chief.GetPaidLeaveApplications(_petition.TargetUserame));
-                _chief.DeletePaidLeaveDates(_petition.TargetUserame);
+                if (!busDriver.HasAssignedItineraryForNextWeek(NextMonday()))
+                {
+                    _chief.DeleteClientComplaints(_complaints);
+                    _chief.DeletePaidLeaveApplications(_chief.GetPaidLeaveApplications(_petition.TargetUserame));
+                    _chief.DeletePaidLeaveDates(_petition.TargetUserame);
+                    _petition.DeleteDismissalPetition();
+                    _chief.DeleteBusDriver(_petition.TargetUserame);
+                    _chief.DeleteEmployee(_petition.TargetUserame);
+                    _chief.DeleteUser(_petition.TargetUserame);
+
+                    MessageBox.Show("Επιτυχής απόλυση οδηγού.",
+                                    "Επιτυχία",
+                                    MessageBoxButtons.OK,
+                                    MessageBoxIcon.Information);
+                }
+                else
+                {
+                    MessageBox.Show("Ο οδηγός δεν μπορεί να απολυθεί γιατί του έχουν ανατεθεί δρομολόγια για την επόμενη εβδομάδα.",
+                                    "Σφάλμα",
+                                    MessageBoxButtons.OK, 
+                                    MessageBoxIcon.Error);
+                }
+
                 this.Close();
             }
             else
             {
-                var busDriver = _chief.GetBusDriver(_complaints[0].TargetUsername);
                 busDriver.ResetComplaintsCounter();
 
                 this.Close();
             }
+        }
+
+        private string NextMonday()
+        {
+            var current = DateTime.Now;
+            while (current.DayOfWeek != DayOfWeek.Sunday)
+            {
+                current = current.AddDays(1);
+            }
+
+            current = current.AddDays(1);
+
+            return current.ToString("yyyy-MM-dd");
         }
     }
 }

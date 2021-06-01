@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "2kzhsfEuPgUIRS9h0kmU2ON0up6DlWdLVGL+q6Oe3viZo4InUTIZKnWALYk5OUNFqoXryzcglRNzmjVQteUt2A==",
+  "dgSpecHash": "D7reGD33E1pv4aXPDfIl6PpZz+VNsLGsfkppnkmKlRZ9znQCu3eVpidqsIfEAKjgPcoPJuFRgTGir+HjCYryoQ==",
   "success": true,
-  "projectFilePath": "D:\\ΕΡΓΑΣΙΑ ΤΕΧΝΟΛΟΓΙΑ ΛΟΓΙΣΜΙΚΟΥ\\Project\\SoftwareTechnologyProject\\Classes\\Classes.csproj",
+  "projectFilePath": "D:\\SoftwareTechProject\\Classes\\Classes.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\User\\.nuget\\packages\\bouncycastle.netcore\\1.8.5\\bouncycastle.netcore.1.8.5.nupkg.sha512",
     "C:\\Users\\User\\.nuget\\packages\\google.protobuf\\3.14.0\\google.protobuf.3.14.0.nupkg.sha512",

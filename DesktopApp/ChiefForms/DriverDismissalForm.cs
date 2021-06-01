@@ -30,9 +30,10 @@ namespace ChiefForms
         {
             if (busDriverNameCombobox.SelectedItem != null)
             {
-               ComplaintHistory form = new ComplaintHistory(_chief, _petitions[busDriverNameCombobox.SelectedIndex]);
-               form.ShowDialog();
-               _petitions[busDriverNameCombobox.SelectedIndex].DeleteDismissalPetition();
+                ComplaintHistory form = new ComplaintHistory(_chief, _petitions[busDriverNameCombobox.SelectedIndex]);
+                form.ShowDialog();
+                _petitions.RemoveAt(busDriverNameCombobox.SelectedIndex);
+                busDriverNameCombobox.Items.RemoveAt(busDriverNameCombobox.SelectedIndex);
             }
             else
             {
