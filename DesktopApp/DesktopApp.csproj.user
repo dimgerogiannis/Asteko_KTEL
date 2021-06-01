@@ -19,6 +19,24 @@
     <Compile Update="ChiefForms\EmployeeForm.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Update="ChiefForms\HireForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="ChiefForms\InputForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="ChiefForms\MonetaryStatsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="ChiefForms\PaidLeaveRequestsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="ChiefForms\ReasonForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="ChiefForms\RejectReasonForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="LoginFolder\LoginForm.cs">
       <SubType>Form</SubType>
     </Compile>
