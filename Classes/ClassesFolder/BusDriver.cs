@@ -79,9 +79,9 @@ namespace ClassesFolder
                 using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
                 connection.Open();
 
-                var query = @"select itineraryID, travelDatetime, busDriverUsername, busLineNumber, busID 
+                var query = @"select itineraryID, travelDatetime, busDriverUsername, busLineNumber, busID, availableSeats
                               from itinerary
-                              where busDriverUsername = @username and current_timestamp() <= travelDatetime and travelDatetime < date(now() + INTERVAL 7 - weekday(now()) DAY);;";
+                              where busDriverUsername = @username and current_timestamp() <= travelDatetime and travelDatetime < date(now() + INTERVAL 7 - weekday(now()) DAY);";
 
                 using var cmd = new MySqlCommand(query, connection);
                 cmd.Parameters.AddWithValue("@username", _username);
@@ -94,9 +94,10 @@ namespace ClassesFolder
                     itineraries.Add(new Itinerary(reader.GetInt32(0),
                                                   reader.GetDateTime(1),
                                                   reader.GetString(2),
-                                                  GetBusLineData(reader.GetInt32(3)), 
+                                                  GetBusLineData(reader.GetInt32(3)),
                                                   GetBusData(reader.GetInt32(4)),
-                                                  ItineraryStatus.NoDelayed));
+                                                  ItineraryStatus.NoDelayed,
+                                                  reader.GetInt32(5)));
                 }
 
                 return itineraries;
@@ -330,7 +331,7 @@ namespace ClassesFolder
             {
                 using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
                 connection.Open();
-                var query = @"select itineraryID, travelDatetime, busDriverUsername, busLineNumber, busID
+                var query = @"select itineraryID, travelDatetime, busDriverUsername, busLineNumber, busID, availableSeats
                             from Itinerary
                             inner join BusLine on Itinerary.busLineNumber = BusLine.number
                             where status = @status and Itinerary.busDriverUsername = @busDriverUsername and current_timestamp() >= travelDatetime and current_timestamp() < date_add(travelDatetime, interval duration minute);";
@@ -346,7 +347,8 @@ namespace ClassesFolder
                                          reader.GetString(2),
                                          GetBusLineData(reader.GetInt32(3)),
                                          GetBusData(reader.GetInt32(4)),
-                                         ItineraryStatus.NoDelayed);
+                                         ItineraryStatus.NoDelayed,
+                                         reader.GetInt32(5));
                 }
                 else
                 {
@@ -620,6 +622,22 @@ namespace ClassesFolder
                                  MessageBoxIcon.Error);
                 Application.Exit();
             }
+        }
+   
+        public bool HasAssignedItineraryForNextWeek(string startingDate)
+        {
+            using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
+            connection.Open();
+            var query = @"select count(*) 
+                          from itinerary 
+                          where busDriverUsername = @username and travelDatetime >= @startingDate;";
+            using var cmd = new MySqlCommand(query, connection);
+            cmd.Parameters.AddWithValue("@username", _username);
+            cmd.Parameters.AddWithValue("@startingDate", startingDate);
+            using MySqlDataReader reader = cmd.ExecuteReader();
+            reader.Read();
+
+            return reader.GetInt32(0) == 1;
         }
     }
 }

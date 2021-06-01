@@ -12,20 +12,22 @@ namespace ClassesFolder
 {
     public class Client : User
     {
-        private decimal _balance;
-        private bool _montlyCard;
-        private int _discount;
-        private List<Ticket> _ticketList;
-        private List<Ticket> _usableTicketList;
-        private List<Reservation> _reservationList;
-        private List<Transaction> _transactionList;
-        private List<Poll> _availablePolls;
-
         public string Username => _username;
         public string Name => _name;
         public string Surname => _surname;
         public string Property => _property;
-        public List<Poll> AvailablePolls => _availablePolls;
+        
+        private decimal _balance;
+        private bool _montlyCard;
+        private int _discount;
+        private List<Ticket> _ticketList;
+        private List<Transaction> _transactionList;
+
+        private List<Ticket> _usableTicketList;
+
+        private List<Reservation> _reservationList;
+        private List<Poll> _availablePolls;
+
 
         public decimal Balance 
         { 
@@ -34,18 +36,26 @@ namespace ClassesFolder
         }
         public bool MonthlyCard => _montlyCard;
         public int Discount => _discount;
+        
         public List<Ticket> TicketList 
         { 
             get { return _ticketList; } 
             set { _ticketList = value; }
         }
+        public List<Transaction> TransactionList
+        {
+            get { return _transactionList; }
+            set { _transactionList = value; }
+        }
+        
         public List<Ticket> UsableTicketList 
         { 
             get { return _usableTicketList; } 
             set { _usableTicketList = value; } 
         }
+        
         public List<Reservation> ReservationList => _reservationList;
-        public List<Transaction> TransactionList => _transactionList;
+        public List<Poll> AvailablePolls => _availablePolls;
 
         public Client(string username,
                       string name,
@@ -138,9 +148,9 @@ namespace ClassesFolder
                 using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
                 connection.Open();
 
-                var query = @"select status, travelDatetime, busDriverUsername, busLineNumber, busID
-                          from itinerary
-                          where itineraryID = @itineraryID";
+                var query = @"select status, travelDatetime, busDriverUsername, busLineNumber, busID, availableSeats
+                              from itinerary
+                              where itineraryID = @itineraryID";
 
                 using var cmd = new MySqlCommand(query, connection);
                 cmd.Parameters.AddWithValue("@itineraryID", itineraryID);
@@ -151,16 +161,19 @@ namespace ClassesFolder
 
                 string status = reader.GetString(0);
                 ItineraryStatus enumStatus = status == "no_delayed" ? ItineraryStatus.NoDelayed : ItineraryStatus.Delayed;
-
                 DateTime travelDatetime = reader.GetDateTime(1);
-
                 string busDriverUsername = reader.GetString(2);
-
                 int busLineNumber = reader.GetInt32(3);
-
                 int busID = reader.GetInt32(4);
+                int availableSeats = reader.GetInt32(5);
 
-                return new Itinerary(itineraryID, travelDatetime, busDriverUsername, GetBusLineData(busLineNumber), GetBusData(busID), enumStatus);
+                return new Itinerary(itineraryID, 
+                                     travelDatetime, 
+                                     busDriverUsername, 
+                                     GetBusLineData(busLineNumber), 
+                                     GetBusData(busID), 
+                                     enumStatus, 
+                                     availableSeats);
             }
             catch (MySqlException)
             {
@@ -422,30 +435,45 @@ namespace ClassesFolder
             _balance -= price;
         }
 
-        public List<ItineraryInfo> GetMatchingItineraries(string busLineNumber, string travelDatetime)
+        public List<Itinerary> GetMatchingItineraries(string busLineNumber, string travelDatetime)
         {
             try
             {
                 using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
                 connection.Open();
 
-                var query = @"select itineraryID, availableSeats
-                          from Itinerary
-                          where travelDatetime = @travelDatetime and busLineNumber = @busLineNumber";
+                var query = @"select itineraryID, status, travelDatetime, busDriverUsername, busLineNumber, busID, availableSeats
+                              from Itinerary
+                              where travelDatetime = @travelDatetime and busLineNumber = @busLineNumber";
                 using var cmd = new MySqlCommand(query, connection);
 
                 cmd.Parameters.AddWithValue("@travelDatetime", travelDatetime.ToString());
                 cmd.Parameters.AddWithValue("@busLineNumber", busLineNumber);
 
-                List<ItineraryInfo> itineraryInfo = new List<ItineraryInfo>();
+                List<Itinerary> itineraries = new List<Itinerary>();
                 using MySqlDataReader reader = cmd.ExecuteReader();
 
                 while (reader.Read())
                 {
-                    itineraryInfo.Add(new ItineraryInfo() { ItineraryID = reader.GetInt32(0), AvailableSeats = reader.GetInt32(1) });
+                    int itineraryID = reader.GetInt32(0);
+                    string status = reader.GetString(1);
+                    ItineraryStatus enumStatus = status == "no_delayed" ? ItineraryStatus.NoDelayed : ItineraryStatus.Delayed;
+                    DateTime _travelDatetime = reader.GetDateTime(2);
+                    string busDriverUsername = reader.GetString(3);
+                    int _busLineNumber = reader.GetInt32(4);
+                    int busID = reader.GetInt32(5);
+                    int availableSeats = reader.GetInt32(6);
+
+                    itineraries.Add(new Itinerary(itineraryID,
+                                                  _travelDatetime,
+                                                  busDriverUsername,
+                                                  GetBusLineData(_busLineNumber),
+                                                  GetBusData(busID),
+                                                  enumStatus,
+                                                  availableSeats));
                 }
 
-                return itineraryInfo;
+                return itineraries;
             }
             catch (MySqlException)
             {
@@ -951,14 +979,15 @@ namespace ClassesFolder
             }
         }
     
-        public Itinerary GetLastestItinerary()
+        public Itinerary GetLatestItinerary()
         {
             try
             {
                 using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
                 connection.Open();
 
-                var query = @"select itinerary.itineraryID, status, travelDatetime, busDriverUsername, busLineNumber, busID from itinerary
+                var query = @"select itinerary.itineraryID, status, travelDatetime, busDriverUsername, busLineNumber, busID , availableSeats
+                              from itinerary
                               inner join ticket on ticket.itineraryID = itinerary.itineraryID
                               where clientUsername = @clientUsername and used = 1
                               order by itinerary.itineraryID desc limit 1;";
@@ -984,8 +1013,15 @@ namespace ClassesFolder
                 int busLineNumber = reader.GetInt32(4);
 
                 int busID = reader.GetInt32(5);
+                int availableSeats = reader.GetInt32(6);
 
-                return new Itinerary(itineraryID, travelDatetime, busDriverUsername, GetBusLineData(busLineNumber), GetBusData(busID), enumStatus);
+                return new Itinerary(itineraryID, 
+                                     travelDatetime, 
+                                     busDriverUsername, 
+                                     GetBusLineData(busLineNumber),
+                                     GetBusData(busID),
+                                     enumStatus, 
+                                     availableSeats);
             }
             catch (MySqlException)
             {

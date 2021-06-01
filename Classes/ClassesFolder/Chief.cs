@@ -536,6 +536,42 @@ namespace ClassesFolder
             }
         }
     
+        public void DeleteEmployee(string username)
+        {
+            using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
+            connection.Open();
+
+            var query = @"delete from Employee
+                          where username = @username";
+            using var cmd = new MySqlCommand(query, connection);
+            cmd.Parameters.AddWithValue("@username", username);
+            cmd.ExecuteNonQuery();
+        }
+
+        public void DeleteBusDriver(string username)
+        {
+            using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
+            connection.Open();
+
+            var query = @"delete from BusDriver
+                          where username = @username";
+            using var cmd = new MySqlCommand(query, connection);
+            cmd.Parameters.AddWithValue("@username", username);
+            cmd.ExecuteNonQuery();
+        }
+
+        public void DeleteUser(string username)
+        {
+            using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
+            connection.Open();
+
+            var query = @"delete from User
+                          where username = @username";
+            using var cmd = new MySqlCommand(query, connection);
+            cmd.Parameters.AddWithValue("@username", username);
+            cmd.ExecuteNonQuery();
+        }
+
         public BusDriver GetBusDriver(string username)
         {
             try
@@ -571,6 +607,22 @@ namespace ClassesFolder
                 Application.Exit();
                 return null;
             }
+        }
+    
+        public string GetUserFullNameFromDatabase(string username)
+        {
+            using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
+            connection.Open();
+            var statement = @"select name, surname
+                              from User
+                              where username = @username;";
+            using var cmd = new MySqlCommand(statement, connection);
+
+            cmd.Parameters.AddWithValue("@username", username);
+            using MySqlDataReader reader = cmd.ExecuteReader();
+            reader.Read();
+
+            return $"{reader.GetString(0)} {reader.GetString(1)}";
         }
     }
 }
