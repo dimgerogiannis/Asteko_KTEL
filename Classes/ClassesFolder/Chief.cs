@@ -433,7 +433,7 @@ namespace ClassesFolder
             {
                 using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
                 connection.Open();
-                var query = @"select qualityManagerUsername, targetUsername 
+                var query = @"select targetUsername 
                              from dismissalpetition;";
 
                 using var cmd = new MySqlCommand(query, connection);
@@ -443,7 +443,7 @@ namespace ClassesFolder
 
                 while (reader.Read())
                 {
-                    petitions.Add(new DismissalPetition(reader.GetString(0), reader.GetString(1)));
+                    petitions.Add(new DismissalPetition(reader.GetString(0)));
                 }
 
                 return petitions;

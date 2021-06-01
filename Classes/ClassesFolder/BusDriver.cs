@@ -560,5 +560,66 @@ namespace ClassesFolder
             _yearlyPaidLeaves--;
         }
     
+        public void IncreaseComplaintCounter()
+        {
+            _complaintCounter++;
+        }
+
+        public void UpdateComplaintCounter()
+        {
+            try
+            {
+                using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
+                connection.Open();
+
+                var query = @"update BusDriver
+                          set complaintsCounter = complaintsCounter + 1
+                          where username = @username;";
+                using var cmd = new MySqlCommand(query, connection);
+
+                cmd.Parameters.AddWithValue("@username", _username);
+                cmd.ExecuteNonQuery();
+            }
+            catch (MySqlException)
+            {
+                MessageBox.Show("Προκλήθηκε σφάλμα κατά την σύνδεση με τον server. Η εφαρμογή θα τερματιστεί!",
+                                 "Σφάλμα",
+                                 MessageBoxButtons.OK,
+                                 MessageBoxIcon.Error);
+                Application.Exit();
+            }
+        }
+
+        public bool HasExceededTolaratedComplaints()
+        {
+            return _complaintCounter > 9;
+        }
+    
+        public void ResetComplaintsCounter()
+        {
+            _complaintCounter = 0;
+            try
+            {
+                using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
+                connection.Open();
+
+                var query = @"update BusDriver
+                          set complaintCounter = @complaintCounter
+                          where username = @username;";
+                using var cmd = new MySqlCommand(query, connection);
+
+                cmd.Parameters.AddWithValue("@username", _username);
+                cmd.Parameters.AddWithValue("@complaintCounter", _complaintCounter);
+                cmd.ExecuteNonQuery();
+            }
+            catch (MySqlException)
+            {
+                MessageBox.Show("Προκλήθηκε σφάλμα κατά την σύνδεση με τον server. Η εφαρμογή θα τερματιστεί!",
+                                 "Σφάλμα",
+                                 MessageBoxButtons.OK,
+                                 MessageBoxIcon.Error);
+                Application.Exit();
+            }
+        }
     }
 }

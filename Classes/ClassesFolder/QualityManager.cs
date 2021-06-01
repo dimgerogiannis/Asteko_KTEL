@@ -310,56 +310,6 @@ namespace ClassesFolder
             }
         }
     
-        public bool CheckDuplicateDismissalPetition(DismissalPetition petition)
-        {
-            try
-            {
-                using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
-                connection.Open();
-                var query = @"select count(*) 
-                          from DismissalPetition 
-                          where targetUsername = @targetUsername;";
-                using var cmd = new MySqlCommand(query, connection);
-                cmd.Parameters.AddWithValue("@targetUsername", petition.TargetUserame);
-                using MySqlDataReader reader = cmd.ExecuteReader();
-
-                reader.Read();
-                return reader.GetInt32(0) == 1;
-            }
-            catch (MySqlException)
-            {
-                MessageBox.Show("Προκλήθηκε σφάλμα κατά την σύνδεση με τον server. Η εφαρμογή θα τερματιστεί!",
-                                "Σφάλμα",
-                                MessageBoxButtons.OK,
-                                MessageBoxIcon.Error);
-                Application.Exit();
-                return false;
-            }
-        }
-
-        public void InsertDismissalPetitionInDatabase(DismissalPetition petition)
-        {
-            try
-            {
-                using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
-                connection.Open();
-                var query = @"insert into DismissalPetition (qualityManagerUsername, targetUsername) values 
-                          (@qualityManagerUsername, @targetUsername);";
-                using var cmd = new MySqlCommand(query, connection);
-                cmd.Parameters.AddWithValue("@targetUsername", petition.TargetUserame);
-                cmd.Parameters.AddWithValue("@qualityManagerUsername", petition.QualityManagerUsername);
-                cmd.ExecuteNonQuery();
-            }
-            catch (MySqlException)
-            {
-                MessageBox.Show("Προκλήθηκε σφάλμα κατά την σύνδεση με τον server. Η εφαρμογή θα τερματιστεί!",
-                                "Σφάλμα",
-                                MessageBoxButtons.OK,
-                                MessageBoxIcon.Error);
-                Application.Exit();
-            }
-        }
-
         public List<Poll> GetPolls()
         {
             try

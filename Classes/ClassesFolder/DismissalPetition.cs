@@ -9,15 +9,12 @@ namespace ClassesFolder
 {
     public class DismissalPetition
     {
-        private string _qualityManagerUsername;
         private string _targetUsername;
 
-        public string QualityManagerUsername => _qualityManagerUsername;
         public string TargetUserame => _targetUsername;
 
-        public DismissalPetition(string qualityManagerUsername, string targetUsername)
+        public DismissalPetition(string targetUsername)
         {
-            _qualityManagerUsername = qualityManagerUsername;
             _targetUsername = targetUsername;
         }
 

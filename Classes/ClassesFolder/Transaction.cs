@@ -9,6 +9,7 @@ namespace ClassesFolder
     public class Transaction
     {
         private decimal _price;
+#nullable enable
         private Ticket? _ticket;
         private DateTime _purchaseDatetime;
 

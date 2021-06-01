@@ -1,6 +1,7 @@
 ﻿using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,11 +19,13 @@ namespace ClassesFolder
         private List<Ticket> _usableTicketList;
         private List<Reservation> _reservationList;
         private List<Transaction> _transactionList;
+        private List<Poll> _availablePolls;
 
         public string Username => _username;
         public string Name => _name;
         public string Surname => _surname;
         public string Property => _property;
+        public List<Poll> AvailablePolls => _availablePolls;
 
         public decimal Balance 
         { 
@@ -50,6 +53,7 @@ namespace ClassesFolder
                       string property) : base(username, name, surname, property)
         {
             GetInformation();
+            GetAvailablePolls();
         }
 
         public string GetFullName()
@@ -454,7 +458,7 @@ namespace ClassesFolder
             }
         }
 
-        public void InsertTicketToDatabase(int itineraryID)
+        public void AutomaticTicketPurchase(int itineraryID)
         {
             try
             {
@@ -955,9 +959,9 @@ namespace ClassesFolder
                 connection.Open();
 
                 var query = @"select itinerary.itineraryID, status, travelDatetime, busDriverUsername, busLineNumber, busID from itinerary
-                          inner join ticket on ticket.itineraryID = itinerary.itineraryID
-                          where clientUsername = @clientUsername and used = 1
-                          order by itinerary.itineraryID desc limit 1;";
+                              inner join ticket on ticket.itineraryID = itinerary.itineraryID
+                              where clientUsername = @clientUsername and used = 1
+                              order by itinerary.itineraryID desc limit 1;";
 
                 using var cmd = new MySqlCommand(query, connection);
                 cmd.Parameters.AddWithValue("@clientUsername", _username);
@@ -994,11 +998,11 @@ namespace ClassesFolder
             }
         }
 
-        public List<Poll> GetAvailablePolls()
+        public void GetAvailablePolls()
         {
             try
             {
-                var activePolls = GetActivePolls();
+                var activePolls = FindAvailablePolls();
                 List<Poll> availablePolls = new List<Poll>();
 
                 foreach (var poll in activePolls)
@@ -1006,10 +1010,10 @@ namespace ClassesFolder
                     using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
                     connection.Open();
                     var query = @"select count(*)
-                              from PollVote
-                              inner join PollChoice on PollVote.pollChoiceID = PollChoice.pollChoiceID
-                              inner join Poll on PollChoice.title = Poll.title
-                              where PollVote.clientUsername = @clientUsername and Poll.title = @title;";
+                                  from PollVote
+                                  inner join PollChoice on PollVote.pollChoiceID = PollChoice.pollChoiceID
+                                  inner join Poll on PollChoice.title = Poll.title
+                                  where PollVote.clientUsername = @clientUsername and Poll.title = @title;";
 
                     using var cmd = new MySqlCommand(query, connection);
                     cmd.Parameters.AddWithValue("@clientUsername", _username);
@@ -1017,11 +1021,11 @@ namespace ClassesFolder
                     using MySqlDataReader reader = cmd.ExecuteReader();
                     reader.Read();
 
-                    if (reader.GetInt32(0) == 1)
+                    if (reader.GetInt32(0) == 0)
                         availablePolls.Add(poll);
                 }
 
-                return availablePolls;
+                _availablePolls = availablePolls;
             }
             catch (MySqlException)
             {
@@ -1030,11 +1034,10 @@ namespace ClassesFolder
                                  MessageBoxButtons.OK,
                                  MessageBoxIcon.Error);
                 Application.Exit();
-                return null;
             }
         }
 
-        public List<Poll> GetActivePolls()
+        public List<Poll> FindAvailablePolls()
         {
             try
             {
@@ -1042,8 +1045,8 @@ namespace ClassesFolder
                 connection.Open();
 
                 var query = @"select title, startingDate, endingDate, question, expired 
-                          from poll
-                          where startingDate <= CURRENT_DATE() and endingDate >= CURRENT_DATE();";
+                              from poll
+                              where startingDate <= CURRENT_DATE() and endingDate >= CURRENT_DATE();";
 
                 using var cmd = new MySqlCommand(query, connection);
                 using MySqlDataReader reader = cmd.ExecuteReader();
@@ -1079,7 +1082,7 @@ namespace ClassesFolder
                 using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
                 connection.Open();
                 var query = @"insert into ClientComplaint (targetUsername, checked, summary, category, clientUsername) values
-                          (@targetUsername, @summary, @category, @clientUsername);";
+                          (@targetUsername, @checked, @summary, @category, @clientUsername);";
                 using var cmd = new MySqlCommand(query, connection);
                 cmd.Parameters.AddWithValue("@clientUsername", complaint.ClientUsername);
                 cmd.Parameters.AddWithValue("@targetUsername", complaint.TargetUsername);
@@ -1110,8 +1113,9 @@ namespace ClassesFolder
 
                 cmd.ExecuteNonQuery();
             }
-            catch (MySqlException)
+            catch (MySqlException e)
             {
+                Debug.WriteLine(e.ToString());
                 MessageBox.Show("Προκλήθηκε σφάλμα κατά την σύνδεση με τον server. Η εφαρμογή θα τερματιστεί!",
                                  "Σφάλμα",
                                  MessageBoxButtons.OK,
@@ -1128,9 +1132,9 @@ namespace ClassesFolder
                 connection.Open();
 
                 var query = @"select ticketID, ticket.itineraryID, used, delayedItinerary
-                          from ticket
-                          inner join itinerary on ticket.itineraryID = itinerary.itineraryID
-                          where clientUsername = @username and month(travelDatetime) >= month(@date) and month(travelDatetime) <= month(@date) and year(travelDatetime) = year(@date);";
+                              from ticket
+                              inner join itinerary on ticket.itineraryID = itinerary.itineraryID
+                              where clientUsername = @username and month(travelDatetime) >= month(@date) and month(travelDatetime) <= month(@date) and year(travelDatetime) = year(@date);";
 
                 using var cmd = new MySqlCommand(query, connection);
                 cmd.Parameters.AddWithValue("@username", _username);
@@ -1303,6 +1307,91 @@ namespace ClassesFolder
                                  "Σφάλμα",
                                  MessageBoxButtons.OK,
                                  MessageBoxIcon.Error);
+                Application.Exit();
+            }
+        }
+
+        public BusDriver GetBusDriver(string username)
+        {
+            try
+            {
+                using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
+                connection.Open();
+                var statement = @"select name, surname, salary, experience, hireDate, complaintsCounter
+                                  from user 
+                                  inner join Employee on User.username = Employee.username
+                                  inner join BusDriver on User.username = BusDriver.username
+                                  where User.username = @username;";
+                using var cmd = new MySqlCommand(statement, connection);
+
+                cmd.Parameters.AddWithValue("@username", username);
+                using MySqlDataReader reader = cmd.ExecuteReader();
+                reader.Read();
+
+                return new BusDriver(username,
+                                     reader.GetString(0),
+                                     reader.GetString(1),
+                                     "Bus Driver",
+                                     reader.GetDecimal(2),
+                                     reader.GetInt32(3),
+                                     reader.GetString(4),
+                                     reader.GetInt32(5));
+            }
+            catch (MySqlException)
+            {
+                MessageBox.Show("Προκλήθηκε σφάλμα κατά την σύνδεση με τον server. Η εφαρμογή θα τερματιστεί!",
+                                "Σφάλμα",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Error);
+                Application.Exit();
+                return null;
+            }
+        }
+
+        public bool CheckDuplicateDismissalPetition(DismissalPetition petition)
+        {
+            try
+            {
+                using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
+                connection.Open();
+                var query = @"select count(*) 
+                          from DismissalPetition 
+                          where targetUsername = @targetUsername;";
+                using var cmd = new MySqlCommand(query, connection);
+                cmd.Parameters.AddWithValue("@targetUsername", petition.TargetUserame);
+                using MySqlDataReader reader = cmd.ExecuteReader();
+
+                reader.Read();
+                return reader.GetInt32(0) == 1;
+            }
+            catch (MySqlException)
+            {
+                MessageBox.Show("Προκλήθηκε σφάλμα κατά την σύνδεση με τον server. Η εφαρμογή θα τερματιστεί!",
+                                "Σφάλμα",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Error);
+                Application.Exit();
+                return false;
+            }
+        }
+    
+        public void InsertDismissalPetitionInDatabase(DismissalPetition petition)
+        {
+            try
+            {
+                using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
+                connection.Open();
+                var query = @"insert into DismissalPetition (targetUsername) values (@targetUsername);";
+                using var cmd = new MySqlCommand(query, connection);
+                cmd.Parameters.AddWithValue("@targetUsername", petition.TargetUserame);
+                cmd.ExecuteNonQuery();
+            }
+            catch (MySqlException)
+            {
+                MessageBox.Show("Προκλήθηκε σφάλμα κατά την σύνδεση με τον server. Η εφαρμογή θα τερματιστεί!",
+                                "Σφάλμα",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Error);
                 Application.Exit();
             }
         }
