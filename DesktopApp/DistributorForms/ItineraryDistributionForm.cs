@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -14,8 +15,10 @@ namespace DistributorForms
     public partial class ItineraryDistributionForm : Form
     {
         private ItineraryDistributionManager _distributor;
+
         private List<Reservation> _reservations;
         private Dictionary<string, List<Reservation>> _dictionary;
+
         private List<BusLine> _busLines;
         private int _busLineIndex;
         private List<Bus> _buses;
@@ -31,13 +34,13 @@ namespace DistributorForms
 
         private void ItineraryDistributionForm_Load(object sender, EventArgs e)
         {
+            _busLines = _distributor.GetBusLines();
             _dictionary = new Dictionary<string, List<Reservation>>();
             _reservations = _distributor.GetReservations();
-            _busLines = _distributor.GetBusLines();
 
             foreach (var reservation in _reservations)
             {
-                var key = $"{reservation.TravelDatetime.ToString("yyyy-MM-dd HH:mm:ss")}{reservation.ResBusLine}";
+                var key = $"{reservation.TravelDatetime.ToString("HH:mm:ss dd-MM-yyyy")}{reservation.ResBusLine}";
                 if (!_dictionary.ContainsKey(key))
                 {
                     _dictionary.Add(key, new List<Reservation>());
@@ -49,19 +52,30 @@ namespace DistributorForms
                 }
             }
 
+            FillReservationListview();
+
+            busLineNumberCombobox.Items.AddRange(_distributor.GetBusLines().Select(x => x.Number.ToString()).ToArray());
+            sizeCombobox.Items.AddRange(new string[] { "Μεγάλο", "Μεσαίο", "Μικρό" });
+        }
+
+        private void FillReservationListview()
+        {
+            rereservationsListview.Items.Clear();
+
             foreach (var key in _dictionary.Keys)
             {
                 var item = _dictionary[key];
+
+                if (item.Count == 0)
+                    continue;
+
                 rereservationsListview.Items.Add(new ListViewItem(new string[]
                 {
-                    item[0].TravelDatetime.ToString("yyyy-MM-dd HH:mm:ss"),
+                    item[0].TravelDatetime.ToString("HH:mm:ss dd-MM-yyyy"),
                     item[0].ResBusLine.ToString(),
                     _dictionary[key].Count.ToString()
                 }));
             }
-
-            busLineNumberCombobox.Items.AddRange(_distributor.GetBusLines().Select(x => x.Number.ToString()).ToArray());
-            sizeCombobox.Items.AddRange(new string[] { "Μεγάλο", "Μεσαίο", "Μικρό" });
         }
 
         private void ProgrammingButton_Click(object sender, EventArgs e)
@@ -74,43 +88,40 @@ namespace DistributorForms
                 recommendedBusesListview.Items.Clear();
                 recommendedDriversListview.Items.Clear();
 
-                if (_distributor.CheckDuplicateItinerary(busLineNumberCombobox.SelectedItem.ToString(),
-                    $"{dateTimePicker.Value.ToString("yyyy-MM-dd")} {availableStartingHoursCombobox.SelectedItem}:00"))
-                {
-                    MessageBox.Show("Υπάρχει ήδη το συγκεκριμένο δρομολόγιο.",
-                                    "Σφάλμα",
-                                    MessageBoxButtons.OK,
-                                    MessageBoxIcon.Error);
-                    return;
-                }
-
+                //if (_distributor.CheckDuplicateItinerary(busLineNumberCombobox.SelectedItem.ToString(),
+                //    $"{dateTimePicker.Value.ToString("yyyy-MM-dd")} {availableStartingHoursCombobox.SelectedItem}:00"))
+                //{
+                //    MessageBox.Show("Υπάρχει ήδη το συγκεκριμένο δρομολόγιο.",
+                //                    "Σφάλμα",
+                //                    MessageBoxButtons.OK,
+                //                    MessageBoxIcon.Error);
+                //    return;
+                //}
 
                 _busLineIndex = busLineNumberCombobox.SelectedIndex;
 
-                var lastMinuteDates = GetLastMinuteAvailableDates();
                 if (DateTime.Now.DayOfWeek != DayOfWeek.Sunday)
                 {
-                    if (!lastMinuteDates.Contains(dateTimePicker.Value.ToString("dd-MM-yyyy")))
+                    if (!GetReservationAvailableDates().Contains(dateTimePicker.Value.ToString("dd-MM-yyyy")))
                     {
-                        MessageBox.Show($"Μη επιτρεπτή ημερομηνία. Παρακαλώ εισάγετε ημερομηνία στο διάστημα [{lastMinuteDates[0]}, {lastMinuteDates[lastMinuteDates.Count - 1]}]",
+                        MessageBox.Show($"Μη επιτρεπτή ημερομηνία.",
                                         "Σφάλμα",
                                         MessageBoxButtons.OK,
                                         MessageBoxIcon.Error);
                         return;
                     }
                 }
-                else
-                {
-                    var reservationDates = GetReservationAvailableDates().Select(x => x).Where(x => !lastMinuteDates.Contains(x)).ToList();
-                    if (!reservationDates.Contains(dateTimePicker.Value.ToString("dd-MM-yyyy")))
-                    {
-                        MessageBox.Show($"Μη επιτρεπτή ημερομηνία. Παρακαλώ εισάγετε ημερομηνία στο διάστημα [{reservationDates[0]}, {reservationDates[reservationDates.Count - 1]}]",
-                                        "Σφάλμα",
-                                        MessageBoxButtons.OK,
-                                        MessageBoxIcon.Error);
-                        return;
-                    }
-                }
+
+                var lastMinuteDates = GetLastMinuteAvailableDates();
+                var reservationDates = GetReservationAvailableDates()
+                    .Select(x => x)
+                    .Where(x => !lastMinuteDates.Contains(x))
+                    .ToList();
+
+
+                var targetDate = dateTimePicker.Value.ToString("dd-MM-yyyy");
+                var targetDatetime = $"{targetDate} {availableStartingHoursCombobox.SelectedIndex}:00";
+
 
                 var busDrivers = _distributor.GetBusDrivers();
                 var duration = _busLines[busLineNumberCombobox.SelectedIndex].Duration;
@@ -290,7 +301,7 @@ namespace DistributorForms
             {
                 var busLine = _busLines.Find(x => x.Number == int.Parse(busLineNumberCombobox.SelectedItem.ToString()));
 
-                TimeSpan timeSpan = new TimeSpan(9, 0, 0);
+                TimeSpan timeSpan = new TimeSpan(8, 0, 0);
                 while (timeSpan.Hours != 23)
                 {
                     availableStartingHoursCombobox.Items.Add(timeSpan.ToString("hh':'mm"));
@@ -304,8 +315,10 @@ namespace DistributorForms
         {
             if (recommendedBusesListview.CheckedItems.Count == 1 &&
                 recommendedDriversListview.CheckedItems.Count == 1)
-            {
+            {          
                 DateTime targetDatetime = DateTime.Parse($"{_date} {_hour}:00");
+                string targetDatetimeAsString = DateTime.Parse($"{_date} {_hour}:00").ToString("HH:mm:ss dd-MM-yyyy");
+
                 string busDriverUsername = _busDrivers[recommendedDriversListview.CheckedIndices[0]].Username;
                 BusLine busLine = _busLines[_busLineIndex];
                 Bus bus = _buses.Find(x => x.Id == int.Parse(recommendedBusesListview.Items[recommendedBusesListview.CheckedIndices[0]].SubItems[0].Text));
@@ -321,7 +334,8 @@ namespace DistributorForms
                         break;
                 }
 
-                Itinerary itinerary = new Itinerary(-1,
+
+                Itinerary itinerary = new Itinerary(_distributor.GetMaxItineraryID(),
                                                     targetDatetime,
                                                     busDriverUsername,
                                                     busLine,
@@ -330,8 +344,36 @@ namespace DistributorForms
                                                     size);
 
                 _distributor.InsertItineraryInDatabase(itinerary);
-
                 _busDrivers[recommendedDriversListview.CheckedIndices[0]].DecreaseAvailableWorkingHours(busLine.Duration);
+
+                int index = GetReservationIndex(targetDatetime);
+                if (index != -1)
+                {
+                    var clients = _reservations.Select(x => x).Where(x => x.TravelDatetime == targetDatetime).OrderBy(x => x.ReservationDatetime).ToList();
+
+                    var servedClients = clients.Take(size).ToList();
+
+                    foreach (var servedClient in servedClients)
+                    {
+                        var client = _distributor.GetClient(servedClient.ReserveringClient);
+                        var ticket = new Ticket(itinerary, false, false, client.Username);
+
+                        client.AddToCollection(ticket);
+                        client.AutomaticTicketPurchase(_distributor.GetMaxItineraryID());
+                        client.InsertTransactionToDatabase(_distributor.GetClientsLastTicketID(client.Username),
+                                                           _distributor.GetReservationPrice(client.Username, 
+                                                                                            targetDatetime.ToString("yyyy-MM-dd HH:mm:ss"), busLine.Number));
+
+                        _distributor.DeleteReservation(servedClient);
+                         _reservations.Remove(servedClient);
+                        _dictionary[$"{targetDatetimeAsString}{servedClient.ResBusLine}"].Remove(servedClient);
+                    }
+
+                    FillReservationListview();
+                }
+
+                recommendedBusesListview.Items.Clear();
+                recommendedDriversListview.Items.Clear();
 
                 MessageBox.Show("Επιτυχής καταχώρηση δρομολογίου.",
                                 "Επιτυχία",
@@ -345,6 +387,20 @@ namespace DistributorForms
                                 MessageBoxButtons.OK,
                                 MessageBoxIcon.Error);
             }
+        }
+
+
+        public int GetReservationIndex(DateTime targetDatetime)
+        {
+            for (int i = 0; i < rereservationsListview.Items.Count; i++)
+            {
+                if (rereservationsListview.Items[i].SubItems[0].Text == targetDatetime.ToString("HH:mm:ss dd-MM-yyyy"))
+                {
+                    return i;
+                }
+            }
+
+            return -1;
         }
 
         public static List<string> GetLastMinuteAvailableDates()

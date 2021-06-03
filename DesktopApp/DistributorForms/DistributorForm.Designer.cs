@@ -210,7 +210,7 @@ namespace DistributorForms
             this.programmingLabel.Size = new System.Drawing.Size(180, 53);
             this.programmingLabel.TabIndex = 7;
             this.programmingLabel.Text = "Προγραμματισμός και κατανομή";
-            this.programmingLabel.Click += new System.EventHandler(this.ProgrammingLabel_Click);
+            //this.programmingLabel.Click += new System.EventHandler(this.ProgrammingLabel_Click);
             // 
             // lastMinuteTravelRequestsLabel
             // 

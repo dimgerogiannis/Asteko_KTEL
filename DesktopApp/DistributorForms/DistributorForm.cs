@@ -24,6 +24,11 @@ namespace DistributorForms
             fullNameLabel.Text = _distributor.GetFullName() + "    ";
             fullNameLabel.Location = fullNameLabel.Location = new Point(this.Width / 2 - fullNameLabel.Width / 2, 50);
             salaryLabel.Text = $"{_distributor.Salary} Ευρώ";
+
+            if (DateTime.Now.DayOfWeek != DayOfWeek.Sunday)
+            {
+                programmingLabel.Click += ProgrammingLabel_Click;
+            }
         }
 
         private void ImprovementCommentsLabel_Click(object sender, EventArgs e)

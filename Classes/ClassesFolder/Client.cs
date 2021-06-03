@@ -65,6 +65,7 @@ namespace ClassesFolder
             GetInformation();
             GetAvailablePolls();
             GetReservations();
+            _ticketList = new List<Ticket>();
         }
 
         public string GetFullName()

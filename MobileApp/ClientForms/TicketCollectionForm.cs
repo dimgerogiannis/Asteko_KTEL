@@ -25,7 +25,11 @@ namespace Project.ClientForms
             _client.GetTickets();
             _client.UsableTicketList = new List<Ticket>();
 
-            _client.TicketList = _client.TicketList.Select(x => x).Where(y => y.Used == false).ToList();
+            _client.TicketList = _client
+                .TicketList
+                .Select(x => x)
+                .Where(y => y.Used == false)
+                .ToList();
 
             SortByDatetimeOfItinerary();
 
@@ -50,7 +54,10 @@ namespace Project.ClientForms
 
         private void SortByDatetimeOfItinerary()
         {
-            _client.TicketList = _client.TicketList.OrderBy(x => x.CorrespondingItinerary.TravelDatetime).ToList();
+            _client.TicketList = _client
+                .TicketList
+                .OrderBy(x => x.CorrespondingItinerary.TravelDatetime)
+                .ToList();
         }
 
         private bool CanBeUsed(DateTime current)

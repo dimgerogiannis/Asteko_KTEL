@@ -313,5 +313,109 @@ namespace ClassesFolder
 
             return reader.GetInt32(0) == 1;
         }
+    
+        public Client GetClient(string username)
+        {
+            try
+            {
+                using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
+                connection.Open();
+                var statement = @"select name, surname
+                                  from user
+                                  where username = @username;";
+                using var cmd = new MySqlCommand(statement, connection);
+
+                cmd.Parameters.AddWithValue("@username", username);
+                using MySqlDataReader reader = cmd.ExecuteReader();
+                reader.Read();
+
+                return new Client(username,
+                                  reader.GetString(0),
+                                  reader.GetString(1),
+                                  "Client");
+            }
+            catch (MySqlException)
+            {
+                MessageBox.Show("Προκλήθηκε σφάλμα κατά την σύνδεση με τον server. Η εφαρμογή θα τερματιστεί!",
+                                "Σφάλμα",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Error);
+                Application.Exit();
+                return null;
+            }
+        }
+
+        public int GetClientsLastTicketID(string username)
+        {
+            using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
+            connection.Open();
+            var statement = @"select max(ticketID)
+                              from ticket
+                              where clientUsername = @username;";
+            using var cmd = new MySqlCommand(statement, connection);
+
+            cmd.Parameters.AddWithValue("@username", username);
+            using MySqlDataReader reader = cmd.ExecuteReader();
+            reader.Read();
+
+            return reader.GetInt32(0);
+        }
+
+        public decimal GetReservationPrice(string username, string travelDatetime, int busLineNumber)
+        {
+            using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
+            connection.Open();
+            var statement = @"select chargedPrice from Reservation
+                              where clientUsername = @username and travelDatetime = @travelDatetime and travelBusLine = @travelBusLine;";
+            using var cmd = new MySqlCommand(statement, connection);
+
+            cmd.Parameters.AddWithValue("@username", username);
+            cmd.Parameters.AddWithValue("@travelDatetime", travelDatetime);
+            cmd.Parameters.AddWithValue("@travelBusLine", busLineNumber);
+            using MySqlDataReader reader = cmd.ExecuteReader();
+            reader.Read();
+
+            return reader.GetInt32(0);
+        }
+
+        public int GetMaxItineraryID()
+        {
+            try
+            {
+                using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
+                connection.Open();
+
+                var query = @"select max(itineraryID)
+                              from itinerary";
+
+                using var cmd = new MySqlCommand(query, connection);
+                using MySqlDataReader reader = cmd.ExecuteReader();
+
+                reader.Read();
+                return reader.GetInt32(0);       
+            }
+            catch (MySqlException)
+            {
+                MessageBox.Show("Προκλήθηκε σφάλμα κατά την σύνδεση με τον server. Η εφαρμογή θα τερματιστεί!",
+                                 "Σφάλμα",
+                                 MessageBoxButtons.OK,
+                                 MessageBoxIcon.Error);
+                Application.Exit();
+                return -1;
+            }
+        }
+    
+        public void DeleteReservation(Reservation reservation)
+        {
+            using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
+            connection.Open();
+            var statement = @"delete from reservation
+                              where clientUsername = @username and travelDatetime = @travelDatetime and travelBusLine = @travelBusLine;";
+            using var cmd = new MySqlCommand(statement, connection);
+            cmd.Parameters.AddWithValue("@username", reservation.ReserveringClient);
+            cmd.Parameters.AddWithValue("@travelDatetime", reservation.TravelDatetime.ToString("yyyy-MM-dd HH:mm:ss"));
+            cmd.Parameters.AddWithValue("@travelBusLine", reservation.ResBusLine);
+            cmd.ExecuteNonQuery();
+        }
     }
 }
