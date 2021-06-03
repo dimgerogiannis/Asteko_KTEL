@@ -1,7 +1,0 @@
-F:\ProjectSoft2021\MobileApp\obj\Debug\netcoreapp3.1\MobileApp.csproj.AssemblyReference.cache
-F:\ProjectSoft2021\MobileApp\obj\Debug\netcoreapp3.1\Login.LoginForm.resources
-F:\ProjectSoft2021\MobileApp\obj\Debug\netcoreapp3.1\Project.Login.RegisterForm.resources
-F:\ProjectSoft2021\MobileApp\obj\Debug\netcoreapp3.1\MobileApp.csproj.GenerateResource.cache
-F:\ProjectSoft2021\MobileApp\obj\Debug\netcoreapp3.1\MobileApp.AssemblyInfoInputs.cache
-F:\ProjectSoft2021\MobileApp\obj\Debug\netcoreapp3.1\MobileApp.AssemblyInfo.cs
-F:\ProjectSoft2021\MobileApp\obj\Debug\netcoreapp3.1\MobileApp.csproj.CoreCompileInputs.cache
