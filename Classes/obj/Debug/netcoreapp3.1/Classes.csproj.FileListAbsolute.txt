@@ -11,3 +11,12 @@ D:\ΕΡΓΑΣΙΑ ΤΕΧΝΟΛΟΓΙΑ ΛΟΓΙΣΜΙΚΟΥ\SoftwareTechProject\
 D:\ΕΡΓΑΣΙΑ ΤΕΧΝΟΛΟΓΙΑ ΛΟΓΙΣΜΙΚΟΥ\SoftwareTechProject\Classes\obj\Debug\netcoreapp3.1\Classes.csproj.CoreCompileInputs.cache
 D:\ΕΡΓΑΣΙΑ ΤΕΧΝΟΛΟΓΙΑ ΛΟΓΙΣΜΙΚΟΥ\SoftwareTechProject\Classes\obj\Debug\netcoreapp3.1\Classes.dll
 D:\ΕΡΓΑΣΙΑ ΤΕΧΝΟΛΟΓΙΑ ΛΟΓΙΣΜΙΚΟΥ\SoftwareTechProject\Classes\obj\Debug\netcoreapp3.1\Classes.pdb
+F:\ProjectSoft2021\Classes\bin\Debug\netcoreapp3.1\Classes.deps.json
+F:\ProjectSoft2021\Classes\bin\Debug\netcoreapp3.1\Classes.dll
+F:\ProjectSoft2021\Classes\bin\Debug\netcoreapp3.1\Classes.pdb
+F:\ProjectSoft2021\Classes\obj\Debug\netcoreapp3.1\Classes.csproj.AssemblyReference.cache
+F:\ProjectSoft2021\Classes\obj\Debug\netcoreapp3.1\Classes.AssemblyInfoInputs.cache
+F:\ProjectSoft2021\Classes\obj\Debug\netcoreapp3.1\Classes.AssemblyInfo.cs
+F:\ProjectSoft2021\Classes\obj\Debug\netcoreapp3.1\Classes.csproj.CoreCompileInputs.cache
+F:\ProjectSoft2021\Classes\obj\Debug\netcoreapp3.1\Classes.dll
+F:\ProjectSoft2021\Classes\obj\Debug\netcoreapp3.1\Classes.pdb

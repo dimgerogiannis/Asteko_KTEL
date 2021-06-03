@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\ΕΡΓΑΣΙΑ ΤΕΧΝΟΛΟΓΙΑ ΛΟΓΙΣΜΙΚΟΥ\\SoftwareTechProject\\DesktopApp\\DesktopApp.csproj": {}
+    "F:\\ProjectSoft2021\\DesktopApp\\DesktopApp.csproj": {}
   },
   "projects": {
-    "D:\\ΕΡΓΑΣΙΑ ΤΕΧΝΟΛΟΓΙΑ ΛΟΓΙΣΜΙΚΟΥ\\SoftwareTechProject\\Classes\\Classes.csproj": {
+    "F:\\ProjectSoft2021\\Classes\\Classes.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\ΕΡΓΑΣΙΑ ΤΕΧΝΟΛΟΓΙΑ ΛΟΓΙΣΜΙΚΟΥ\\SoftwareTechProject\\Classes\\Classes.csproj",
+        "projectUniqueName": "F:\\ProjectSoft2021\\Classes\\Classes.csproj",
         "projectName": "Classes",
-        "projectPath": "D:\\ΕΡΓΑΣΙΑ ΤΕΧΝΟΛΟΓΙΑ ΛΟΓΙΣΜΙΚΟΥ\\SoftwareTechProject\\Classes\\Classes.csproj",
+        "projectPath": "F:\\ProjectSoft2021\\Classes\\Classes.csproj",
         "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-        "outputPath": "D:\\ΕΡΓΑΣΙΑ ΤΕΧΝΟΛΟΓΙΑ ΛΟΓΙΣΜΙΚΟΥ\\SoftwareTechProject\\Classes\\obj\\",
+        "outputPath": "F:\\ProjectSoft2021\\Classes\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -67,14 +67,14 @@
         }
       }
     },
-    "D:\\ΕΡΓΑΣΙΑ ΤΕΧΝΟΛΟΓΙΑ ΛΟΓΙΣΜΙΚΟΥ\\SoftwareTechProject\\DesktopApp\\DesktopApp.csproj": {
+    "F:\\ProjectSoft2021\\DesktopApp\\DesktopApp.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\ΕΡΓΑΣΙΑ ΤΕΧΝΟΛΟΓΙΑ ΛΟΓΙΣΜΙΚΟΥ\\SoftwareTechProject\\DesktopApp\\DesktopApp.csproj",
+        "projectUniqueName": "F:\\ProjectSoft2021\\DesktopApp\\DesktopApp.csproj",
         "projectName": "DesktopApp",
-        "projectPath": "D:\\ΕΡΓΑΣΙΑ ΤΕΧΝΟΛΟΓΙΑ ΛΟΓΙΣΜΙΚΟΥ\\SoftwareTechProject\\DesktopApp\\DesktopApp.csproj",
+        "projectPath": "F:\\ProjectSoft2021\\DesktopApp\\DesktopApp.csproj",
         "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-        "outputPath": "D:\\ΕΡΓΑΣΙΑ ΤΕΧΝΟΛΟΓΙΑ ΛΟΓΙΣΜΙΚΟΥ\\SoftwareTechProject\\DesktopApp\\obj\\",
+        "outputPath": "F:\\ProjectSoft2021\\DesktopApp\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -91,8 +91,8 @@
           "netcoreapp3.1": {
             "targetAlias": "netcoreapp3.1",
             "projectReferences": {
-              "D:\\ΕΡΓΑΣΙΑ ΤΕΧΝΟΛΟΓΙΑ ΛΟΓΙΣΜΙΚΟΥ\\SoftwareTechProject\\Classes\\Classes.csproj": {
-                "projectPath": "D:\\ΕΡΓΑΣΙΑ ΤΕΧΝΟΛΟΓΙΑ ΛΟΓΙΣΜΙΚΟΥ\\SoftwareTechProject\\Classes\\Classes.csproj"
+              "F:\\ProjectSoft2021\\Classes\\Classes.csproj": {
+                "projectPath": "F:\\ProjectSoft2021\\Classes\\Classes.csproj"
               }
             }
           }

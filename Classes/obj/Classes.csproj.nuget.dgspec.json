@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\ΕΡΓΑΣΙΑ ΤΕΧΝΟΛΟΓΙΑ ΛΟΓΙΣΜΙΚΟΥ\\SoftwareTechProject\\Classes\\Classes.csproj": {}
+    "F:\\ProjectSoft2021\\Classes\\Classes.csproj": {}
   },
   "projects": {
-    "D:\\ΕΡΓΑΣΙΑ ΤΕΧΝΟΛΟΓΙΑ ΛΟΓΙΣΜΙΚΟΥ\\SoftwareTechProject\\Classes\\Classes.csproj": {
+    "F:\\ProjectSoft2021\\Classes\\Classes.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\ΕΡΓΑΣΙΑ ΤΕΧΝΟΛΟΓΙΑ ΛΟΓΙΣΜΙΚΟΥ\\SoftwareTechProject\\Classes\\Classes.csproj",
+        "projectUniqueName": "F:\\ProjectSoft2021\\Classes\\Classes.csproj",
         "projectName": "Classes",
-        "projectPath": "D:\\ΕΡΓΑΣΙΑ ΤΕΧΝΟΛΟΓΙΑ ΛΟΓΙΣΜΙΚΟΥ\\SoftwareTechProject\\Classes\\Classes.csproj",
+        "projectPath": "F:\\ProjectSoft2021\\Classes\\Classes.csproj",
         "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-        "outputPath": "D:\\ΕΡΓΑΣΙΑ ΤΕΧΝΟΛΟΓΙΑ ΛΟΓΙΣΜΙΚΟΥ\\SoftwareTechProject\\Classes\\obj\\",
+        "outputPath": "F:\\ProjectSoft2021\\Classes\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config",

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "ySaergJ6L0D15kIYANxeJGrWeTMSDjkhSX0q8MCzZxZeZYkjg9AEg8sP672rHFVaRtlGPgHpPG+fvYO5MFx/Ew==",
+  "dgSpecHash": "qxw8rueLZE+tTMMDYCEGyDrb5aJlmnmxWiCtx463gfnmKE74L2AOIif/iNMe5BVpLPxu2aGhgF4ZwcBoV/6FVw==",
   "success": true,
-  "projectFilePath": "D:\\ΕΡΓΑΣΙΑ ΤΕΧΝΟΛΟΓΙΑ ΛΟΓΙΣΜΙΚΟΥ\\SoftwareTechProject\\DesktopApp\\DesktopApp.csproj",
+  "projectFilePath": "F:\\ProjectSoft2021\\DesktopApp\\DesktopApp.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\User\\.nuget\\packages\\bouncycastle.netcore\\1.8.5\\bouncycastle.netcore.1.8.5.nupkg.sha512",
     "C:\\Users\\User\\.nuget\\packages\\google.protobuf\\3.14.0\\google.protobuf.3.14.0.nupkg.sha512",
