@@ -20,3 +20,12 @@ F:\ProjectSoft2021\Classes\obj\Debug\netcoreapp3.1\Classes.AssemblyInfo.cs
 F:\ProjectSoft2021\Classes\obj\Debug\netcoreapp3.1\Classes.csproj.CoreCompileInputs.cache
 F:\ProjectSoft2021\Classes\obj\Debug\netcoreapp3.1\Classes.dll
 F:\ProjectSoft2021\Classes\obj\Debug\netcoreapp3.1\Classes.pdb
+F:\Software\Classes\bin\Debug\netcoreapp3.1\Classes.deps.json
+F:\Software\Classes\bin\Debug\netcoreapp3.1\Classes.dll
+F:\Software\Classes\bin\Debug\netcoreapp3.1\Classes.pdb
+F:\Software\Classes\obj\Debug\netcoreapp3.1\Classes.csproj.AssemblyReference.cache
+F:\Software\Classes\obj\Debug\netcoreapp3.1\Classes.AssemblyInfoInputs.cache
+F:\Software\Classes\obj\Debug\netcoreapp3.1\Classes.AssemblyInfo.cs
+F:\Software\Classes\obj\Debug\netcoreapp3.1\Classes.csproj.CoreCompileInputs.cache
+F:\Software\Classes\obj\Debug\netcoreapp3.1\Classes.dll
+F:\Software\Classes\obj\Debug\netcoreapp3.1\Classes.pdb

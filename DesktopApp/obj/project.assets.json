@@ -865,11 +865,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "F:\\ProjectSoft2021\\DesktopApp\\DesktopApp.csproj",
+      "projectUniqueName": "F:\\Software\\DesktopApp\\DesktopApp.csproj",
       "projectName": "DesktopApp",
-      "projectPath": "F:\\ProjectSoft2021\\DesktopApp\\DesktopApp.csproj",
+      "projectPath": "F:\\Software\\DesktopApp\\DesktopApp.csproj",
       "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-      "outputPath": "F:\\ProjectSoft2021\\DesktopApp\\obj\\",
+      "outputPath": "F:\\Software\\DesktopApp\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -886,8 +886,8 @@
         "netcoreapp3.1": {
           "targetAlias": "netcoreapp3.1",
           "projectReferences": {
-            "F:\\ProjectSoft2021\\Classes\\Classes.csproj": {
-              "projectPath": "F:\\ProjectSoft2021\\Classes\\Classes.csproj"
+            "F:\\Software\\Classes\\Classes.csproj": {
+              "projectPath": "F:\\Software\\Classes\\Classes.csproj"
             }
           }
         }

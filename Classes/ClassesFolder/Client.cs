@@ -444,7 +444,7 @@ namespace ClassesFolder
 
             var query = @"update Client set balance = balance - @price where username = @username;";
             using var cmd = new MySqlCommand(query, connection);
-            cmd.Parameters.AddWithValue("@balance", price);
+            cmd.Parameters.AddWithValue("@price", price);
             cmd.Parameters.AddWithValue("@username", _username);
             cmd.ExecuteNonQuery();
         }
@@ -1448,6 +1448,46 @@ namespace ClassesFolder
         public void SetAsUnavailable(Poll poll)
         {
             _availablePolls.Remove(poll);
+        }
+
+        public void AddToCollection(Ticket ticket)
+        {
+            _ticketList.Add(ticket);
+        }
+
+        public Itinerary GetItinerary(string datetime, string _busLineNumber)
+        {
+            using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
+            connection.Open();
+
+            var query = @"select itineraryID, status, travelDatetime, busDriverUsername, busLineNumber, busID, availableSeats
+                              from itinerary
+                              where busLineNumber = @busLineNumber and travelDatetime = @travelDatetime";
+
+            using var cmd = new MySqlCommand(query, connection);
+            cmd.Parameters.AddWithValue("@busLineNumber", _busLineNumber);
+            cmd.Parameters.AddWithValue("@travelDatetime", datetime);
+
+            using MySqlDataReader reader = cmd.ExecuteReader();
+
+            reader.Read();
+
+            int itineraryID = reader.GetInt32(0);
+            string status = reader.GetString(1);
+            ItineraryStatus enumStatus = status == "no_delayed" ? ItineraryStatus.NoDelayed : ItineraryStatus.Delayed;
+            DateTime travelDatetime = reader.GetDateTime(2);
+            string busDriverUsername = reader.GetString(3);
+            int busLineNumber = reader.GetInt32(4);
+            int busID = reader.GetInt32(5);
+            int availableSeats = reader.GetInt32(6);
+
+            return new Itinerary(itineraryID,
+                                 travelDatetime,
+                                 busDriverUsername,
+                                 GetBusLineData(busLineNumber),
+                                 GetBusData(busID),
+                                 enumStatus,
+                                 availableSeats);
         }
     }
 }

@@ -97,6 +97,12 @@ namespace Project.ClientForms
 
                             _client.AutomaticTicketPurchase(itinerary.ID);
                             _client.PayForTicket(price);
+
+                            _client.AddToCollection(new Ticket(_client.GetItinerary($"{dateTimePicker.Value.ToString("yyyy-MM-dd")} {timeCombobox.SelectedItem}:00", lineNumberCombobox.SelectedItem.ToString()), 
+                                                               false, 
+                                                               false, 
+                                                               _client.Username));
+
                             _client.DecrementItinerarySeats(itinerary.ID, itinerary.AvailableSeats);
                             _client.InsertTransactionToDatabase(_client.GetLastInsertedTicketID(), price);
                             break;
@@ -213,7 +219,7 @@ namespace Project.ClientForms
             if (lineNumberCombobox.SelectedItem != null)
             {
                 timeCombobox.Items.Clear();
-                TimeSpan time = new TimeSpan(9, 0, 0);
+                TimeSpan time = new TimeSpan(8, 0, 0);
                 while (time.Hours != 23)
                 {
                     timeCombobox.Items.Add(time.ToString("hh':'mm"));
