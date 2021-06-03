@@ -2,3 +2,12 @@ D:\ΕΡΓΑΣΙΑ ΤΕΧΝΟΛΟΓΙΑ ΛΟΓΙΣΜΙΚΟΥ\Project\SoftwareTech
 D:\ΕΡΓΑΣΙΑ ΤΕΧΝΟΛΟΓΙΑ ΛΟΓΙΣΜΙΚΟΥ\Project\SoftwareTechnologyProject\Classes\obj\Debug\netcoreapp3.1\Classes.AssemblyInfoInputs.cache
 D:\ΕΡΓΑΣΙΑ ΤΕΧΝΟΛΟΓΙΑ ΛΟΓΙΣΜΙΚΟΥ\Project\SoftwareTechnologyProject\Classes\obj\Debug\netcoreapp3.1\Classes.AssemblyInfo.cs
 D:\ΕΡΓΑΣΙΑ ΤΕΧΝΟΛΟΓΙΑ ΛΟΓΙΣΜΙΚΟΥ\Project\SoftwareTechnologyProject\Classes\obj\Debug\netcoreapp3.1\Classes.csproj.CoreCompileInputs.cache
+D:\ΕΡΓΑΣΙΑ ΤΕΧΝΟΛΟΓΙΑ ΛΟΓΙΣΜΙΚΟΥ\SoftwareTechProject\Classes\bin\Debug\netcoreapp3.1\Classes.deps.json
+D:\ΕΡΓΑΣΙΑ ΤΕΧΝΟΛΟΓΙΑ ΛΟΓΙΣΜΙΚΟΥ\SoftwareTechProject\Classes\bin\Debug\netcoreapp3.1\Classes.dll
+D:\ΕΡΓΑΣΙΑ ΤΕΧΝΟΛΟΓΙΑ ΛΟΓΙΣΜΙΚΟΥ\SoftwareTechProject\Classes\bin\Debug\netcoreapp3.1\Classes.pdb
+D:\ΕΡΓΑΣΙΑ ΤΕΧΝΟΛΟΓΙΑ ΛΟΓΙΣΜΙΚΟΥ\SoftwareTechProject\Classes\obj\Debug\netcoreapp3.1\Classes.csproj.AssemblyReference.cache
+D:\ΕΡΓΑΣΙΑ ΤΕΧΝΟΛΟΓΙΑ ΛΟΓΙΣΜΙΚΟΥ\SoftwareTechProject\Classes\obj\Debug\netcoreapp3.1\Classes.AssemblyInfoInputs.cache
+D:\ΕΡΓΑΣΙΑ ΤΕΧΝΟΛΟΓΙΑ ΛΟΓΙΣΜΙΚΟΥ\SoftwareTechProject\Classes\obj\Debug\netcoreapp3.1\Classes.AssemblyInfo.cs
+D:\ΕΡΓΑΣΙΑ ΤΕΧΝΟΛΟΓΙΑ ΛΟΓΙΣΜΙΚΟΥ\SoftwareTechProject\Classes\obj\Debug\netcoreapp3.1\Classes.csproj.CoreCompileInputs.cache
+D:\ΕΡΓΑΣΙΑ ΤΕΧΝΟΛΟΓΙΑ ΛΟΓΙΣΜΙΚΟΥ\SoftwareTechProject\Classes\obj\Debug\netcoreapp3.1\Classes.dll
+D:\ΕΡΓΑΣΙΑ ΤΕΧΝΟΛΟΓΙΑ ΛΟΓΙΣΜΙΚΟΥ\SoftwareTechProject\Classes\obj\Debug\netcoreapp3.1\Classes.pdb

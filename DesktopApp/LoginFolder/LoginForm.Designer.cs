@@ -54,18 +54,18 @@ namespace LoginFolder
             this.usernameLabel.AutoSize = true;
             this.usernameLabel.Location = new System.Drawing.Point(133, 494);
             this.usernameLabel.Name = "usernameLabel";
-            this.usernameLabel.Size = new System.Drawing.Size(91, 25);
+            this.usernameLabel.Size = new System.Drawing.Size(132, 25);
             this.usernameLabel.TabIndex = 1;
-            this.usernameLabel.Text = "Username";
+            this.usernameLabel.Text = "Όνομα χρήστη";
             // 
             // passwordLabel
             // 
             this.passwordLabel.AutoSize = true;
             this.passwordLabel.Location = new System.Drawing.Point(133, 569);
             this.passwordLabel.Name = "passwordLabel";
-            this.passwordLabel.Size = new System.Drawing.Size(87, 25);
+            this.passwordLabel.Size = new System.Drawing.Size(178, 25);
             this.passwordLabel.TabIndex = 2;
-            this.passwordLabel.Text = "Password";
+            this.passwordLabel.Text = "Κωδικός πρόσβασης";
             // 
             // usernameTextbox
             // 
@@ -84,12 +84,13 @@ namespace LoginFolder
             // 
             // loginButton
             // 
-            this.loginButton.Location = new System.Drawing.Point(133, 644);
+            this.loginButton.BackColor = System.Drawing.Color.Red;
+            this.loginButton.Location = new System.Drawing.Point(133, 655);
             this.loginButton.Name = "loginButton";
-            this.loginButton.Size = new System.Drawing.Size(112, 34);
+            this.loginButton.Size = new System.Drawing.Size(112, 35);
             this.loginButton.TabIndex = 4;
-            this.loginButton.Text = "Login";
-            this.loginButton.UseVisualStyleBackColor = true;
+            this.loginButton.Text = "Σύνδεση";
+            this.loginButton.UseVisualStyleBackColor = false;
             this.loginButton.Click += new System.EventHandler(this.LoginButton_Click);
             // 
             // LoginForm
@@ -97,7 +98,7 @@ namespace LoginFolder
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.ClientSize = new System.Drawing.Size(627, 703);
+            this.ClientSize = new System.Drawing.Size(627, 710);
             this.Controls.Add(this.loginButton);
             this.Controls.Add(this.passwordTextbox);
             this.Controls.Add(this.usernameTextbox);

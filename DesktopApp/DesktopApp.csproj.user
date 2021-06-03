@@ -37,6 +37,21 @@
     <Compile Update="ChiefForms\RejectReasonForm.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Update="DistributorForms\BusLineConfigurationForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="DistributorForms\BusLineEditingForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="DistributorForms\DistributorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="DistributorForms\FeedbackForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="DistributorForms\ItineraryDistributionForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="LoginFolder\LoginForm.cs">
       <SubType>Form</SubType>
     </Compile>
