@@ -64,6 +64,7 @@ namespace ClassesFolder
         {
             GetInformation();
             GetAvailablePolls();
+            GetReservations();
         }
 
         public string GetFullName()
@@ -111,9 +112,9 @@ namespace ClassesFolder
                 using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
                 connection.Open();
 
-                var query = @"select ticketID, itineraryID, used, delayedItinerary
-                          from ticket
-                          where clientUsername = @username;";
+                var query = @"select itineraryID, used, delayedItinerary, clientUsername
+                              from ticket
+                              where clientUsername = @username;";
 
                 using var cmd = new MySqlCommand(query, connection);
                 cmd.Parameters.AddWithValue("@username", _username);
@@ -124,11 +125,10 @@ namespace ClassesFolder
 
                 while (reader.Read())
                 {
-                    int ticketID = reader.GetInt32(0);
-                    int itineraryID = reader.GetInt32(1);
-                    bool used = reader.GetBoolean(2);
-                    bool delayedItinerary = reader.GetBoolean(3);
-                    _ticketList.Add(new Ticket(ticketID, GetItineraryData(itineraryID), delayedItinerary, used));
+                    _ticketList.Add(new Ticket(GetItineraryData(reader.GetInt32(0)), 
+                                               reader.GetBoolean(2), 
+                                               reader.GetBoolean(1),
+                                               reader.GetString(3)));
                 }
             }
             catch (MySqlException)
@@ -194,8 +194,8 @@ namespace ClassesFolder
                 connection.Open();
 
                 var query = @"select size 
-                          from bus 
-                          where busID = @busID;";
+                              from bus 
+                              where busID = @busID;";
 
                 using var cmd = new MySqlCommand(query, connection);
                 cmd.Parameters.AddWithValue("@busID", busID);
@@ -266,8 +266,8 @@ namespace ClassesFolder
                 connection.Open();
 
                 var query = @"select stopName 
-                          from stop 
-                          where number = @number;";
+                              from stop 
+                              where number = @number;";
 
                 using var cmd = new MySqlCommand(query, connection);
                 cmd.Parameters.AddWithValue("@number", number);
@@ -341,11 +341,12 @@ namespace ClassesFolder
                 connection.Open();
 
                 var query = @"select price, purchaseDatetime
-                              from transaction 
-                              where ticketID = @ticketID;";
+                              from Ticket inner join Transaction on Ticket.ticketID = Transaction.TicketID
+                              where itineraryID = @itineraryID and clientUsername = @clientUsername;";
 
                 using var cmd = new MySqlCommand(query, connection);
-                cmd.Parameters.AddWithValue("@ticketID", ticket.ID);
+                cmd.Parameters.AddWithValue("@itineraryID", ticket.CorrespondingItinerary.ID);
+                cmd.Parameters.AddWithValue("@clientUsername", _username);
                 using MySqlDataReader reader = cmd.ExecuteReader();
                 reader.Read();
 
@@ -362,23 +363,23 @@ namespace ClassesFolder
             }
         }
 
-        public List<string> GetBusLinesNumbers()
+        public Dictionary<string, int> GetBusLinesNumbers()
         {
             try
             {
                 using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
                 connection.Open();
 
-                var statement = @"select number
-                              from busline;";
+                var statement = @"select number, duration
+                                 from busline;";
 
                 using var cmd = new MySqlCommand(statement, connection);
                 using MySqlDataReader reader = cmd.ExecuteReader();
-                List<string> busLines = new List<string>();
+                Dictionary<string, int> busLines = new Dictionary<string, int>();
 
                 while (reader.Read())
                 {
-                    busLines.Add(reader.GetInt32(0).ToString());
+                    busLines.Add(reader.GetInt32(0).ToString(), reader.GetInt32(1));
                 }
                 return busLines;
             }
@@ -433,6 +434,19 @@ namespace ClassesFolder
         public void PayForTicket(decimal price)
         {
             _balance -= price;
+            DecreaseBalance(price);
+        }
+
+        private void DecreaseBalance(decimal price)
+        {
+            using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
+            connection.Open();
+
+            var query = @"update Client set balance = balance - @price where username = @username;";
+            using var cmd = new MySqlCommand(query, connection);
+            cmd.Parameters.AddWithValue("@balance", price);
+            cmd.Parameters.AddWithValue("@username", _username);
+            cmd.ExecuteNonQuery();
         }
 
         public List<Itinerary> GetMatchingItineraries(string busLineNumber, string travelDatetime)
@@ -538,7 +552,7 @@ namespace ClassesFolder
             }
         }
 
-        public void InsertReservationToDatabase(string reservationDatetime, int busLineNumber, decimal chargedPrice)
+        public void InsertReservationToDatabase(Reservation reservation, decimal chargedPrice)
         {
             try
             {
@@ -548,8 +562,8 @@ namespace ClassesFolder
 	                     (CURRENT_TIME(), @travelDatetime, @travelBusLine, @chargedPrice, @clientUsername);";
 
                 using var cmd = new MySqlCommand(query, connection);
-                cmd.Parameters.AddWithValue("@travelDatetime", reservationDatetime);
-                cmd.Parameters.AddWithValue("@travelBusLine", busLineNumber);
+                cmd.Parameters.AddWithValue("@travelDatetime", reservation.TravelDatetime.ToString("yyyy-MM-dd HH:mm:ss"));
+                cmd.Parameters.AddWithValue("@travelBusLine", reservation.ResBusLine);
                 cmd.Parameters.AddWithValue("@chargedPrice", chargedPrice);
                 cmd.Parameters.AddWithValue("@clientUsername", _username);
                 cmd.ExecuteNonQuery();
@@ -1167,7 +1181,7 @@ namespace ClassesFolder
                 using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
                 connection.Open();
 
-                var query = @"select ticketID, ticket.itineraryID, used, delayedItinerary
+                var query = @"select ticket.itineraryID, used, delayedItinerary, clientUsername
                               from ticket
                               inner join itinerary on ticket.itineraryID = itinerary.itineraryID
                               where clientUsername = @username and month(travelDatetime) >= month(@date) and month(travelDatetime) <= month(@date) and year(travelDatetime) = year(@date);";
@@ -1182,11 +1196,10 @@ namespace ClassesFolder
 
                 while (reader.Read())
                 {
-                    int ticketID = reader.GetInt32(0);
-                    int itineraryID = reader.GetInt32(1);
-                    bool used = reader.GetBoolean(2);
-                    bool delayedItinerary = reader.GetBoolean(3);
-                    tickets.Add(new Ticket(ticketID, GetItineraryData(itineraryID), delayedItinerary, used));
+                    tickets.Add(new Ticket(GetItineraryData(reader.GetInt32(0)), 
+                                           reader.GetBoolean(2), 
+                                           reader.GetBoolean(1), 
+                                           reader.GetString(3)));
                 }
 
                 return tickets;
@@ -1225,11 +1238,10 @@ namespace ClassesFolder
 
                 while (reader.Read())
                 {
-                    int ticketID = reader.GetInt32(0);
-                    int itineraryID = reader.GetInt32(1);
-                    bool used = reader.GetBoolean(2);
-                    bool delayedItinerary = reader.GetBoolean(3);
-                    tickets.Add(new Ticket(ticketID, GetItineraryData(itineraryID), delayedItinerary, used));
+                    tickets.Add(new Ticket(GetItineraryData(reader.GetInt32(0)), 
+                                                            reader.GetBoolean(2), 
+                                                            reader.GetBoolean(1),
+                                                            reader.GetString(3)));
                 }
 
                 return tickets;
@@ -1353,7 +1365,7 @@ namespace ClassesFolder
             {
                 using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
                 connection.Open();
-                var statement = @"select name, surname, salary, experience, hireDate, complaintsCounter
+                var statement = @"select name, surname, salary, experience, hireDate, complaintsCounter, availableWorkingHours
                                   from user 
                                   inner join Employee on User.username = Employee.username
                                   inner join BusDriver on User.username = BusDriver.username
@@ -1371,7 +1383,8 @@ namespace ClassesFolder
                                      reader.GetDecimal(2),
                                      reader.GetInt32(3),
                                      reader.GetString(4),
-                                     reader.GetInt32(5));
+                                     reader.GetInt32(5),
+                                     reader.GetInt32(6));
             }
             catch (MySqlException)
             {
@@ -1430,6 +1443,11 @@ namespace ClassesFolder
                                 MessageBoxIcon.Error);
                 Application.Exit();
             }
+        }
+   
+        public void SetAsUnavailable(Poll poll)
+        {
+            _availablePolls.Remove(poll);
         }
     }
 }

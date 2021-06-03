@@ -14,6 +14,7 @@ namespace ClassesFolder
         private int _complaintCounter;
         private List<string> _paidLeaveDates;
         private int _yearlyPaidLeaves = 15;
+        private int _availableWorkingHours;
 
         public int ComplaintCounter => _complaintCounter;
         public List<string> PaidLeaveDates
@@ -21,18 +22,22 @@ namespace ClassesFolder
             get { return _paidLeaveDates; }
             set { _paidLeaveDates = value; }
         }
+        public int AvailableWorkingHours => _availableWorkingHours;
 
-        public BusDriver(string username, 
-                         string name, 
-                         string surname, 
-                         string property, 
-                         decimal salary, 
+        public BusDriver(string username,
+                         string name,
+                         string surname,
+                         string property,
+                         decimal salary,
                          int experience,
                          string hireDate,
-                         int complaintCounter) : base(username, name, surname, property, salary, experience, hireDate)
+                         int complaintCounter,
+                         int availableWorkingHours) : base(username, name, surname, property, salary, experience, hireDate)
         {
             _complaintCounter = complaintCounter;
             _paidLeaveDates = new List<string>();
+            _availableWorkingHours = availableWorkingHours;
+
             GetPaidLeaveDates();
             _yearlyPaidLeaves = 15 - PaidLeaveDates.Count;
         }
@@ -58,8 +63,8 @@ namespace ClassesFolder
                 using MySqlDataReader reader = cmd.ExecuteReader();
 
                 while (reader.Read())
-                { 
-                    _paidLeaveDates.Add(reader.GetString(0)); 
+                {
+                    _paidLeaveDates.Add(reader.GetString(0));
                 }
             }
             catch (MySqlException)
@@ -71,7 +76,7 @@ namespace ClassesFolder
                 Application.Exit();
             }
         }
-    
+
         public List<Itinerary> GetCurrentWeekItineraries()
         {
             try
@@ -111,7 +116,7 @@ namespace ClassesFolder
                 Application.Exit();
                 return null;
             }
-       
+
         }
 
         private Bus GetBusData(int busID)
@@ -194,8 +199,8 @@ namespace ClassesFolder
                 connection.Open();
 
                 var query = @"select stopName 
-                          from stop 
-                          where number = @number;";
+                              from stop 
+                              where number = @number;";
 
                 using var cmd = new MySqlCommand(query, connection);
                 cmd.Parameters.AddWithValue("@number", number);
@@ -368,7 +373,7 @@ namespace ClassesFolder
 
         public void SetItineraryAsDelayed(Itinerary itinerary, string reason)
         {
-           try
+            try
             {
                 using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
                 connection.Open();
@@ -392,7 +397,7 @@ namespace ClassesFolder
                 Application.Exit();
             }
         }
-    
+
         public List<DisciplinaryComplaint> GetDisciplinaryComplaints()
         {
             try
@@ -425,7 +430,7 @@ namespace ClassesFolder
                 return null;
             }
         }
-    
+
         public void InsertPaidLeaveApplicationInDatabase(PaidLeaveApplication application)
         {
             try
@@ -453,7 +458,7 @@ namespace ClassesFolder
                 Application.Exit();
             }
         }
-    
+
         public bool CheckDuplicatePaidLeaveApplication(string requestedDate)
         {
             try
@@ -530,7 +535,7 @@ namespace ClassesFolder
                 return null;
             }
         }
-    
+
         public void SetAsUnavailable(string date)
         {
             _paidLeaveDates.Add(date);
@@ -556,12 +561,12 @@ namespace ClassesFolder
                 Application.Exit();
             }
         }
-    
+
         public void DecreasePaidYearlyDates()
         {
             _yearlyPaidLeaves--;
         }
-    
+
         public void IncreaseComplaintCounter()
         {
             _complaintCounter++;
@@ -596,7 +601,7 @@ namespace ClassesFolder
         {
             return _complaintCounter > 9;
         }
-    
+
         public void ResetComplaintsCounter()
         {
             _complaintCounter = 0;
@@ -623,7 +628,7 @@ namespace ClassesFolder
                 Application.Exit();
             }
         }
-   
+
         public bool HasAssignedItineraryForNextWeek(string startingDate)
         {
             using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
@@ -638,6 +643,122 @@ namespace ClassesFolder
             reader.Read();
 
             return reader.GetInt32(0) == 1;
+        }
+
+        public bool IsOnPaidLeave(string date)
+        {
+            return _paidLeaveDates.Contains(date);
+        }
+
+        public bool IsAvailableOnHour(string date, string startingHour, int duration)
+        {
+            using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
+            connection.Open();
+            var query = @"select count(*)
+                        from Itinerary
+                        inner join BusDriver on BusDriver.username = Itinerary.busDriverUsername
+                        inner join BusLine on BusLine.number = busLineNumber
+                        where BusDriver.username = @username AND (travelDatetime <= @targetDatetime AND ADDDATE(travelDatetime, INTERVAL duration MINUTE) > @targetDatetime
+OR @targetDatetime <= travelDatetime AND ADDDATE(@targetDatetime, INTERVAL @duration MINUTE) <= ADDDATE(travelDatetime, INTERVAL duration MINUTE)
+OR travelDatetime <= ADDDATE(@targetDatetime, INTERVAL @duration MINUTE) AND ADDDATE(@targetDatetime, INTERVAL @duration MINUTE) <= ADDDATE(travelDatetime, INTERVAL duration MINUTE)
+OR @targetDatetime > travelDatetime AND ADDDATE(@targetDatetime, INTERVAL @duration MINUTE) <= ADDDATE(travelDatetime, INTERVAL duration MINUTE));";
+
+            var target = $"{date} {startingHour}:00";
+            using var cmd = new MySqlCommand(query, connection);
+            cmd.Parameters.AddWithValue("@username", _username);
+            cmd.Parameters.AddWithValue("@targetDatetime", target);
+            cmd.Parameters.AddWithValue("@duration", duration);
+
+            using MySqlDataReader reader = cmd.ExecuteReader();
+            reader.Read();
+
+            return reader.GetInt32(0) == 0;
+        }
+    
+        public bool IsLeadToOverWorking(int duration)
+        {
+            return _availableWorkingHours - duration < 0;
+        }
+   
+        public bool HasItineraryEndTimeAndNoNextItineraryOnSpecificTime(string date, string startingHour, string targetStop)
+        {
+            using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
+            connection.Open();
+            var query = @"select count(*)
+                          from Itinerary
+                          inner join BusLine on BusLine.number = busLineNumber
+                          where busDriverUsername = @targetUsername and ADDDATE(travelDatetime, INTERVAL duration MINUTE) = @targetDatetime and (select stopName from Stop where Stop.number = BusLine.number order by id desc limit 1) = @targetStop;";
+
+            var targetDatetime = $"{date} {startingHour}:00";
+            using var cmd = new MySqlCommand(query, connection);
+            cmd.Parameters.AddWithValue("@targetUsername", _username);
+            cmd.Parameters.AddWithValue("@targetDatetime", targetDatetime);
+            cmd.Parameters.AddWithValue("@targetStop", targetStop);
+            using MySqlDataReader reader = cmd.ExecuteReader();
+            reader.Read();
+
+            return reader.GetInt32(0) == 1;
+        }
+
+        public bool DoesntHaveImmidiatelyItinerary(string date, string startingHour, int duration, string targetStop)
+        {
+            using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
+            connection.Open();
+            var query = @"select count(*)
+                        from Itinerary
+                        inner join BusDriver on BusDriver.username = Itinerary.busDriverUsername
+                        inner join BusLine on BusLine.number = busLineNumber
+                        where BusDriver.username = @targetUsername AND 
+                        (TIMEDIFF(travelDatetime, ADDDATE(@targetDatetime, INTERVAL @duration MINUTE)) > '00:00:00' AND TIMEDIFF(travelDatetime, ADDDATE(@targetDatetime, INTERVAL @duration MINUTE)) < '00:30:00'
+                        AND (select stopName from Stop where Stop.number = BusLine.number order by Stop.id asc limit 1) != @targetStop);";
+
+            var targetDatetime = $"{date} {startingHour}:00";
+            using var cmd = new MySqlCommand(query, connection);
+            cmd.Parameters.AddWithValue("@duration", duration);
+            cmd.Parameters.AddWithValue("@targetUsername", _username);
+            cmd.Parameters.AddWithValue("@targetDatetime", targetDatetime);
+            cmd.Parameters.AddWithValue("@targetStop", targetStop);
+            using MySqlDataReader reader = cmd.ExecuteReader();
+            reader.Read();
+
+            return reader.GetInt32(0) == 0;
+        }
+    
+        public bool FindIfCanBeAccepted(string date, string startingHour, int duration)
+        {
+            using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
+            connection.Open();
+            var query = @"select count(*)
+                        from Itinerary
+                        inner join BusDriver on BusDriver.username = Itinerary.busDriverUsername
+                        inner join BusLine on BusLine.number = busLineNumber
+                        where BusDriver.username = @targetUsername AND (TIMEDIFF(@targetDatetime, travelDatetime) <= '00:30:00' AND TIMEDIFF(@targetDatetime, travelDatetime) > '00:00:01'
+                        OR TIMEDIFF(travelDatetime, ADDDATE(@targetDatetime, INTERVAL @duration MINUTE)) <= '00:30:00' AND TIMEDIFF(travelDatetime, ADDDATE(@targetDatetime, INTERVAL @duration MINUTE)) > '00:00:01');";
+
+            var targetDatetime = $"{date} {startingHour}:00";
+            using var cmd = new MySqlCommand(query, connection);
+            cmd.Parameters.AddWithValue("@duration", duration);
+            cmd.Parameters.AddWithValue("@targetUsername", _username);
+            cmd.Parameters.AddWithValue("@targetDatetime", targetDatetime);
+            using MySqlDataReader reader = cmd.ExecuteReader();
+            reader.Read();
+
+            return reader.GetInt32(0) == 0;
+        }
+    
+        public void DecreaseAvailableWorkingHours(int duration)
+        {
+            _availableWorkingHours -= duration;
+            using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
+            connection.Open();
+            var query = @"update BusDriver
+                          set availableWorkingHours = @availableWorkingHours
+                          where username = @username;";
+
+            using var cmd = new MySqlCommand(query, connection);
+            cmd.Parameters.AddWithValue("@username", _username);
+            cmd.Parameters.AddWithValue("@availableWorkingHours", _availableWorkingHours);
+            cmd.ExecuteNonQuery();
         }
     }
 }

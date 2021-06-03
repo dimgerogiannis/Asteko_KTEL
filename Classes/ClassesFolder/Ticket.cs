@@ -9,12 +9,11 @@ namespace ClassesFolder
 {
     public class Ticket
     {
-        private int _id;
         private Itinerary _correspondingItinerary;
         private bool _delayedItinerary;
         private bool _used;
+        private string _clientUsername;
 
-        public int ID => _id;
         public Itinerary CorrespondingItinerary => _correspondingItinerary;
         public bool DelayedItinerary
         {
@@ -26,14 +25,14 @@ namespace ClassesFolder
             get { return _used; }
             set { _used = value; }
         }
+        public string ClientUsername => _clientUsername;
 
-
-        public Ticket(int ID, Itinerary correspondingItinerary, bool delayedItinerary, bool used)
+        public Ticket(Itinerary correspondingItinerary, bool delayedItinerary, bool used, string clientUsername)
         {
-            _id = ID;
             _correspondingItinerary = correspondingItinerary;
             _delayedItinerary = delayedItinerary;
             _used = used;
+            _clientUsername = clientUsername;
         }
 
         public void SetAsUsed()
@@ -45,10 +44,11 @@ namespace ClassesFolder
 
             var query = @"update Ticket
                           set used = @used
-                          where ticketID = @ticketID;";
+                          where itineraryID = @itineraryID and clientUsername = @username;";
             using var cmd = new MySqlCommand(query, connection);
             cmd.Parameters.AddWithValue("@used", _used);
-            cmd.Parameters.AddWithValue("@ticketID", _id);
+            cmd.Parameters.AddWithValue("@clientUsername", _clientUsername);
+            cmd.Parameters.AddWithValue("@itineraryID", _correspondingItinerary.ID);
             cmd.ExecuteNonQuery();
         }
 
@@ -61,10 +61,11 @@ namespace ClassesFolder
 
             var query = @"update Ticket 
                           set delayedItinerary = @delayedItinerary
-                          where ticketID = @ticketID;";
+                          where itineraryID = @itineraryID and clientUsername = @username;";
 
             using var cmd = new MySqlCommand(query, connection);
-            cmd.Parameters.AddWithValue("@ticketID", _id);
+            cmd.Parameters.AddWithValue("@clientUsername", _clientUsername);
+            cmd.Parameters.AddWithValue("@itineraryID", _correspondingItinerary.ID);
             cmd.Parameters.AddWithValue("@delayedItinerary", _delayedItinerary);
             cmd.ExecuteNonQuery();
         }
@@ -78,10 +79,11 @@ namespace ClassesFolder
 
             var query = @"update Ticket 
                           set delayedItinerary = @delayedItinerary
-                          where ticketID = @ticketID;";
+                          where itineraryID = @itineraryID and clientUsername = @username;";
 
             using var cmd = new MySqlCommand(query, connection);
-            cmd.Parameters.AddWithValue("@ticketID", _id);
+            cmd.Parameters.AddWithValue("@clientUsername", _clientUsername);
+            cmd.Parameters.AddWithValue("@itineraryID", _correspondingItinerary.ID);
             cmd.Parameters.AddWithValue("@delayedItinerary", _delayedItinerary);
             cmd.ExecuteNonQuery();
         }
