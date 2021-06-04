@@ -210,7 +210,6 @@ namespace DistributorForms
             this.programmingLabel.Size = new System.Drawing.Size(180, 53);
             this.programmingLabel.TabIndex = 7;
             this.programmingLabel.Text = "Προγραμματισμός και κατανομή";
-            //this.programmingLabel.Click += new System.EventHandler(this.ProgrammingLabel_Click);
             // 
             // lastMinuteTravelRequestsLabel
             // 
@@ -221,6 +220,7 @@ namespace DistributorForms
             this.lastMinuteTravelRequestsLabel.Size = new System.Drawing.Size(205, 75);
             this.lastMinuteTravelRequestsLabel.TabIndex = 7;
             this.lastMinuteTravelRequestsLabel.Text = "Αιτήματα καθυστερημένης εξυπηρέτησης";
+            this.lastMinuteTravelRequestsLabel.Click += new System.EventHandler(this.LastMinuteTravelRequestsLabel_Click);
             // 
             // panel11
             // 

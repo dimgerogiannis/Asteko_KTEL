@@ -43,6 +43,9 @@
     <Compile Update="DistributorForms\BusLineEditingForm.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Update="DistributorForms\DelayedServiceForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="DistributorForms\DistributorForm.cs">
       <SubType>Form</SubType>
     </Compile>

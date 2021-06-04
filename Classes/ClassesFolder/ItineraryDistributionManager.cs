@@ -347,35 +347,59 @@ namespace ClassesFolder
 
         public int GetClientsLastTicketID(string username)
         {
-            using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
-            connection.Open();
-            var statement = @"select max(ticketID)
+            try
+            {
+                using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
+                connection.Open();
+                var statement = @"select max(ticketID)
                               from ticket
                               where clientUsername = @username;";
-            using var cmd = new MySqlCommand(statement, connection);
+                using var cmd = new MySqlCommand(statement, connection);
 
-            cmd.Parameters.AddWithValue("@username", username);
-            using MySqlDataReader reader = cmd.ExecuteReader();
-            reader.Read();
+                cmd.Parameters.AddWithValue("@username", username);
+                using MySqlDataReader reader = cmd.ExecuteReader();
+                reader.Read();
 
-            return reader.GetInt32(0);
+                return reader.GetInt32(0);
+            }
+            catch (MySqlException)
+            {
+                MessageBox.Show("Προκλήθηκε σφάλμα κατά την σύνδεση με τον server. Η εφαρμογή θα τερματιστεί!",
+                                "Σφάλμα",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Error);
+                Application.Exit();
+                return -1;
+            }
         }
 
         public decimal GetReservationPrice(string username, string travelDatetime, int busLineNumber)
         {
-            using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
-            connection.Open();
-            var statement = @"select chargedPrice from Reservation
+            try
+            {
+                using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
+                connection.Open();
+                var statement = @"select chargedPrice from Reservation
                               where clientUsername = @username and travelDatetime = @travelDatetime and travelBusLine = @travelBusLine;";
-            using var cmd = new MySqlCommand(statement, connection);
+                using var cmd = new MySqlCommand(statement, connection);
 
-            cmd.Parameters.AddWithValue("@username", username);
-            cmd.Parameters.AddWithValue("@travelDatetime", travelDatetime);
-            cmd.Parameters.AddWithValue("@travelBusLine", busLineNumber);
-            using MySqlDataReader reader = cmd.ExecuteReader();
-            reader.Read();
+                cmd.Parameters.AddWithValue("@username", username);
+                cmd.Parameters.AddWithValue("@travelDatetime", travelDatetime);
+                cmd.Parameters.AddWithValue("@travelBusLine", busLineNumber);
+                using MySqlDataReader reader = cmd.ExecuteReader();
+                reader.Read();
 
-            return reader.GetInt32(0);
+                return reader.GetInt32(0);
+            }
+            catch (MySqlException)
+            {
+                MessageBox.Show("Προκλήθηκε σφάλμα κατά την σύνδεση με τον server. Η εφαρμογή θα τερματιστεί!",
+                                "Σφάλμα",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Error);
+                Application.Exit();
+                return -1;
+            }
         }
 
         public int GetMaxItineraryID()
@@ -407,15 +431,44 @@ namespace ClassesFolder
     
         public void DeleteReservation(Reservation reservation)
         {
+            try
+            {
+                using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
+                connection.Open();
+                var statement = @"delete from reservation
+                              where clientUsername = @username and travelDatetime = @travelDatetime and travelBusLine = @travelBusLine;";
+                using var cmd = new MySqlCommand(statement, connection);
+                cmd.Parameters.AddWithValue("@username", reservation.ReserveringClient);
+                cmd.Parameters.AddWithValue("@travelDatetime", reservation.TravelDatetime.ToString("yyyy-MM-dd HH:mm:ss"));
+                cmd.Parameters.AddWithValue("@travelBusLine", reservation.ResBusLine);
+                cmd.ExecuteNonQuery();
+            }
+            catch (MySqlException)
+            {
+                MessageBox.Show("Προκλήθηκε σφάλμα κατά την σύνδεση με τον server. Η εφαρμογή θα τερματιστεί!",
+                                "Σφάλμα",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Error);
+                Application.Exit();
+            }
+        }
+    
+        public List<LastMinuteTravelRequest> GetLastMinuteTravelRequests()
+        {
             using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
             connection.Open();
-            var statement = @"delete from reservation
-                              where clientUsername = @username and travelDatetime = @travelDatetime and travelBusLine = @travelBusLine;";
+            var statement = @";";
             using var cmd = new MySqlCommand(statement, connection);
-            cmd.Parameters.AddWithValue("@username", reservation.ReserveringClient);
-            cmd.Parameters.AddWithValue("@travelDatetime", reservation.TravelDatetime.ToString("yyyy-MM-dd HH:mm:ss"));
-            cmd.Parameters.AddWithValue("@travelBusLine", reservation.ResBusLine);
-            cmd.ExecuteNonQuery();
+            using MySqlDataReader reader = cmd.ExecuteReader();
+
+            List<LastMinuteTravelRequest> lastMinuteRequests = new List<LastMinuteTravelRequest>();
+
+            while (reader.Read())
+            {
+
+            }
+
+            return lastMinuteRequests;
         }
     }
 }

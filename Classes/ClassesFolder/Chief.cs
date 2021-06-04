@@ -539,38 +539,71 @@ namespace ClassesFolder
     
         public void DeleteEmployee(string username)
         {
-            using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
-            connection.Open();
+            try
+            {
+                using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
+                connection.Open();
 
-            var query = @"delete from Employee
+                var query = @"delete from Employee
                           where username = @username";
-            using var cmd = new MySqlCommand(query, connection);
-            cmd.Parameters.AddWithValue("@username", username);
-            cmd.ExecuteNonQuery();
+                using var cmd = new MySqlCommand(query, connection);
+                cmd.Parameters.AddWithValue("@username", username);
+                cmd.ExecuteNonQuery();
+            }
+            catch (MySqlException)
+            {
+                MessageBox.Show("Προκλήθηκε σφάλμα κατά την σύνδεση με τον server. Η εφαρμογή θα τερματιστεί!",
+                                "Σφάλμα",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Error);
+                Application.Exit();
+            }
         }
 
         public void DeleteBusDriver(string username)
         {
-            using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
-            connection.Open();
+            try
+            {
+                using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
+                connection.Open();
 
-            var query = @"delete from BusDriver
-                          where username = @username";
-            using var cmd = new MySqlCommand(query, connection);
-            cmd.Parameters.AddWithValue("@username", username);
-            cmd.ExecuteNonQuery();
+                var query = @"delete from BusDriver
+                              where username = @username";
+                using var cmd = new MySqlCommand(query, connection);
+                cmd.Parameters.AddWithValue("@username", username);
+                cmd.ExecuteNonQuery();
+            }
+            catch (MySqlException)
+            {
+                MessageBox.Show("Προκλήθηκε σφάλμα κατά την σύνδεση με τον server. Η εφαρμογή θα τερματιστεί!",
+                                "Σφάλμα",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Error);
+                Application.Exit();
+            }
         }
 
         public void DeleteUser(string username)
         {
-            using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
-            connection.Open();
+            try
+            {
+                using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
+                connection.Open();
 
-            var query = @"delete from User
+                var query = @"delete from User
                           where username = @username";
-            using var cmd = new MySqlCommand(query, connection);
-            cmd.Parameters.AddWithValue("@username", username);
-            cmd.ExecuteNonQuery();
+                using var cmd = new MySqlCommand(query, connection);
+                cmd.Parameters.AddWithValue("@username", username);
+                cmd.ExecuteNonQuery();
+            }
+            catch (MySqlException)
+            {
+                MessageBox.Show("Προκλήθηκε σφάλμα κατά την σύνδεση με τον server. Η εφαρμογή θα τερματιστεί!",
+                                "Σφάλμα",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Error);
+                Application.Exit();
+            }
         }
 
         public BusDriver GetBusDriver(string username)
@@ -613,18 +646,30 @@ namespace ClassesFolder
     
         public string GetUserFullNameFromDatabase(string username)
         {
-            using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
-            connection.Open();
-            var statement = @"select name, surname
+            try
+            {
+                using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
+                connection.Open();
+                var statement = @"select name, surname
                               from User
                               where username = @username;";
-            using var cmd = new MySqlCommand(statement, connection);
+                using var cmd = new MySqlCommand(statement, connection);
 
-            cmd.Parameters.AddWithValue("@username", username);
-            using MySqlDataReader reader = cmd.ExecuteReader();
-            reader.Read();
+                cmd.Parameters.AddWithValue("@username", username);
+                using MySqlDataReader reader = cmd.ExecuteReader();
+                reader.Read();
 
-            return $"{reader.GetString(0)} {reader.GetString(1)}";
+                return $"{reader.GetString(0)} {reader.GetString(1)}";
+            }
+            catch (MySqlException)
+            {
+                MessageBox.Show("Προκλήθηκε σφάλμα κατά την σύνδεση με τον server. Η εφαρμογή θα τερματιστεί!",
+                                "Σφάλμα",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Error);
+                Application.Exit();
+                return "";
+            }
         }
     }
 }

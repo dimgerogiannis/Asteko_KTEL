@@ -54,5 +54,11 @@ namespace DistributorForms
             ItineraryDistributionForm form = new ItineraryDistributionForm(_distributor);
             form.ShowDialog();
         }
+
+        private void LastMinuteTravelRequestsLabel_Click(object sender, EventArgs e)
+        {
+            DelayedServiceForm form = new DelayedServiceForm(_distributor);
+            form.ShowDialog();
+        }
     }
 }
