@@ -73,7 +73,7 @@ namespace ClassesFolder
             return $"{_name} {_surname}";
         }
 
-        private void GetInformation()
+        public void GetInformation()
         {
             try
             {
@@ -1489,6 +1489,46 @@ namespace ClassesFolder
                                  GetBusData(busID),
                                  enumStatus,
                                  availableSeats);
+        }
+    
+        public List<LastMinuteTravelRequest> GetLastMinuteTravelRequests()
+        {
+            using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
+            connection.Open();
+
+            var query = @"select applicationDate, travelDatetime, travelBusLine, status
+                          from LastMinuteTravelRequest
+                          where clientUsername = @username;";
+
+            using var cmd = new MySqlCommand(query, connection);
+            cmd.Parameters.AddWithValue("@username", _username);
+
+            using MySqlDataReader reader = cmd.ExecuteReader();
+            List<LastMinuteTravelRequest> lastMinuteTravelRequests = new List<LastMinuteTravelRequest>();
+
+            while (reader.Read())
+            {
+                var status = reader.GetString(3);
+                Status _status = Status.Pending;
+
+                switch (status)
+                {
+                    case "accepted":
+                        _status = Status.Accepted;
+                        break;
+                    case "rejected":
+                        _status = Status.Rejected;
+                        break;
+                }
+
+                lastMinuteTravelRequests.Add(new LastMinuteTravelRequest(_username,
+                                                                         reader.GetDateTime(0).ToString("dd-MM-yyyy"),
+                                                                         reader.GetDateTime(1),
+                                                                         reader.GetInt32(2),
+                                                                         _status));
+            }
+
+            return lastMinuteTravelRequests;
         }
     }
 }

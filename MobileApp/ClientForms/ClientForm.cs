@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using ClassesFolder;
+using ClientForms;
 
 namespace Project.ClientForms
 {
@@ -26,17 +27,16 @@ namespace Project.ClientForms
             this.Text = $"Καλωσόρισες {_client.GetFullName()}";
             _client.GetTickets();
             currentBoughtTicketsLabel.Text = $"Αγορασμένα εισιτηρία: {_client.TicketList.Select(x => x).Where(y => y.Used == false).Count()}";
-            currentBoughtTicketsLabel.Location = new Point
-            (
-                this.Width / 2 - currentBoughtTicketsLabel.Width / 2,
-                currentBoughtTicketsLabel.Height
-            );
+            currentBoughtTicketsLabel.Location = new Point(this.Width / 2 - currentBoughtTicketsLabel.Width / 2,
+                                                           currentBoughtTicketsLabel.Height);
 
             currentMoneyLabel.Text = $"{_client.Balance} Ευρώ";
         }
 
         private void BuyTicketButton_Click(object sender, EventArgs e)
         {
+            _client.GetInformation();
+            currentMoneyLabel.Text = $"{_client.Balance} Ευρώ";
             BuyTicketForm form = new BuyTicketForm(_client);
             form.ShowDialog();
         }
@@ -85,7 +85,8 @@ namespace Project.ClientForms
 
         private void TicketReservationLastMinuteButton_Click(object sender, EventArgs e)
         {
-
+            TicketReservationLastMinuteRequestsForm form = new TicketReservationLastMinuteRequestsForm(_client);
+            form.ShowDialog();
         }
     }
 }

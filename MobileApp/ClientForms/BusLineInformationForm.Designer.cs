@@ -65,7 +65,7 @@ namespace Project.ClientForms
             this.busLineStopsListview.HideSelection = false;
             this.busLineStopsListview.Location = new System.Drawing.Point(12, 102);
             this.busLineStopsListview.Name = "busLineStopsListview";
-            this.busLineStopsListview.Size = new System.Drawing.Size(488, 190);
+            this.busLineStopsListview.Size = new System.Drawing.Size(488, 275);
             this.busLineStopsListview.TabIndex = 2;
             this.busLineStopsListview.UseCompatibleStateImageBehavior = false;
             this.busLineStopsListview.View = System.Windows.Forms.View.Details;
@@ -81,9 +81,9 @@ namespace Project.ClientForms
             this.columnHeader2});
             this.busLineAvailableItineraryTimeListview.FullRowSelect = true;
             this.busLineAvailableItineraryTimeListview.HideSelection = false;
-            this.busLineAvailableItineraryTimeListview.Location = new System.Drawing.Point(12, 321);
+            this.busLineAvailableItineraryTimeListview.Location = new System.Drawing.Point(12, 403);
             this.busLineAvailableItineraryTimeListview.Name = "busLineAvailableItineraryTimeListview";
-            this.busLineAvailableItineraryTimeListview.Size = new System.Drawing.Size(488, 187);
+            this.busLineAvailableItineraryTimeListview.Size = new System.Drawing.Size(488, 275);
             this.busLineAvailableItineraryTimeListview.TabIndex = 2;
             this.busLineAvailableItineraryTimeListview.UseCompatibleStateImageBehavior = false;
             this.busLineAvailableItineraryTimeListview.View = System.Windows.Forms.View.Details;
@@ -96,7 +96,7 @@ namespace Project.ClientForms
             // durationLabel
             // 
             this.durationLabel.AutoSize = true;
-            this.durationLabel.Location = new System.Drawing.Point(12, 531);
+            this.durationLabel.Location = new System.Drawing.Point(12, 681);
             this.durationLabel.Name = "durationLabel";
             this.durationLabel.Size = new System.Drawing.Size(162, 25);
             this.durationLabel.TabIndex = 3;
@@ -113,6 +113,8 @@ namespace Project.ClientForms
             this.Controls.Add(this.busLineNumberLabel);
             this.Controls.Add(this.busLineListComboBox);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "BusLineInformationForm";
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;

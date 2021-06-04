@@ -28,7 +28,10 @@ namespace Project.ClientForms
             if (lineNumberCombobox.SelectedItem == null || 
                 timeCombobox.SelectedItem == null)
             {
-                MessageBox.Show("Παρακαλώ βάλτε γραμμή λεωφορείου και ώρα δρομολογίου!", "Σφάλμα", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Παρακαλώ βάλτε γραμμή λεωφορείου και ώρα δρομολογίου.", 
+                                "Σφάλμα", 
+                                MessageBoxButtons.OK, 
+                                MessageBoxIcon.Error);
                 return;
             }
 
@@ -37,14 +40,20 @@ namespace Project.ClientForms
 
             if (selected <= today)
             {
-                MessageBox.Show("Παρακαλώ βάλτε σωστή ημερομηνία, δηλαδή από την επόμενη μέρα!", "Σφάλμα", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Παρακαλώ βάλτε σωστή ημερομηνία, δηλαδή από την επόμενη μέρα.", 
+                                "Σφάλμα", 
+                                MessageBoxButtons.OK, 
+                                MessageBoxIcon.Error);
                 return;
             }
 
             if (_client.CheckForDuplicateTicket(lineNumberCombobox.SelectedItem.ToString(), 
                 dateTimePicker.Value.ToString($"yyyy-MM-dd {timeCombobox.SelectedItem}:00")))
             {
-                MessageBox.Show("Έχετε ήδη αγοράσει εισητήριο για αυτό το δρομολόγιο!", "Σφάλμα", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Έχετε ήδη αγοράσει εισητήριο για αυτό το δρομολόγιο.", 
+                                "Σφάλμα", 
+                                MessageBoxButtons.OK, 
+                                MessageBoxIcon.Error);
                 return;
             }
 
@@ -52,7 +61,10 @@ namespace Project.ClientForms
                 x.ResBusLine == int.Parse(lineNumberCombobox.SelectedItem.ToString()) && 
                 x.TravelDatetime.ToString("yyyy-MM-dd HH:mm:ss") == dateTimePicker.Value.ToString($"yyyy-MM-dd {timeCombobox.SelectedItem}:00")))
             {
-                MessageBox.Show("Έχετε ήδη κάνει κράτηση θέσης για αυτό το δρομολόγιο!", "Σφάλμα", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Έχετε ήδη κάνει κράτηση θέσης για αυτό το δρομολόγιο.", 
+                                "Σφάλμα", 
+                                MessageBoxButtons.OK, 
+                                MessageBoxIcon.Error);
                 return;
             }
 
@@ -74,6 +86,15 @@ namespace Project.ClientForms
                     .Select(x => x)
                     .Where(x => !lastMinuteDates.Contains(x))
                     .ToList();
+
+            if (!lastMinuteDates.Contains(dateTimePicker.Value.ToString("dd-MM-yyyy")) &&
+                !reservationDates.Contains(dateTimePicker.Value.ToString("dd-MM-yyyy")))
+            {
+                MessageBox.Show($"Παρακαλώ βάλτε σωστή ημερομηνία, δηλαδή στο διάστημα [{DateTime.Now.AddDays(1).ToString("dd-MM-yyyy")}, {reservationDates[reservationDates.Count - 1]}].",
+                                "Σφάλμα",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Error);
+            }
 
 
             if (lastMinuteDates.Contains(dateTimePicker.Value.ToString("dd-MM-yyyy")))
@@ -204,6 +225,11 @@ namespace Project.ClientForms
                                         MessageBoxIcon.Error);
                     }
                 }
+
+            }
+            else
+            {
+
             }
         }
 
