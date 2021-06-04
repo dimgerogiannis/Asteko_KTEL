@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace ClassesFolder
 {
@@ -37,55 +38,88 @@ namespace ClassesFolder
 
         public void SetAsUsed()
         {
-            _used = true;
+            try
+            {
+                _used = true;
 
-            using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
-            connection.Open();
+                using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
+                connection.Open();
 
-            var query = @"update Ticket
+                var query = @"update Ticket
                           set used = @used
                           where itineraryID = @itineraryID and clientUsername = @username;";
-            using var cmd = new MySqlCommand(query, connection);
-            cmd.Parameters.AddWithValue("@used", _used);
-            cmd.Parameters.AddWithValue("@clientUsername", _clientUsername);
-            cmd.Parameters.AddWithValue("@itineraryID", _correspondingItinerary.ID);
-            cmd.ExecuteNonQuery();
+                using var cmd = new MySqlCommand(query, connection);
+                cmd.Parameters.AddWithValue("@used", _used);
+                cmd.Parameters.AddWithValue("@clientUsername", _clientUsername);
+                cmd.Parameters.AddWithValue("@itineraryID", _correspondingItinerary.ID);
+                cmd.ExecuteNonQuery();
+            }
+            catch (MySqlException)
+            {
+                MessageBox.Show("Προκλήθηκε σφάλμα κατά την σύνδεση με τον server. Η εφαρμογή θα τερματιστεί!",
+                                 "Σφάλμα",
+                                 MessageBoxButtons.OK,
+                                 MessageBoxIcon.Error);
+                Application.Exit();
+            }
         }
 
         public void SetAsDelayed()
         {
-            _delayedItinerary = true;
+            try
+            {
+                _delayedItinerary = true;
 
-            using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
-            connection.Open();
+                using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
+                connection.Open();
 
-            var query = @"update Ticket 
+                var query = @"update Ticket 
                           set delayedItinerary = @delayedItinerary
                           where itineraryID = @itineraryID and clientUsername = @username;";
 
-            using var cmd = new MySqlCommand(query, connection);
-            cmd.Parameters.AddWithValue("@clientUsername", _clientUsername);
-            cmd.Parameters.AddWithValue("@itineraryID", _correspondingItinerary.ID);
-            cmd.Parameters.AddWithValue("@delayedItinerary", _delayedItinerary);
-            cmd.ExecuteNonQuery();
+                using var cmd = new MySqlCommand(query, connection);
+                cmd.Parameters.AddWithValue("@clientUsername", _clientUsername);
+                cmd.Parameters.AddWithValue("@itineraryID", _correspondingItinerary.ID);
+                cmd.Parameters.AddWithValue("@delayedItinerary", _delayedItinerary);
+                cmd.ExecuteNonQuery();
+            }
+            catch (MySqlException)
+            {
+                MessageBox.Show("Προκλήθηκε σφάλμα κατά την σύνδεση με τον server. Η εφαρμογή θα τερματιστεί!",
+                                 "Σφάλμα",
+                                 MessageBoxButtons.OK,
+                                 MessageBoxIcon.Error);
+                Application.Exit();
+            }
         }
 
         public void UnsetDelayed()
         {
-            _delayedItinerary = false;
+            try
+            {
+                _delayedItinerary = false;
 
-            using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
-            connection.Open();
+                using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
+                connection.Open();
 
-            var query = @"update Ticket 
+                var query = @"update Ticket 
                           set delayedItinerary = @delayedItinerary
                           where itineraryID = @itineraryID and clientUsername = @username;";
 
-            using var cmd = new MySqlCommand(query, connection);
-            cmd.Parameters.AddWithValue("@clientUsername", _clientUsername);
-            cmd.Parameters.AddWithValue("@itineraryID", _correspondingItinerary.ID);
-            cmd.Parameters.AddWithValue("@delayedItinerary", _delayedItinerary);
-            cmd.ExecuteNonQuery();
+                using var cmd = new MySqlCommand(query, connection);
+                cmd.Parameters.AddWithValue("@clientUsername", _clientUsername);
+                cmd.Parameters.AddWithValue("@itineraryID", _correspondingItinerary.ID);
+                cmd.Parameters.AddWithValue("@delayedItinerary", _delayedItinerary);
+                cmd.ExecuteNonQuery();
+            }
+            catch (MySqlException)
+            {
+                MessageBox.Show("Προκλήθηκε σφάλμα κατά την σύνδεση με τον server. Η εφαρμογή θα τερματιστεί!",
+                                 "Σφάλμα",
+                                 MessageBoxButtons.OK,
+                                 MessageBoxIcon.Error);
+                Application.Exit();
+            }
         }
     }
 }

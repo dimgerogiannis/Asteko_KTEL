@@ -128,8 +128,8 @@ namespace ClassesFolder
                 connection.Open();
 
                 var query = @"select name, surname
-                          from User
-                          where username = @username;";
+                              from User
+                              where username = @username;";
 
                 using var cmd = new MySqlCommand(query, connection);
                 cmd.Parameters.AddWithValue("@username", username);
@@ -187,7 +187,7 @@ namespace ClassesFolder
                 using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
                 connection.Open();
                 var statement = @"select targetUsername, summary, category, busDriverUsername 
-                              from sanitarycomplaint;";
+                                  from sanitarycomplaint;";
 
                 using var cmd = new MySqlCommand(statement, connection);
                 using MySqlDataReader reader = cmd.ExecuteReader();
@@ -459,6 +459,5 @@ namespace ClassesFolder
                 Application.Exit();
             }
         }
-    
     }
 }
