@@ -46,6 +46,7 @@ namespace Project.ClientForms
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.busLineInformationButton = new System.Windows.Forms.Button();
             this.panel3 = new System.Windows.Forms.Panel();
+            this.ticketReservationLastMinuteButton = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
@@ -54,7 +55,7 @@ namespace Project.ClientForms
             // 
             // historyPreviewButton
             // 
-            this.historyPreviewButton.Location = new System.Drawing.Point(118, 155);
+            this.historyPreviewButton.Location = new System.Drawing.Point(118, 147);
             this.historyPreviewButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.historyPreviewButton.Name = "historyPreviewButton";
             this.historyPreviewButton.Size = new System.Drawing.Size(273, 44);
@@ -66,7 +67,7 @@ namespace Project.ClientForms
             // complaintButton
             // 
             this.complaintButton.BackColor = System.Drawing.SystemColors.Control;
-            this.complaintButton.Location = new System.Drawing.Point(118, 480);
+            this.complaintButton.Location = new System.Drawing.Point(118, 489);
             this.complaintButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.complaintButton.Name = "complaintButton";
             this.complaintButton.Size = new System.Drawing.Size(273, 44);
@@ -77,7 +78,7 @@ namespace Project.ClientForms
             // 
             // pollButton
             // 
-            this.pollButton.Location = new System.Drawing.Point(118, 415);
+            this.pollButton.Location = new System.Drawing.Point(118, 432);
             this.pollButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.pollButton.Name = "pollButton";
             this.pollButton.Size = new System.Drawing.Size(273, 44);
@@ -88,7 +89,7 @@ namespace Project.ClientForms
             // 
             // myTicketsButton
             // 
-            this.myTicketsButton.Location = new System.Drawing.Point(118, 350);
+            this.myTicketsButton.Location = new System.Drawing.Point(118, 375);
             this.myTicketsButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.myTicketsButton.Name = "myTicketsButton";
             this.myTicketsButton.Size = new System.Drawing.Size(273, 44);
@@ -99,7 +100,7 @@ namespace Project.ClientForms
             // 
             // discountApplicationButton
             // 
-            this.discountApplicationButton.Location = new System.Drawing.Point(118, 220);
+            this.discountApplicationButton.Location = new System.Drawing.Point(118, 204);
             this.discountApplicationButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.discountApplicationButton.Name = "discountApplicationButton";
             this.discountApplicationButton.Size = new System.Drawing.Size(273, 44);
@@ -145,7 +146,7 @@ namespace Project.ClientForms
             // 
             // myApplicationsButton
             // 
-            this.myApplicationsButton.Location = new System.Drawing.Point(118, 285);
+            this.myApplicationsButton.Location = new System.Drawing.Point(118, 261);
             this.myApplicationsButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.myApplicationsButton.Name = "myApplicationsButton";
             this.myApplicationsButton.Size = new System.Drawing.Size(273, 44);
@@ -212,7 +213,7 @@ namespace Project.ClientForms
             // 
             // busLineInformationButton
             // 
-            this.busLineInformationButton.Location = new System.Drawing.Point(118, 545);
+            this.busLineInformationButton.Location = new System.Drawing.Point(118, 546);
             this.busLineInformationButton.Name = "busLineInformationButton";
             this.busLineInformationButton.Size = new System.Drawing.Size(273, 44);
             this.busLineInformationButton.TabIndex = 11;
@@ -228,12 +229,23 @@ namespace Project.ClientForms
             this.panel3.Size = new System.Drawing.Size(391, 70);
             this.panel3.TabIndex = 12;
             // 
+            // ticketReservationLastMinuteButton
+            // 
+            this.ticketReservationLastMinuteButton.Location = new System.Drawing.Point(118, 318);
+            this.ticketReservationLastMinuteButton.Name = "ticketReservationLastMinuteButton";
+            this.ticketReservationLastMinuteButton.Size = new System.Drawing.Size(273, 44);
+            this.ticketReservationLastMinuteButton.TabIndex = 13;
+            this.ticketReservationLastMinuteButton.Text = "Εισιτήρια-Κρατήσεις-Αιτήματα";
+            this.ticketReservationLastMinuteButton.UseVisualStyleBackColor = true;
+            this.ticketReservationLastMinuteButton.Click += new System.EventHandler(this.TicketReservationLastMinuteButton_Click);
+            // 
             // ClientForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.ClientSize = new System.Drawing.Size(509, 711);
+            this.Controls.Add(this.ticketReservationLastMinuteButton);
             this.Controls.Add(this.currentBoughtTicketsLabel);
             this.Controls.Add(this.panel3);
             this.Controls.Add(this.busLineInformationButton);
@@ -283,5 +295,6 @@ namespace Project.ClientForms
         private System.Windows.Forms.Button busLineInformationButton;
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.PictureBox pictureBox2;
+        private System.Windows.Forms.Button ticketReservationLastMinuteButton;
     }
 }

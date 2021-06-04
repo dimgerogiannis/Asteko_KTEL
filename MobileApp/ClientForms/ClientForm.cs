@@ -82,5 +82,10 @@ namespace Project.ClientForms
             BusLineInformationForm form = new BusLineInformationForm();
             form.ShowDialog();
         }
+
+        private void TicketReservationLastMinuteButton_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
