@@ -16,7 +16,7 @@ namespace ClassesFolder
         public string Name => _name;
         public string Surname => _surname;
         public string Property => _property;
-        
+
         private decimal _balance;
         private bool _montlyCard;
         private int _discount;
@@ -29,17 +29,17 @@ namespace ClassesFolder
         private List<Poll> _availablePolls;
 
 
-        public decimal Balance 
-        { 
-            get { return _balance; } 
-            set { _balance = value; } 
+        public decimal Balance
+        {
+            get { return _balance; }
+            set { _balance = value; }
         }
         public bool MonthlyCard => _montlyCard;
         public int Discount => _discount;
-        
-        public List<Ticket> TicketList 
-        { 
-            get { return _ticketList; } 
+
+        public List<Ticket> TicketList
+        {
+            get { return _ticketList; }
             set { _ticketList = value; }
         }
         public List<Transaction> TransactionList
@@ -47,13 +47,13 @@ namespace ClassesFolder
             get { return _transactionList; }
             set { _transactionList = value; }
         }
-        
-        public List<Ticket> UsableTicketList 
-        { 
-            get { return _usableTicketList; } 
-            set { _usableTicketList = value; } 
+
+        public List<Ticket> UsableTicketList
+        {
+            get { return _usableTicketList; }
+            set { _usableTicketList = value; }
         }
-        
+
         public List<Reservation> ReservationList => _reservationList;
         public List<Poll> AvailablePolls => _availablePolls;
 
@@ -126,8 +126,8 @@ namespace ClassesFolder
 
                 while (reader.Read())
                 {
-                    _ticketList.Add(new Ticket(GetItineraryData(reader.GetInt32(0)), 
-                                               reader.GetBoolean(2), 
+                    _ticketList.Add(new Ticket(GetItineraryData(reader.GetInt32(0)),
+                                               reader.GetBoolean(2),
                                                reader.GetBoolean(1),
                                                reader.GetString(3)));
                 }
@@ -168,12 +168,12 @@ namespace ClassesFolder
                 int busID = reader.GetInt32(4);
                 int availableSeats = reader.GetInt32(5);
 
-                return new Itinerary(itineraryID, 
-                                     travelDatetime, 
-                                     busDriverUsername, 
-                                     GetBusLineData(busLineNumber), 
-                                     GetBusData(busID), 
-                                     enumStatus, 
+                return new Itinerary(itineraryID,
+                                     travelDatetime,
+                                     busDriverUsername,
+                                     GetBusLineData(busLineNumber),
+                                     GetBusData(busID),
+                                     enumStatus,
                                      availableSeats);
             }
             catch (MySqlException)
@@ -440,14 +440,25 @@ namespace ClassesFolder
 
         private void DecreaseBalance(decimal price)
         {
-            using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
-            connection.Open();
+            try
+            {
+                using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
+                connection.Open();
 
-            var query = @"update Client set balance = balance - @price where username = @username;";
-            using var cmd = new MySqlCommand(query, connection);
-            cmd.Parameters.AddWithValue("@price", price);
-            cmd.Parameters.AddWithValue("@username", _username);
-            cmd.ExecuteNonQuery();
+                var query = @"update Client set balance = balance - @price where username = @username;";
+                using var cmd = new MySqlCommand(query, connection);
+                cmd.Parameters.AddWithValue("@price", price);
+                cmd.Parameters.AddWithValue("@username", _username);
+                cmd.ExecuteNonQuery();
+            }
+            catch (MySqlException)
+            {
+                MessageBox.Show("Προκλήθηκε σφάλμα κατά την σύνδεση με τον server. Η εφαρμογή θα τερματιστεί!",
+                                 "Σφάλμα",
+                                 MessageBoxButtons.OK,
+                                 MessageBoxIcon.Error);
+                Application.Exit();
+            }
         }
 
         public List<Itinerary> GetMatchingItineraries(string busLineNumber, string travelDatetime)
@@ -526,7 +537,7 @@ namespace ClassesFolder
                 Application.Exit();
             }
         }
-        
+
         public void DecrementItinerarySeats(int itineraryID, int oldSeatsNumber)
         {
             try
@@ -629,7 +640,7 @@ namespace ClassesFolder
                 Application.Exit();
             }
         }
-    
+
         public void InsertLastMinuteTravelRequestToDatabase(LastMinuteTravelRequest lastMinuteTravelRequest)
         {
             try
@@ -655,7 +666,7 @@ namespace ClassesFolder
                 Application.Exit();
             }
         }
-    
+
         public bool CheckForDuplicateTicket(string busLineNumber, string travelDatetime)
         {
             try
@@ -720,7 +731,7 @@ namespace ClassesFolder
                 return false;
             }
         }
-   
+
         public bool CheckForDuplicateLastMinuteTravelRequest(string travelBusLine, string travelDatetime)
         {
             try
@@ -752,7 +763,7 @@ namespace ClassesFolder
                 return false;
             }
         }
-    
+
         public void InsertDiscountApplicationInDatabase(DiscountApplication application)
         {
             try
@@ -822,7 +833,7 @@ namespace ClassesFolder
                 return 0;
             }
         }
-    
+
         public bool CheckForDuplicateDiscountApplication()
         {
             try
@@ -852,7 +863,7 @@ namespace ClassesFolder
                 return false;
             }
         }
-    
+
         public void InsertDiscountApplicationFilesInDatabase(int discountApplicationID, List<File> files)
         {
             try
@@ -887,7 +898,7 @@ namespace ClassesFolder
                 Application.Exit();
             }
         }
-    
+
         public List<DiscountApplication> GetDiscountApplicationsFromDatabase()
         {
             try
@@ -969,7 +980,7 @@ namespace ClassesFolder
                 return null;
             }
         }
-    
+
         public void DeleteDiscountApplicationFromDatabase(string applicationDatetime)
         {
             try
@@ -993,7 +1004,7 @@ namespace ClassesFolder
                 Application.Exit();
             }
         }
-    
+
         public Itinerary GetLatestItinerary()
         {
             try
@@ -1030,12 +1041,12 @@ namespace ClassesFolder
                 int busID = reader.GetInt32(5);
                 int availableSeats = reader.GetInt32(6);
 
-                return new Itinerary(itineraryID, 
-                                     travelDatetime, 
-                                     busDriverUsername, 
+                return new Itinerary(itineraryID,
+                                     travelDatetime,
+                                     busDriverUsername,
                                      GetBusLineData(busLineNumber),
                                      GetBusData(busID),
-                                     enumStatus, 
+                                     enumStatus,
                                      availableSeats);
             }
             catch (MySqlException)
@@ -1174,7 +1185,7 @@ namespace ClassesFolder
                 Application.Exit();
             }
         }
-    
+
         public List<Ticket> GetTickets(string lastMonth)
         {
             try
@@ -1197,9 +1208,9 @@ namespace ClassesFolder
 
                 while (reader.Read())
                 {
-                    tickets.Add(new Ticket(GetItineraryData(reader.GetInt32(0)), 
-                                           reader.GetBoolean(2), 
-                                           reader.GetBoolean(1), 
+                    tickets.Add(new Ticket(GetItineraryData(reader.GetInt32(0)),
+                                           reader.GetBoolean(2),
+                                           reader.GetBoolean(1),
                                            reader.GetString(3)));
                 }
 
@@ -1239,8 +1250,8 @@ namespace ClassesFolder
 
                 while (reader.Read())
                 {
-                    tickets.Add(new Ticket(GetItineraryData(reader.GetInt32(0)), 
-                                                            reader.GetBoolean(2), 
+                    tickets.Add(new Ticket(GetItineraryData(reader.GetInt32(0)),
+                                                            reader.GetBoolean(2),
                                                             reader.GetBoolean(1),
                                                             reader.GetString(3)));
                 }
@@ -1283,7 +1294,7 @@ namespace ClassesFolder
                 return -1;
             }
         }
-    
+
         public int GetDiscountCategoryID(Category category)
         {
             try
@@ -1424,7 +1435,7 @@ namespace ClassesFolder
                 return false;
             }
         }
-    
+
         public void InsertDismissalPetitionInDatabase(DismissalPetition petition)
         {
             try
@@ -1445,7 +1456,7 @@ namespace ClassesFolder
                 Application.Exit();
             }
         }
-   
+
         public void SetAsUnavailable(Poll poll)
         {
             _availablePolls.Remove(poll);
@@ -1458,77 +1469,101 @@ namespace ClassesFolder
 
         public Itinerary GetItinerary(string datetime, string _busLineNumber)
         {
-            using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
-            connection.Open();
+            try
+            {
+                using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
+                connection.Open();
 
-            var query = @"select itineraryID, status, travelDatetime, busDriverUsername, busLineNumber, busID, availableSeats
+                var query = @"select itineraryID, status, travelDatetime, busDriverUsername, busLineNumber, busID, availableSeats
                               from itinerary
                               where busLineNumber = @busLineNumber and travelDatetime = @travelDatetime";
 
-            using var cmd = new MySqlCommand(query, connection);
-            cmd.Parameters.AddWithValue("@busLineNumber", _busLineNumber);
-            cmd.Parameters.AddWithValue("@travelDatetime", datetime);
+                using var cmd = new MySqlCommand(query, connection);
+                cmd.Parameters.AddWithValue("@busLineNumber", _busLineNumber);
+                cmd.Parameters.AddWithValue("@travelDatetime", datetime);
 
-            using MySqlDataReader reader = cmd.ExecuteReader();
+                using MySqlDataReader reader = cmd.ExecuteReader();
 
-            reader.Read();
+                reader.Read();
 
-            int itineraryID = reader.GetInt32(0);
-            string status = reader.GetString(1);
-            ItineraryStatus enumStatus = status == "no_delayed" ? ItineraryStatus.NoDelayed : ItineraryStatus.Delayed;
-            DateTime travelDatetime = reader.GetDateTime(2);
-            string busDriverUsername = reader.GetString(3);
-            int busLineNumber = reader.GetInt32(4);
-            int busID = reader.GetInt32(5);
-            int availableSeats = reader.GetInt32(6);
+                int itineraryID = reader.GetInt32(0);
+                string status = reader.GetString(1);
+                ItineraryStatus enumStatus = status == "no_delayed" ? ItineraryStatus.NoDelayed : ItineraryStatus.Delayed;
+                DateTime travelDatetime = reader.GetDateTime(2);
+                string busDriverUsername = reader.GetString(3);
+                int busLineNumber = reader.GetInt32(4);
+                int busID = reader.GetInt32(5);
+                int availableSeats = reader.GetInt32(6);
 
-            return new Itinerary(itineraryID,
-                                 travelDatetime,
-                                 busDriverUsername,
-                                 GetBusLineData(busLineNumber),
-                                 GetBusData(busID),
-                                 enumStatus,
-                                 availableSeats);
+                return new Itinerary(itineraryID,
+                                     travelDatetime,
+                                     busDriverUsername,
+                                     GetBusLineData(busLineNumber),
+                                     GetBusData(busID),
+                                     enumStatus,
+                                     availableSeats);
+            }
+            catch (MySqlException)
+            {
+                MessageBox.Show("Προκλήθηκε σφάλμα κατά την σύνδεση με τον server. Η εφαρμογή θα τερματιστεί!",
+                                 "Σφάλμα",
+                                 MessageBoxButtons.OK,
+                                 MessageBoxIcon.Error);
+                Application.Exit();
+                return null;
+            }
         }
-    
+
         public List<LastMinuteTravelRequest> GetLastMinuteTravelRequests()
         {
-            using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
-            connection.Open();
+            try
+            {
+                using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
+                connection.Open();
 
-            var query = @"select applicationDate, travelDatetime, travelBusLine, status
+                var query = @"select applicationDate, travelDatetime, travelBusLine, status
                           from LastMinuteTravelRequest
                           where clientUsername = @username;";
 
-            using var cmd = new MySqlCommand(query, connection);
-            cmd.Parameters.AddWithValue("@username", _username);
+                using var cmd = new MySqlCommand(query, connection);
+                cmd.Parameters.AddWithValue("@username", _username);
 
-            using MySqlDataReader reader = cmd.ExecuteReader();
-            List<LastMinuteTravelRequest> lastMinuteTravelRequests = new List<LastMinuteTravelRequest>();
+                using MySqlDataReader reader = cmd.ExecuteReader();
+                List<LastMinuteTravelRequest> lastMinuteTravelRequests = new List<LastMinuteTravelRequest>();
 
-            while (reader.Read())
-            {
-                var status = reader.GetString(3);
-                Status _status = Status.Pending;
-
-                switch (status)
+                while (reader.Read())
                 {
-                    case "accepted":
-                        _status = Status.Accepted;
-                        break;
-                    case "rejected":
-                        _status = Status.Rejected;
-                        break;
+                    var status = reader.GetString(3);
+                    Status _status = Status.Pending;
+
+                    switch (status)
+                    {
+                        case "accepted":
+                            _status = Status.Accepted;
+                            break;
+                        case "rejected":
+                            _status = Status.Rejected;
+                            break;
+                    }
+
+                    lastMinuteTravelRequests.Add(new LastMinuteTravelRequest(_username,
+                                                                             reader.GetDateTime(0).ToString("dd-MM-yyyy"),
+                                                                             reader.GetDateTime(1),
+                                                                             reader.GetInt32(2),
+                                                                             _status));
                 }
 
-                lastMinuteTravelRequests.Add(new LastMinuteTravelRequest(_username,
-                                                                         reader.GetDateTime(0).ToString("dd-MM-yyyy"),
-                                                                         reader.GetDateTime(1),
-                                                                         reader.GetInt32(2),
-                                                                         _status));
+                return lastMinuteTravelRequests;
             }
-
-            return lastMinuteTravelRequests;
+            catch (MySqlException)
+            {
+                MessageBox.Show("Προκλήθηκε σφάλμα κατά την σύνδεση με τον server. Η εφαρμογή θα τερματιστεί!",
+                                 "Σφάλμα",
+                                 MessageBoxButtons.OK,
+                                 MessageBoxIcon.Error);
+                Application.Exit();
+                return null;
+            }
         }
     }
 }
