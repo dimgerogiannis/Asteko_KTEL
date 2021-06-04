@@ -61,7 +61,7 @@ namespace ClassesFolder
 
                 using var cmd = new MySqlCommand(query, connection);
 
-                cmd.Parameters.AddWithValue("@status", _status);
+                cmd.Parameters.AddWithValue("@status", "accepted");
                 cmd.Parameters.AddWithValue("@username", ApplicantUsername);
                 cmd.ExecuteNonQuery();
             }
@@ -90,7 +90,7 @@ namespace ClassesFolder
 
                 using var cmd = new MySqlCommand(query, connection);
 
-                cmd.Parameters.AddWithValue("@status", _status);
+                cmd.Parameters.AddWithValue("@status", "rejected");
                 cmd.Parameters.AddWithValue("@username", ApplicantUsername);
                 cmd.Parameters.AddWithValue("@reason", _possibleRejectionReason);
                 cmd.ExecuteNonQuery();

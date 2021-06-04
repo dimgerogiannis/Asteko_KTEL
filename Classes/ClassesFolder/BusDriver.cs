@@ -123,8 +123,8 @@ namespace ClassesFolder
                 connection.Open();
 
                 var query = @"select size 
-                          from bus 
-                          where busID = @busID;";
+                              from bus 
+                              where busID = @busID;";
 
                 using var cmd = new MySqlCommand(query, connection);
                 cmd.Parameters.AddWithValue("@busID", busID);
@@ -716,23 +716,35 @@ namespace ClassesFolder
    
         public int GetAvailableWorkingHours(string date)
         {
-            using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
-            connection.Open();
-            var query = @"select count(*), sum(duration) from itinerary
+            try
+            {
+                using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
+                connection.Open();
+                var query = @"select count(*), sum(duration) from itinerary
                           inner join BusLine on BusLine.number = Itinerary.busLineNumber
                           where busDriverUsername = @username and Substring(travelDatetime,1,10) = @travelDatetime;";
 
-            using var cmd = new MySqlCommand(query, connection);
-            cmd.Parameters.AddWithValue("@username", _username);
-            cmd.Parameters.AddWithValue("@travelDatetime", date);
+                using var cmd = new MySqlCommand(query, connection);
+                cmd.Parameters.AddWithValue("@username", _username);
+                cmd.Parameters.AddWithValue("@travelDatetime", date);
 
-            using MySqlDataReader reader = cmd.ExecuteReader();
-            reader.Read();
+                using MySqlDataReader reader = cmd.ExecuteReader();
+                reader.Read();
 
-            if (reader.GetInt32(0) == 0)
-                return 300;
-            else
-                return 300 - reader.GetInt32(1);
+                if (reader.GetInt32(0) == 0)
+                    return 300;
+                else
+                    return 300 - reader.GetInt32(1);
+            }
+            catch (MySqlException)
+            {
+                MessageBox.Show("Προκλήθηκε σφάλμα κατά την σύνδεση με τον server. Η εφαρμογή θα τερματιστεί!",
+                                 "Σφάλμα",
+                                 MessageBoxButtons.OK,
+                                 MessageBoxIcon.Error);
+                Application.Exit();
+                return -1;
+            }
         }
 
         public bool HasItineraryEndTimeAndNoNextItineraryOnSpecificTime(string date, string startingHour, string targetStop)
@@ -835,7 +847,6 @@ namespace ClassesFolder
                 Application.Exit();
                 return false;
             }
-        }
-    
+        }   
     }
 }

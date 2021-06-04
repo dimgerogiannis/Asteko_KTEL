@@ -219,98 +219,145 @@ namespace ClassesFolder
     
         public List<BusDriver> GetBusDrivers()
         {
-            List<BusDriver> busDrivers = new List<BusDriver>();
+            try
+            {
+                List<BusDriver> busDrivers = new List<BusDriver>();
 
-            using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
-            connection.Open();
-            var statement = @"select BusDriver.username, name, surname, salary, experience, hireDate, complaintsCounter
+                using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
+                connection.Open();
+                var statement = @"select BusDriver.username, name, surname, salary, experience, hireDate, complaintsCounter
                                   from user 
                                   inner join Employee on User.username = Employee.username
                                   inner join BusDriver on User.username = BusDriver.username;";
-            
-            using var cmd = new MySqlCommand(statement, connection);
-            using MySqlDataReader reader = cmd.ExecuteReader();
 
-            while (reader.Read())
-            {
-                busDrivers.Add(new BusDriver(reader.GetString(0),
-                                             reader.GetString(1),
-                                             reader.GetString(2),
-                                             "BusDriver",
-                                             reader.GetDecimal(3),
-                                             reader.GetInt32(4),
-                                             reader.GetString(5),
-                                             reader.GetInt32(6)));
+                using var cmd = new MySqlCommand(statement, connection);
+                using MySqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    busDrivers.Add(new BusDriver(reader.GetString(0),
+                                                 reader.GetString(1),
+                                                 reader.GetString(2),
+                                                 "BusDriver",
+                                                 reader.GetDecimal(3),
+                                                 reader.GetInt32(4),
+                                                 reader.GetString(5),
+                                                 reader.GetInt32(6)));
+                }
+
+                return busDrivers;
             }
-
-            return busDrivers;
+            catch (MySqlException)
+            {
+                MessageBox.Show("Προκλήθηκε σφάλμα κατά την σύνδεση με τον server. Η εφαρμογή θα τερματιστεί!",
+                                 "Σφάλμα",
+                                 MessageBoxButtons.OK,
+                                 MessageBoxIcon.Error);
+                Application.Exit();
+                return null;
+            }
         }
     
         public List<Bus> GetBuses()
         {
-            using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
-            connection.Open();
-            var statement = @"select busID, size 
-                            from bus;";
-
-            using var cmd = new MySqlCommand(statement, connection);
-            using MySqlDataReader reader = cmd.ExecuteReader();
-
-            List<Bus> buses = new List<Bus>();
-
-            while (reader.Read())
+            try
             {
-                var size = BusSize.SMALL;
+                using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
+                connection.Open();
+                var statement = @"select busID, size 
+                                from bus;";
 
-                switch (reader.GetString(1))
+                using var cmd = new MySqlCommand(statement, connection);
+                using MySqlDataReader reader = cmd.ExecuteReader();
+
+                List<Bus> buses = new List<Bus>();
+
+                while (reader.Read())
                 {
-                    case "medium":
-                        size = BusSize.MEDIUM;
-                        break;
-                    case "large":
-                        size = BusSize.LARGE;
-                        break;
+                    var size = BusSize.SMALL;
+
+                    switch (reader.GetString(1))
+                    {
+                        case "medium":
+                            size = BusSize.MEDIUM;
+                            break;
+                        case "large":
+                            size = BusSize.LARGE;
+                            break;
+                    }
+
+                    buses.Add(new Bus(reader.GetInt32(0), size));
                 }
 
-                buses.Add(new Bus(reader.GetInt32(0), size));
+                return buses;
             }
-
-            return buses;
+            catch (MySqlException)
+            {
+                MessageBox.Show("Προκλήθηκε σφάλμα κατά την σύνδεση με τον server. Η εφαρμογή θα τερματιστεί!",
+                                 "Σφάλμα",
+                                 MessageBoxButtons.OK,
+                                 MessageBoxIcon.Error);
+                Application.Exit();
+                return null;
+            }
         }
     
         public void InsertItineraryInDatabase(Itinerary itinerary)
         {
-            using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
-            connection.Open();
+            try
+            {
+                using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
+                connection.Open();
 
-            var statement = @"insert into Itinerary (status, travelDatetime, availableSeats, distributorUsername, busDriverUsername, busLineNumber, busID) VALUES 
+                var statement = @"insert into Itinerary (status, travelDatetime, availableSeats, distributorUsername, busDriverUsername, busLineNumber, busID) VALUES 
 			                (@status, @travelDatetime,  @availableSeats, @distributorUsername, @busDriverUsername, @busLineNumber, @busID)";
 
-            using var cmd = new MySqlCommand(statement, connection);
-            cmd.Parameters.AddWithValue("@status", "no_delayed");
-            cmd.Parameters.AddWithValue("@travelDatetime", itinerary.TravelDatetime.ToString("yyyy-MM-dd HH:mm:ss"));
-            cmd.Parameters.AddWithValue("@availableSeats", itinerary.AvailableSeats);
-            cmd.Parameters.AddWithValue("@distributorUsername", _username);
-            cmd.Parameters.AddWithValue("@busDriverUsername", itinerary.ResponsibleDriver);
-            cmd.Parameters.AddWithValue("@busLineNumber", itinerary.ItineraryLine.Number);
-            cmd.Parameters.AddWithValue("@busID", itinerary.ResponsibleBus.Id);
-            cmd.ExecuteNonQuery();
+                using var cmd = new MySqlCommand(statement, connection);
+                cmd.Parameters.AddWithValue("@status", "no_delayed");
+                cmd.Parameters.AddWithValue("@travelDatetime", itinerary.TravelDatetime.ToString("yyyy-MM-dd HH:mm:ss"));
+                cmd.Parameters.AddWithValue("@availableSeats", itinerary.AvailableSeats);
+                cmd.Parameters.AddWithValue("@distributorUsername", _username);
+                cmd.Parameters.AddWithValue("@busDriverUsername", itinerary.ResponsibleDriver);
+                cmd.Parameters.AddWithValue("@busLineNumber", itinerary.ItineraryLine.Number);
+                cmd.Parameters.AddWithValue("@busID", itinerary.ResponsibleBus.Id);
+                cmd.ExecuteNonQuery();
+            }
+            catch (MySqlException)
+            {
+                MessageBox.Show("Προκλήθηκε σφάλμα κατά την σύνδεση με τον server. Η εφαρμογή θα τερματιστεί!",
+                                 "Σφάλμα",
+                                 MessageBoxButtons.OK,
+                                 MessageBoxIcon.Error);
+                Application.Exit();
+            }
         }
 
         public bool CheckDuplicateItinerary(string busLineNumber, string travelDatetime)
         {
-            using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
-            connection.Open();
-            var statement = @"select count(*)
+            try
+            {
+                using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
+                connection.Open();
+                var statement = @"select count(*)
                               from itinerary where busLineNumber = @busLineNumber and travelDatetime = @travelDatetime;";
 
-            using var cmd = new MySqlCommand(statement, connection);
-            cmd.Parameters.AddWithValue("@busLineNumber", busLineNumber);
-            cmd.Parameters.AddWithValue("@travelDatetime", travelDatetime);
-            using MySqlDataReader reader = cmd.ExecuteReader();
-            reader.Read();
+                using var cmd = new MySqlCommand(statement, connection);
+                cmd.Parameters.AddWithValue("@busLineNumber", busLineNumber);
+                cmd.Parameters.AddWithValue("@travelDatetime", travelDatetime);
+                using MySqlDataReader reader = cmd.ExecuteReader();
+                reader.Read();
 
-            return reader.GetInt32(0) == 1;
+                return reader.GetInt32(0) == 1;
+            }
+            catch (MySqlException)
+            {
+                MessageBox.Show("Προκλήθηκε σφάλμα κατά την σύνδεση με τον server. Η εφαρμογή θα τερματιστεί!",
+                                 "Σφάλμα",
+                                 MessageBoxButtons.OK,
+                                 MessageBoxIcon.Error);
+                Application.Exit();
+                return false;
+            }
         }
     
         public Client GetClient(string username)
@@ -454,27 +501,39 @@ namespace ClassesFolder
     
         public List<LastMinuteTravelRequest> GetLastMinuteTravelRequests()
         {
-            using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
-            connection.Open();
-            var statement = @"select clientUsername, applicationDate, travelDatetime, travelBusLine, status 
+            try
+            {
+                using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
+                connection.Open();
+                var statement = @"select clientUsername, applicationDate, travelDatetime, travelBusLine, status 
                               from lastminutetravelrequest
                               where status = @status;";
-            using var cmd = new MySqlCommand(statement, connection);
-            cmd.Parameters.AddWithValue("@status", "pending");
-            using MySqlDataReader reader = cmd.ExecuteReader();
+                using var cmd = new MySqlCommand(statement, connection);
+                cmd.Parameters.AddWithValue("@status", "pending");
+                using MySqlDataReader reader = cmd.ExecuteReader();
 
-            List<LastMinuteTravelRequest> lastMinuteRequests = new List<LastMinuteTravelRequest>();
+                List<LastMinuteTravelRequest> lastMinuteRequests = new List<LastMinuteTravelRequest>();
 
-            while (reader.Read())
-            {
-                lastMinuteRequests.Add(new LastMinuteTravelRequest(reader.GetString(0),
-                                                                   reader.GetDateTime(1).ToString("dd-MM-yyyy"),
-                                                                   reader.GetDateTime(2),
-                                                                   reader.GetInt32(3),
-                                                                   Status.Pending));
+                while (reader.Read())
+                {
+                    lastMinuteRequests.Add(new LastMinuteTravelRequest(reader.GetString(0),
+                                                                       reader.GetDateTime(1).ToString("dd-MM-yyyy"),
+                                                                       reader.GetDateTime(2),
+                                                                       reader.GetInt32(3),
+                                                                       Status.Pending));
+                }
+
+                return lastMinuteRequests;
             }
-
-            return lastMinuteRequests;
+            catch (MySqlException)
+            {
+                MessageBox.Show("Προκλήθηκε σφάλμα κατά την σύνδεση με τον server. Η εφαρμογή θα τερματιστεί!",
+                                "Σφάλμα",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Error);
+                Application.Exit();
+                return null;
+            }
         }
     }
 }

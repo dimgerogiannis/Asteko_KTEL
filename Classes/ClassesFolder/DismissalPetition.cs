@@ -20,47 +20,59 @@ namespace ClassesFolder
 
         public List<ClientComplaint> GetComplaintHistory()
         {
-            using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
-            connection.Open();
+            try
+            {
+                using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
+                connection.Open();
 
-            var query = @"select targetUsername, summary, category, clientUsername 
+                var query = @"select targetUsername, summary, category, clientUsername 
                          from ClientComplaint
                          where targetUsername = @targetUsername and checked = @checked";
 
-            using var cmd = new MySqlCommand(query, connection);
-            cmd.Parameters.AddWithValue("@targetUsername", _targetUsername);
-            cmd.Parameters.AddWithValue("@checked", false);
+                using var cmd = new MySqlCommand(query, connection);
+                cmd.Parameters.AddWithValue("@targetUsername", _targetUsername);
+                cmd.Parameters.AddWithValue("@checked", false);
 
-            using MySqlDataReader reader = cmd.ExecuteReader();
+                using MySqlDataReader reader = cmd.ExecuteReader();
 
-            List<ClientComplaint> complaints = new List<ClientComplaint>();
+                List<ClientComplaint> complaints = new List<ClientComplaint>();
 
-            while (reader.Read())
-            {
-                ClientComplaintCategory category = ClientComplaintCategory.AggresiveBehaviour;
-                switch (reader.GetString(2))
+                while (reader.Read())
                 {
-                    case "rude_bus_driver":
-                        category = ClientComplaintCategory.AggresiveBehaviour;
-                        break;
-                    case "late_for_no_reason":
-                        category = ClientComplaintCategory.LateForNoReason;
-                        break;
-                    case "aggresive_behavior":
-                        category = ClientComplaintCategory.AggresiveBehaviour;
-                        break;
-                    case "aggresive_driving":
-                        category = ClientComplaintCategory.CarelessDriving;
-                        break;
-                    case "driving_rules_violation":
-                        category = ClientComplaintCategory.DrivingRuleViolation;
-                        break;
+                    ClientComplaintCategory category = ClientComplaintCategory.AggresiveBehaviour;
+                    switch (reader.GetString(2))
+                    {
+                        case "rude_bus_driver":
+                            category = ClientComplaintCategory.AggresiveBehaviour;
+                            break;
+                        case "late_for_no_reason":
+                            category = ClientComplaintCategory.LateForNoReason;
+                            break;
+                        case "aggresive_behavior":
+                            category = ClientComplaintCategory.AggresiveBehaviour;
+                            break;
+                        case "aggresive_driving":
+                            category = ClientComplaintCategory.CarelessDriving;
+                            break;
+                        case "driving_rules_violation":
+                            category = ClientComplaintCategory.DrivingRuleViolation;
+                            break;
+                    }
+
+                    complaints.Add(new ClientComplaint(reader.GetString(0), false, reader.GetString(1), category, reader.GetString(3)));
                 }
 
-                complaints.Add(new ClientComplaint(reader.GetString(0), false, reader.GetString(1), category, reader.GetString(3)));
+                return complaints;               
             }
-
-            return complaints;
+            catch (MySqlException)
+            {
+                MessageBox.Show("Προκλήθηκε σφάλμα κατά την σύνδεση με τον server. Η εφαρμογή θα τερματιστεί!",
+                                 "Σφάλμα",
+                                 MessageBoxButtons.OK,
+                                 MessageBoxIcon.Error);
+                Application.Exit();
+                return null;
+            }
         }
     
         public void DeleteDismissalPetition()
