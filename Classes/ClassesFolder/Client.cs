@@ -1564,5 +1564,31 @@ namespace ClassesFolder
                 return null;
             }
         }
+    
+        public void DeleteLastMinuteTravelRequest(LastMinuteTravelRequest request)
+        {
+            try
+            {
+                using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
+                connection.Open();
+
+                var query = @"delete from LastMinuteTravelRequest
+                             where clientUsername = @username and travelDatetime = @travelDatetime and travelBusLine = @travelBusLine";
+
+                using var cmd = new MySqlCommand(query, connection);
+                cmd.Parameters.AddWithValue("@username", _username);
+                cmd.Parameters.AddWithValue("@travelDatetime", request.TravelDatetime.ToString("yyyy-MM-dd HH:mm:ss"));
+                cmd.Parameters.AddWithValue("@travelBusLine", request.TravelBusLine);
+                cmd.ExecuteNonQuery();
+            }
+            catch (MySqlException)
+            {
+                MessageBox.Show("Προκλήθηκε σφάλμα κατά την σύνδεση με τον server. Η εφαρμογή θα τερματιστεί!",
+                                 "Σφάλμα",
+                                 MessageBoxButtons.OK,
+                                 MessageBoxIcon.Error);
+                Application.Exit();
+            }
+        }
     }
 }

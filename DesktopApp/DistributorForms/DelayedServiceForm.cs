@@ -129,18 +129,12 @@ namespace DistributorForms
 
             _busDrivers = _busDrivers
                     .Select(x => x)
-                    .Where(x => !x.IsOnPaidLeave(databaseDateFormat) &&
-                                x.IsAvailableOnHour(databaseDateFormat,
-                                                    startingHour,
-                                                    duration) &&
-                                !x.IsLedToOverWorking(duration, databaseDateFormat))
+                    .Where(x => !x.IsOnPaidLeave(databaseDateFormat) && x.IsAvailableOnHour(databaseDateFormat, startingHour, duration) && !x.IsLedToOverWorking(duration, databaseDateFormat))
                     .ToList();
 
             _buses = _buses
                 .Select(x => x)
-                .Where(x => x.IsAvailableOnHour(databaseDateFormat,
-                                                    startingHour,
-                                                    duration))
+                .Where(x => x.IsAvailableOnHour(databaseDateFormat, startingHour, duration))
                 .ToList();
 
             var startStop = _busLines[reqLine].Stops[0];
@@ -148,24 +142,12 @@ namespace DistributorForms
 
             var recBusDrivers = _busDrivers
                     .Select(x => x)
-                    .Where(x => x.HasItineraryEndTimeAndNoNextItineraryOnSpecificTime(databaseDateFormat,
-                                                                                      startingHour,
-                                                                                      startStop) &&
-                                x.DoesntHaveImmidiatelyItinerary(databaseDateFormat,
-                                                                 startingHour,
-                                                                 duration,
-                                                                 endStop))
+                    .Where(x => x.HasItineraryEndTimeAndNoNextItineraryOnSpecificTime(databaseDateFormat, startingHour, startStop) && x.DoesntHaveImmidiatelyItinerary(databaseDateFormat, startingHour, duration, endStop))
                     .ToList();
 
             var recBuses = _buses
                 .Select(x => x)
-                .Where(x => x.HasItineraryEndTimeAndNoNextItineraryOnSpecificTime(databaseDateFormat,
-                                                                                  startingHour,
-                                                                                  startStop) &&
-                            x.DoesntHaveImmidiatelyItinerary(databaseDateFormat,
-                                                             startingHour,
-                                                             duration,
-                                                             endStop))
+                .Where(x => x.HasItineraryEndTimeAndNoNextItineraryOnSpecificTime(databaseDateFormat, startingHour, startStop) && x.DoesntHaveImmidiatelyItinerary(databaseDateFormat, startingHour, duration, endStop))
                 .ToList();
 
 
@@ -178,13 +160,16 @@ namespace DistributorForms
 
                 if (result == DialogResult.Yes)
                 {
-                    _busDrivers = recBusDrivers.OrderByDescending(x => x.GetAvailableWorkingHours(databaseDateFormat)).ToList();
+                    _busDrivers = recBusDrivers
+                        .OrderByDescending(x => x.GetAvailableWorkingHours(databaseDateFormat))
+                        .ToList();
+
                     foreach (var busDriver in _busDrivers)
                     {
                         recommendedDriversListview.Items.Add(new ListViewItem(new string[]
                         {
-                                $"{busDriver.Name} {busDriver.Surname}",
-                                (busDriver.GetAvailableWorkingHours(databaseDateFormat)).ToString("#.##")
+                            $"{busDriver.Name} {busDriver.Surname}",
+                            (busDriver.GetAvailableWorkingHours(databaseDateFormat)).ToString("#.##")
                         }));
                     }
 
@@ -208,8 +193,8 @@ namespace DistributorForms
 
                         recommendedBusesListview.Items.Add(new ListViewItem(new string[]
                         {
-                                bus.Id.ToString(),
-                                size.ToString()
+                            bus.Id.ToString(),
+                            size.ToString()
                         }));
                     }
 
@@ -219,9 +204,7 @@ namespace DistributorForms
 
             _busDrivers = _busDrivers
                 .Select(x => x)
-                .Where(x => x.FindIfCanBeAccepted(databaseDateFormat,
-                                                  startingHour,
-                                                  duration))
+                .Where(x => x.FindIfCanBeAccepted(databaseDateFormat, startingHour, duration))
                 .ToList();         
 
             _busDrivers = _busDrivers
@@ -232,8 +215,8 @@ namespace DistributorForms
             {
                 recommendedDriversListview.Items.Add(new ListViewItem(new string[]
                 {
-                                $"{busDriver.Name} {busDriver.Surname}",
-                                (busDriver.GetAvailableWorkingHours(databaseDateFormat)).ToString("#.##")
+                    $"{busDriver.Name} {busDriver.Surname}",
+                    (busDriver.GetAvailableWorkingHours(databaseDateFormat)).ToString("#.##")
                 }));
             }
 
@@ -255,8 +238,8 @@ namespace DistributorForms
 
                 recommendedBusesListview.Items.Add(new ListViewItem(new string[]
                 {
-                                bus.Id.ToString(),
-                                size.ToString()
+                    bus.Id.ToString(),
+                    size.ToString()
                 }));
             }
         }
@@ -274,21 +257,65 @@ namespace DistributorForms
             if (recommendedBusesListview.CheckedItems.Count == 1 &&
                 recommendedDriversListview.CheckedItems.Count == 1)
             {
+                int availableSeats = int.Parse(recommendedBusesListview.Items[recommendedBusesListview.CheckedIndices[0]].SubItems[1].Text);
+
                 Itinerary itinerary = new Itinerary(_distributor.GetMaxItineraryID() + 1,
                                                     DateTime.Parse(_selectedTravelDatetime),
                                                     _busDrivers[recommendedDriversListview.CheckedIndices[0]].Username,
                                                     _busLines[_selectedBusLine],
                                                     _buses.Find(x => x.Id == int.Parse(recommendedBusesListview.Items[recommendedBusesListview.CheckedIndices[0]].SubItems[0].Text)),
                                                     ItineraryStatus.NoDelayed,
-                                                    int.Parse(recommendedBusesListview.Items[recommendedBusesListview.CheckedIndices[0]].SubItems[1].Text));
+                                                    availableSeats);
 
                 _distributor.InsertItineraryInDatabase(itinerary);
 
                 var client = _distributor.GetClient(_requests[_selectedRequestIndex].ClientUsername);
-                Ticket ticket = new Ticket(itinerary, false, false, _requests[_selectedRequestIndex].ClientUsername);
+
+                Ticket ticket = new Ticket(itinerary, 
+                                           false, 
+                                           false, 
+                                           _requests[_selectedRequestIndex].ClientUsername);
+
                 client.AddToCollection(ticket);
                 client.AutomaticTicketPurchase(_distributor.GetMaxItineraryID());
-                client.InsertTransactionToDatabase(_distributor.GetClientsLastTicketID(client.Username), client.GetTicketPrice());
+                client.InsertTransactionToDatabase(_distributor.GetClientsLastTicketID(client.Username), 
+                                                   client.GetTicketPrice());
+                client.DeleteLastMinuteTravelRequest(_requests[_selectedRequestIndex]);
+                _requests.RemoveAt(_selectedRequestIndex);
+                int counter = 1;
+
+                var requests = _requests
+                    .Select(x => x)
+                    .Where(x => x.TravelBusLine == _selectedBusLine && x.TravelDatetime == DateTime.Parse(_selectedTravelDatetime))
+                    .Take(--availableSeats)
+                    .ToList();
+
+                foreach (var request in requests)
+                {
+                    client = _distributor.GetClient(request.ClientUsername);
+
+                    ticket = new Ticket(itinerary, 
+                                        false, 
+                                        false, 
+                                        request.ClientUsername);
+
+                    client.AddToCollection(ticket);
+                    client.AutomaticTicketPurchase(_distributor.GetMaxItineraryID());
+                    client.InsertTransactionToDatabase(_distributor.GetClientsLastTicketID(client.Username), 
+                                                       client.GetTicketPrice());
+                    client.DeleteLastMinuteTravelRequest(request);
+                    _requests.Remove(request);
+                    counter++;
+                }
+
+                recommendedBusesListview.Items.Clear();
+                recommendedDriversListview.Items.Clear();
+                DisplayLastMinuteTravelRequests();
+
+                MessageBox.Show($"Επιτυχής καταχώρηση δρομολογιού και εξυπηρέτηση {counter} αιτήσεων καθυστερημένης εξυπηρέτησης.",
+                                "Επιτυχία",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Information);
             }
             else
             {
