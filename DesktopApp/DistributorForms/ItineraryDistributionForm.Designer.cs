@@ -110,6 +110,7 @@ namespace DistributorForms
             this.busLineNumberCombobox.Name = "busLineNumberCombobox";
             this.busLineNumberCombobox.Size = new System.Drawing.Size(154, 33);
             this.busLineNumberCombobox.TabIndex = 3;
+            this.busLineNumberCombobox.SelectedIndexChanged += new System.EventHandler(this.BusLineNumberCombobox_SelectedIndexChanged);
             this.busLineNumberCombobox.SelectedValueChanged += new System.EventHandler(this.BusLineNumberCombobox_SelectedValueChanged);
             // 
             // availableStartingHoursLabel
@@ -164,12 +165,12 @@ namespace DistributorForms
             // columnHeader4
             // 
             this.columnHeader4.Text = "Όνομα οδηγού";
-            this.columnHeader4.Width = 250;
+            this.columnHeader4.Width = 220;
             // 
             // columnHeader5
             // 
-            this.columnHeader5.Text = "Ώρες εργασίας";
-            this.columnHeader5.Width = 150;
+            this.columnHeader5.Text = "Διαθέσιμα λεπτά εργασίας";
+            this.columnHeader5.Width = 230;
             // 
             // recommendedBusesListview
             // 
@@ -201,9 +202,9 @@ namespace DistributorForms
             this.sizeLabel.AutoSize = true;
             this.sizeLabel.Location = new System.Drawing.Point(17, 633);
             this.sizeLabel.Name = "sizeLabel";
-            this.sizeLabel.Size = new System.Drawing.Size(193, 25);
+            this.sizeLabel.Size = new System.Drawing.Size(189, 25);
             this.sizeLabel.TabIndex = 11;
-            this.sizeLabel.Text = "Μέγεθος λεωφορείου:";
+            this.sizeLabel.Text = "Μέγεθος λεωφορείου";
             // 
             // sizeCombobox
             // 
@@ -250,7 +251,7 @@ namespace DistributorForms
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.ClientSize = new System.Drawing.Size(969, 1018);
+            this.ClientSize = new System.Drawing.Size(957, 1006);
             this.ControlBox = false;
             this.Controls.Add(this.panel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;

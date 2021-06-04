@@ -79,7 +79,7 @@ namespace Project.ClientForms
                 busDriver.IncreaseComplaintCounter();
                 busDriver.UpdateComplaintCounter();
 
-                if (busDriver.HasExceededTolaratedComplaints())
+                if (busDriver.HasExceededToleratedComplaints())
                 {
                     complaint.SetAsChecked();
                     DismissalPetition petition = new DismissalPetition(busDriver.Username);

@@ -88,15 +88,6 @@ namespace DistributorForms
                 recommendedBusesListview.Items.Clear();
                 recommendedDriversListview.Items.Clear();
 
-                //if (_distributor.CheckDuplicateItinerary(busLineNumberCombobox.SelectedItem.ToString(),
-                //    $"{dateTimePicker.Value.ToString("yyyy-MM-dd")} {availableStartingHoursCombobox.SelectedItem}:00"))
-                //{
-                //    MessageBox.Show("Υπάρχει ήδη το συγκεκριμένο δρομολόγιο.",
-                //                    "Σφάλμα",
-                //                    MessageBoxButtons.OK,
-                //                    MessageBoxIcon.Error);
-                //    return;
-                //}
 
                 _busLineIndex = busLineNumberCombobox.SelectedIndex;
 
@@ -132,7 +123,7 @@ namespace DistributorForms
                                 x.IsAvailableOnHour(dateTimePicker.Value.ToString("yyyy-MM-dd"), 
                                                     availableStartingHoursCombobox.SelectedItem.ToString(),
                                                     duration) &&
-                                !x.IsLeadToOverWorking(duration))
+                                !x.IsLedToOverWorking(duration, dateTimePicker.Value.ToString("yyyy-MM-dd")))
                     .ToList();
 
                 var buses = _distributor.GetBuses();
@@ -181,13 +172,13 @@ namespace DistributorForms
                                                  MessageBoxIcon.Question);
                     if (result == DialogResult.Yes)
                     {
-                        _busDrivers = recBusDrivers.OrderBy(x => x.AvailableWorkingHours).ToList();
+                        _busDrivers = recBusDrivers.OrderBy(x => x.GetAvailableWorkingHours(dateTimePicker.Value.ToString("yyyy-MM-dd"))).ToList();
                         foreach (var busDriver in _busDrivers)
                         {
                             recommendedDriversListview.Items.Add(new ListViewItem(new string[]
                             {
                                 $"{busDriver.Name} {busDriver.Surname}",
-                                (busDriver.AvailableWorkingHours / 60m).ToString("#.##")
+                                (busDriver.GetAvailableWorkingHours(dateTimePicker.Value.ToString("yyyy-MM-dd"))).ToString("#.##")
                             }));
                         }
 
@@ -249,13 +240,13 @@ namespace DistributorForms
                         .ToList();
                 }
 
-                _busDrivers = busDrivers.OrderBy(x => x.AvailableWorkingHours).ToList();
+                _busDrivers = busDrivers.OrderByDescending(x => x.GetAvailableWorkingHours(dateTimePicker.Value.ToString("yyyy-MM-dd"))).ToList();
                 foreach (var busDriver in _busDrivers)
                 {
                     recommendedDriversListview.Items.Add(new ListViewItem(new string[]
                     {
                                 $"{busDriver.Name} {busDriver.Surname}",
-                                (busDriver.AvailableWorkingHours / 60m).ToString("#.##")
+                                (busDriver.GetAvailableWorkingHours(dateTimePicker.Value.ToString("yyyy-MM-dd"))).ToString("#.##")
                     }));
                 }
 
@@ -344,7 +335,6 @@ namespace DistributorForms
                                                     size);
 
                 _distributor.InsertItineraryInDatabase(itinerary);
-                _busDrivers[recommendedDriversListview.CheckedIndices[0]].DecreaseAvailableWorkingHours(busLine.Duration);
 
                 int index = GetReservationIndex(targetDatetime);
                 if (index != -1)
@@ -448,6 +438,12 @@ namespace DistributorForms
             }
 
             return dates;
+        }
+
+        private void BusLineNumberCombobox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            recommendedBusesListview.Items.Clear();
+            recommendedDriversListview.Items.Clear();
         }
     }
 }

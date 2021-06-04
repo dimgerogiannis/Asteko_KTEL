@@ -143,7 +143,7 @@ namespace Login
             {
                 using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
                 connection.Open();
-                var statement = @"select name, surname, salary, experience, hireDate, complaintsCounter, availableWorkingHours
+                var statement = @"select name, surname, salary, experience, hireDate, complaintsCounter
                                   from user 
                                   inner join Employee on User.username = Employee.username
                                   inner join BusDriver on User.username = BusDriver.username
@@ -161,8 +161,7 @@ namespace Login
                                      reader.GetDecimal(2),
                                      reader.GetInt32(3),
                                      reader.GetString(4),
-                                     reader.GetInt32(5),
-                                     reader.GetInt32(6));
+                                     reader.GetInt32(5));
             }
             catch (MySqlException)
             {

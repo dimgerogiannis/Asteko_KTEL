@@ -25,10 +25,9 @@ namespace ClassesFolder
                           from Itinerary
                           inner join BusLine on BusLineNumber = number
                           inner join Bus on Itinerary.busID = Bus.busID
-                          where Bus.busID = @busID AND (travelDatetime <= @targetDatetime AND ADDDATE(travelDatetime, INTERVAL duration MINUTE) > @targetDatetime
-                          OR @targetDatetime <= travelDatetime AND ADDDATE(@targetDatetime, INTERVAL @duration MINUTE) <= ADDDATE(travelDatetime, INTERVAL duration MINUTE)
-                          OR travelDatetime <= ADDDATE(@targetDatetime, INTERVAL @duration MINUTE) AND ADDDATE(@targetDatetime, INTERVAL @duration MINUTE) <= ADDDATE(travelDatetime, INTERVAL duration MINUTE)
-                          OR @targetDatetime > travelDatetime AND ADDDATE(@targetDatetime, INTERVAL @duration MINUTE) <= ADDDATE(travelDatetime, INTERVAL duration MINUTE));";
+                          where Bus.busID = @busID AND (travelDatetime >= @targetDatetime and travelDatetime <= ADDDATE(@targetDatetime, INTERVAL @duration MINUTE) or
+                            ADDDATE(travelDatetime, INTERVAL duration MINUTE) >= @targetDatetime and ADDDATE(travelDatetime, INTERVAL duration MINUTE) <= ADDDATE(@targetDatetime, INTERVAL @duration MINUTE) or
+                            travelDatetime <= @targetDatetime and ADDDATE(travelDatetime, INTERVAL duration MINUTE) >= ADDDATE(@targetDatetime, INTERVAL @duration MINUTE));";
 
             var targetDatetime = $"{date} {startingHour}:00";
             var target = $"{date} {startingHour}:00";

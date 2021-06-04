@@ -14,7 +14,6 @@ namespace ClassesFolder
         private int _complaintCounter;
         private List<string> _paidLeaveDates;
         private int _yearlyPaidLeaves = 15;
-        private int _availableWorkingHours;
 
         public int ComplaintCounter => _complaintCounter;
         public List<string> PaidLeaveDates
@@ -22,7 +21,7 @@ namespace ClassesFolder
             get { return _paidLeaveDates; }
             set { _paidLeaveDates = value; }
         }
-        public int AvailableWorkingHours => _availableWorkingHours;
+
 
         public BusDriver(string username,
                          string name,
@@ -31,12 +30,10 @@ namespace ClassesFolder
                          decimal salary,
                          int experience,
                          string hireDate,
-                         int complaintCounter,
-                         int availableWorkingHours) : base(username, name, surname, property, salary, experience, hireDate)
+                         int complaintCounter) : base(username, name, surname, property, salary, experience, hireDate)
         {
             _complaintCounter = complaintCounter;
             _paidLeaveDates = new List<string>();
-            _availableWorkingHours = availableWorkingHours;
 
             GetPaidLeaveDates();
             _yearlyPaidLeaves = 15 - PaidLeaveDates.Count;
@@ -595,7 +592,7 @@ namespace ClassesFolder
             }
         }
 
-        public bool HasExceededTolaratedComplaints()
+        public bool HasExceededToleratedComplaints()
         {
             return _complaintCounter > 9;
         }
@@ -667,13 +664,12 @@ namespace ClassesFolder
                 using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
                 connection.Open();
                 var query = @"select count(*)
-                        from Itinerary
-                        inner join BusDriver on BusDriver.username = Itinerary.busDriverUsername
-                        inner join BusLine on BusLine.number = busLineNumber
-                        where BusDriver.username = @username AND (travelDatetime <= @targetDatetime AND ADDDATE(travelDatetime, INTERVAL duration MINUTE) > @targetDatetime
-OR @targetDatetime <= travelDatetime AND ADDDATE(@targetDatetime, INTERVAL @duration MINUTE) <= ADDDATE(travelDatetime, INTERVAL duration MINUTE)
-OR travelDatetime <= ADDDATE(@targetDatetime, INTERVAL @duration MINUTE) AND ADDDATE(@targetDatetime, INTERVAL @duration MINUTE) <= ADDDATE(travelDatetime, INTERVAL duration MINUTE)
-OR @targetDatetime > travelDatetime AND ADDDATE(@targetDatetime, INTERVAL @duration MINUTE) <= ADDDATE(travelDatetime, INTERVAL duration MINUTE));";
+                            from Itinerary
+                            inner join BusDriver on BusDriver.username = Itinerary.busDriverUsername
+                            inner join BusLine on BusLine.number = busLineNumber
+                            where BusDriver.username = @username and (travelDatetime >= @targetDatetime and travelDatetime <= ADDDATE(@targetDatetime, INTERVAL @duration MINUTE) or
+                            ADDDATE(travelDatetime, INTERVAL duration MINUTE) >= @targetDatetime and ADDDATE(travelDatetime, INTERVAL duration MINUTE) <= ADDDATE(@targetDatetime, INTERVAL @duration MINUTE) or
+                            travelDatetime <= @targetDatetime and ADDDATE(travelDatetime, INTERVAL duration MINUTE) >= ADDDATE(@targetDatetime, INTERVAL @duration MINUTE));";
 
                 var target = $"{date} {startingHour}:00";
                 using var cmd = new MySqlCommand(query, connection);
@@ -697,11 +693,48 @@ OR @targetDatetime > travelDatetime AND ADDDATE(@targetDatetime, INTERVAL @durat
             }
         }
     
-        public bool IsLeadToOverWorking(int duration)
+        public bool IsLedToOverWorking(int duration, string date)
         {
-            return _availableWorkingHours - duration < 0;
+            using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
+            connection.Open();
+            var query = @"select count(*), sum(duration) from itinerary
+                          inner join BusLine on BusLine.number = Itinerary.busLineNumber
+                          where busDriverUsername = @username and Substring(travelDatetime,1,10) = @travelDatetime;";
+
+            using var cmd = new MySqlCommand(query, connection);
+            cmd.Parameters.AddWithValue("@username", _username);
+            cmd.Parameters.AddWithValue("@travelDatetime", date);
+
+            using MySqlDataReader reader = cmd.ExecuteReader();
+            reader.Read();
+
+            if (reader.GetInt32(0) == 0)
+                return false;
+
+            return reader.GetInt32(1) + duration > 300;
         }
    
+        public int GetAvailableWorkingHours(string date)
+        {
+            using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
+            connection.Open();
+            var query = @"select count(*), sum(duration) from itinerary
+                          inner join BusLine on BusLine.number = Itinerary.busLineNumber
+                          where busDriverUsername = @username and Substring(travelDatetime,1,10) = @travelDatetime;";
+
+            using var cmd = new MySqlCommand(query, connection);
+            cmd.Parameters.AddWithValue("@username", _username);
+            cmd.Parameters.AddWithValue("@travelDatetime", date);
+
+            using MySqlDataReader reader = cmd.ExecuteReader();
+            reader.Read();
+
+            if (reader.GetInt32(0) == 0)
+                return 300;
+            else
+                return 300 - reader.GetInt32(1);
+        }
+
         public bool HasItineraryEndTimeAndNoNextItineraryOnSpecificTime(string date, string startingHour, string targetStop)
         {
             try
@@ -804,31 +837,5 @@ OR @targetDatetime > travelDatetime AND ADDDATE(@targetDatetime, INTERVAL @durat
             }
         }
     
-        public void DecreaseAvailableWorkingHours(int duration)
-        {
-            try
-            {
-                _availableWorkingHours -= duration;
-                using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
-                connection.Open();
-                var query = @"update BusDriver
-                          set availableWorkingHours = @availableWorkingHours
-                          where username = @username;";
-
-                using var cmd = new MySqlCommand(query, connection);
-                cmd.Parameters.AddWithValue("@username", _username);
-                cmd.Parameters.AddWithValue("@availableWorkingHours", _availableWorkingHours);
-                cmd.ExecuteNonQuery();
-            }
-            catch (MySqlException)
-            {
-
-                MessageBox.Show("Προκλήθηκε σφάλμα κατά την σύνδεση με τον server. Η εφαρμογή θα τερματιστεί!",
-                                 "Σφάλμα",
-                                 MessageBoxButtons.OK,
-                                 MessageBoxIcon.Error);
-                Application.Exit();
-            }
-        }
     }
 }

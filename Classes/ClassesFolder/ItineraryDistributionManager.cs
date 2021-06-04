@@ -223,7 +223,7 @@ namespace ClassesFolder
 
             using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
             connection.Open();
-            var statement = @"select BusDriver.username, name, surname, salary, experience, hireDate, complaintsCounter, availableWorkingHours
+            var statement = @"select BusDriver.username, name, surname, salary, experience, hireDate, complaintsCounter
                                   from user 
                                   inner join Employee on User.username = Employee.username
                                   inner join BusDriver on User.username = BusDriver.username;";
@@ -240,8 +240,7 @@ namespace ClassesFolder
                                              reader.GetDecimal(3),
                                              reader.GetInt32(4),
                                              reader.GetString(5),
-                                             reader.GetInt32(6),
-                                             reader.GetInt32(7)));
+                                             reader.GetInt32(6)));
             }
 
             return busDrivers;
