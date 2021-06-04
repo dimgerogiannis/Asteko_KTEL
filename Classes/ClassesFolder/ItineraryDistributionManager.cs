@@ -457,15 +457,22 @@ namespace ClassesFolder
         {
             using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
             connection.Open();
-            var statement = @";";
+            var statement = @"select clientUsername, applicationDate, travelDatetime, travelBusLine, status 
+                              from lastminutetravelrequest
+                              where status = @status;";
             using var cmd = new MySqlCommand(statement, connection);
+            cmd.Parameters.AddWithValue("@status", "pending");
             using MySqlDataReader reader = cmd.ExecuteReader();
 
             List<LastMinuteTravelRequest> lastMinuteRequests = new List<LastMinuteTravelRequest>();
 
             while (reader.Read())
             {
-
+                lastMinuteRequests.Add(new LastMinuteTravelRequest(reader.GetString(0),
+                                                                   reader.GetDateTime(1).ToString("dd-MM-yyyy"),
+                                                                   reader.GetDateTime(2),
+                                                                   reader.GetInt32(3),
+                                                                   Status.Pending));
             }
 
             return lastMinuteRequests;

@@ -12,6 +12,7 @@ namespace DistributorForms
     public partial class DelayedServiceForm : Form
     {
         private ItineraryDistributionManager _ditributor;
+        private List<LastMinuteTravelRequest> _requests;
 
         public DelayedServiceForm(ItineraryDistributionManager distributor)
         {
@@ -21,7 +22,7 @@ namespace DistributorForms
 
         private void DelayedServiceForm_Load(object sender, EventArgs e)
         {
-
+            _requests = _ditributor.GetLastMinuteTravelRequests();
         }
     }
 }
