@@ -116,7 +116,6 @@ namespace ClassesFolder
                 Application.Exit();
                 return null;
             }
-
         }
 
         private Bus GetBusData(int busID)
@@ -539,7 +538,6 @@ namespace ClassesFolder
         public void SetAsUnavailable(string date)
         {
             _paidLeaveDates.Add(date);
-
             try
             {
                 using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
@@ -631,18 +629,30 @@ namespace ClassesFolder
 
         public bool HasAssignedItineraryForNextWeek(string startingDate)
         {
-            using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
-            connection.Open();
-            var query = @"select count(*) 
+            try
+            {
+                using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
+                connection.Open();
+                var query = @"select count(*) 
                           from itinerary 
                           where busDriverUsername = @username and travelDatetime >= @startingDate;";
-            using var cmd = new MySqlCommand(query, connection);
-            cmd.Parameters.AddWithValue("@username", _username);
-            cmd.Parameters.AddWithValue("@startingDate", startingDate);
-            using MySqlDataReader reader = cmd.ExecuteReader();
-            reader.Read();
+                using var cmd = new MySqlCommand(query, connection);
+                cmd.Parameters.AddWithValue("@username", _username);
+                cmd.Parameters.AddWithValue("@startingDate", startingDate);
+                using MySqlDataReader reader = cmd.ExecuteReader();
+                reader.Read();
 
-            return reader.GetInt32(0) == 1;
+                return reader.GetInt32(0) == 1;
+            }
+            catch (MySqlException)
+            {
+                MessageBox.Show("Προκλήθηκε σφάλμα κατά την σύνδεση με τον server. Η εφαρμογή θα τερματιστεί!",
+                                 "Σφάλμα",
+                                 MessageBoxButtons.OK,
+                                 MessageBoxIcon.Error);
+                Application.Exit();
+                return false;
+            }
         }
 
         public bool IsOnPaidLeave(string date)
@@ -652,9 +662,11 @@ namespace ClassesFolder
 
         public bool IsAvailableOnHour(string date, string startingHour, int duration)
         {
-            using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
-            connection.Open();
-            var query = @"select count(*)
+            try
+            {
+                using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
+                connection.Open();
+                var query = @"select count(*)
                         from Itinerary
                         inner join BusDriver on BusDriver.username = Itinerary.busDriverUsername
                         inner join BusLine on BusLine.number = busLineNumber
@@ -663,16 +675,26 @@ OR @targetDatetime <= travelDatetime AND ADDDATE(@targetDatetime, INTERVAL @dura
 OR travelDatetime <= ADDDATE(@targetDatetime, INTERVAL @duration MINUTE) AND ADDDATE(@targetDatetime, INTERVAL @duration MINUTE) <= ADDDATE(travelDatetime, INTERVAL duration MINUTE)
 OR @targetDatetime > travelDatetime AND ADDDATE(@targetDatetime, INTERVAL @duration MINUTE) <= ADDDATE(travelDatetime, INTERVAL duration MINUTE));";
 
-            var target = $"{date} {startingHour}:00";
-            using var cmd = new MySqlCommand(query, connection);
-            cmd.Parameters.AddWithValue("@username", _username);
-            cmd.Parameters.AddWithValue("@targetDatetime", target);
-            cmd.Parameters.AddWithValue("@duration", duration);
+                var target = $"{date} {startingHour}:00";
+                using var cmd = new MySqlCommand(query, connection);
+                cmd.Parameters.AddWithValue("@username", _username);
+                cmd.Parameters.AddWithValue("@targetDatetime", target);
+                cmd.Parameters.AddWithValue("@duration", duration);
 
-            using MySqlDataReader reader = cmd.ExecuteReader();
-            reader.Read();
+                using MySqlDataReader reader = cmd.ExecuteReader();
+                reader.Read();
 
-            return reader.GetInt32(0) == 0;
+                return reader.GetInt32(0) == 0;
+            }
+            catch (MySqlException)
+            {
+                MessageBox.Show("Προκλήθηκε σφάλμα κατά την σύνδεση με τον server. Η εφαρμογή θα τερματιστεί!",
+                                 "Σφάλμα",
+                                 MessageBoxButtons.OK,
+                                 MessageBoxIcon.Error);
+                Application.Exit();
+                return false;
+            }
         }
     
         public bool IsLeadToOverWorking(int duration)
@@ -682,29 +704,43 @@ OR @targetDatetime > travelDatetime AND ADDDATE(@targetDatetime, INTERVAL @durat
    
         public bool HasItineraryEndTimeAndNoNextItineraryOnSpecificTime(string date, string startingHour, string targetStop)
         {
-            using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
-            connection.Open();
-            var query = @"select count(*)
+            try
+            {
+                using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
+                connection.Open();
+                var query = @"select count(*)
                           from Itinerary
                           inner join BusLine on BusLine.number = busLineNumber
                           where busDriverUsername = @targetUsername and ADDDATE(travelDatetime, INTERVAL duration MINUTE) = @targetDatetime and (select stopName from Stop where Stop.number = BusLine.number order by id desc limit 1) = @targetStop;";
 
-            var targetDatetime = $"{date} {startingHour}:00";
-            using var cmd = new MySqlCommand(query, connection);
-            cmd.Parameters.AddWithValue("@targetUsername", _username);
-            cmd.Parameters.AddWithValue("@targetDatetime", targetDatetime);
-            cmd.Parameters.AddWithValue("@targetStop", targetStop);
-            using MySqlDataReader reader = cmd.ExecuteReader();
-            reader.Read();
+                var targetDatetime = $"{date} {startingHour}:00";
+                using var cmd = new MySqlCommand(query, connection);
+                cmd.Parameters.AddWithValue("@targetUsername", _username);
+                cmd.Parameters.AddWithValue("@targetDatetime", targetDatetime);
+                cmd.Parameters.AddWithValue("@targetStop", targetStop);
+                using MySqlDataReader reader = cmd.ExecuteReader();
+                reader.Read();
 
-            return reader.GetInt32(0) == 1;
+                return reader.GetInt32(0) == 1;
+            }
+            catch (MySqlException)
+            {
+                MessageBox.Show("Προκλήθηκε σφάλμα κατά την σύνδεση με τον server. Η εφαρμογή θα τερματιστεί!",
+                                 "Σφάλμα",
+                                 MessageBoxButtons.OK,
+                                 MessageBoxIcon.Error);
+                Application.Exit();
+                return false;
+            }
         }
 
         public bool DoesntHaveImmidiatelyItinerary(string date, string startingHour, int duration, string targetStop)
         {
-            using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
-            connection.Open();
-            var query = @"select count(*)
+            try
+            {
+                using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
+                connection.Open();
+                var query = @"select count(*)
                         from Itinerary
                         inner join BusDriver on BusDriver.username = Itinerary.busDriverUsername
                         inner join BusLine on BusLine.number = busLineNumber
@@ -712,53 +748,87 @@ OR @targetDatetime > travelDatetime AND ADDDATE(@targetDatetime, INTERVAL @durat
                         (TIMEDIFF(travelDatetime, ADDDATE(@targetDatetime, INTERVAL @duration MINUTE)) > '00:00:00' AND TIMEDIFF(travelDatetime, ADDDATE(@targetDatetime, INTERVAL @duration MINUTE)) < '00:30:00'
                         AND (select stopName from Stop where Stop.number = BusLine.number order by Stop.id asc limit 1) != @targetStop);";
 
-            var targetDatetime = $"{date} {startingHour}:00";
-            using var cmd = new MySqlCommand(query, connection);
-            cmd.Parameters.AddWithValue("@duration", duration);
-            cmd.Parameters.AddWithValue("@targetUsername", _username);
-            cmd.Parameters.AddWithValue("@targetDatetime", targetDatetime);
-            cmd.Parameters.AddWithValue("@targetStop", targetStop);
-            using MySqlDataReader reader = cmd.ExecuteReader();
-            reader.Read();
+                var targetDatetime = $"{date} {startingHour}:00";
+                using var cmd = new MySqlCommand(query, connection);
+                cmd.Parameters.AddWithValue("@duration", duration);
+                cmd.Parameters.AddWithValue("@targetUsername", _username);
+                cmd.Parameters.AddWithValue("@targetDatetime", targetDatetime);
+                cmd.Parameters.AddWithValue("@targetStop", targetStop);
+                using MySqlDataReader reader = cmd.ExecuteReader();
+                reader.Read();
 
-            return reader.GetInt32(0) == 0;
+                return reader.GetInt32(0) == 0;
+            }
+            catch (MySqlException)
+            {
+                MessageBox.Show("Προκλήθηκε σφάλμα κατά την σύνδεση με τον server. Η εφαρμογή θα τερματιστεί!",
+                                 "Σφάλμα",
+                                 MessageBoxButtons.OK,
+                                 MessageBoxIcon.Error);
+                Application.Exit();
+                return false;
+            }
         }
     
         public bool FindIfCanBeAccepted(string date, string startingHour, int duration)
         {
-            using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
-            connection.Open();
-            var query = @"select count(*)
+            try
+            {
+                using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
+                connection.Open();
+                var query = @"select count(*)
                         from Itinerary
                         inner join BusDriver on BusDriver.username = Itinerary.busDriverUsername
                         inner join BusLine on BusLine.number = busLineNumber
                         where BusDriver.username = @targetUsername AND (TIMEDIFF(@targetDatetime, travelDatetime) <= '00:30:00' AND TIMEDIFF(@targetDatetime, travelDatetime) > '00:00:01'
                         OR TIMEDIFF(travelDatetime, ADDDATE(@targetDatetime, INTERVAL @duration MINUTE)) <= '00:30:00' AND TIMEDIFF(travelDatetime, ADDDATE(@targetDatetime, INTERVAL @duration MINUTE)) > '00:00:01');";
 
-            var targetDatetime = $"{date} {startingHour}:00";
-            using var cmd = new MySqlCommand(query, connection);
-            cmd.Parameters.AddWithValue("@duration", duration);
-            cmd.Parameters.AddWithValue("@targetUsername", _username);
-            cmd.Parameters.AddWithValue("@targetDatetime", targetDatetime);
-            using MySqlDataReader reader = cmd.ExecuteReader();
-            reader.Read();
+                var targetDatetime = $"{date} {startingHour}:00";
+                using var cmd = new MySqlCommand(query, connection);
+                cmd.Parameters.AddWithValue("@duration", duration);
+                cmd.Parameters.AddWithValue("@targetUsername", _username);
+                cmd.Parameters.AddWithValue("@targetDatetime", targetDatetime);
+                using MySqlDataReader reader = cmd.ExecuteReader();
+                reader.Read();
 
-            return reader.GetInt32(0) == 0;
+                return reader.GetInt32(0) == 0;
+            }
+            catch (MySqlException)
+            {
+                MessageBox.Show("Προκλήθηκε σφάλμα κατά την σύνδεση με τον server. Η εφαρμογή θα τερματιστεί!",
+                                 "Σφάλμα",
+                                 MessageBoxButtons.OK,
+                                 MessageBoxIcon.Error);
+                Application.Exit();
+                return false;
+            }
         }
     
         public void DecreaseAvailableWorkingHours(int duration)
         {
-            _availableWorkingHours -= duration;
-            using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
-            connection.Open();
-            var query = @"update BusDriver
+            try
+            {
+                _availableWorkingHours -= duration;
+                using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
+                connection.Open();
+                var query = @"update BusDriver
                           set availableWorkingHours = @availableWorkingHours
                           where username = @username;";
 
-            using var cmd = new MySqlCommand(query, connection);
-            cmd.Parameters.AddWithValue("@username", _username);
-            cmd.Parameters.AddWithValue("@availableWorkingHours", _availableWorkingHours);
-            cmd.ExecuteNonQuery();
+                using var cmd = new MySqlCommand(query, connection);
+                cmd.Parameters.AddWithValue("@username", _username);
+                cmd.Parameters.AddWithValue("@availableWorkingHours", _availableWorkingHours);
+                cmd.ExecuteNonQuery();
+            }
+            catch (MySqlException)
+            {
+
+                MessageBox.Show("Προκλήθηκε σφάλμα κατά την σύνδεση με τον server. Η εφαρμογή θα τερματιστεί!",
+                                 "Σφάλμα",
+                                 MessageBoxButtons.OK,
+                                 MessageBoxIcon.Error);
+                Application.Exit();
+            }
         }
     }
 }
