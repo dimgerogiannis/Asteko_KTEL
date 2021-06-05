@@ -115,7 +115,7 @@ namespace Project.ClientForms
                     category,
                     taxIDTextbox.Text,
                     phoneTextbox.Text,
-                    ClassesFolder.Status.Pending,
+                    Status.Pending,
                     files
                 );
 

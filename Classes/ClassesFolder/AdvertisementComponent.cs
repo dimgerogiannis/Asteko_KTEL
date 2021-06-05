@@ -5,7 +5,7 @@ using static ClassesFolder.Enums;
 
 namespace ClassesFolder
 {
-    public class AdvertisementComponent : IAdvertisementComponent
+    public class AdvertisementComponent
     {
         private BusSize _busSize;
         private BusPart _busPart;

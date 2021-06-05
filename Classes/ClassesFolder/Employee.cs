@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ClassesFolder
 {
-    public class Employee : User, IEmployee
+    public class Employee : User
     {
         protected decimal _salary;
         protected int _experience;

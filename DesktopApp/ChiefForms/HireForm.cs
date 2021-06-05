@@ -22,13 +22,13 @@ namespace ChiefForms
 
         private void SubmitButton_Click(object sender, EventArgs e)
         {
-            int salary;
+            decimal salary;
 
             if (usernameTextbox.Text != "" &&
                 passwordTextbox.Text != "" &&
                 nameTextbox.Text != "" &&
                 surnameTextbox.Text != "" &&
-                int.TryParse(salaryTextbox.Text, out salary) &&
+                decimal.TryParse(salaryTextbox.Text, out salary) &&
                 salary > 0 &&
                 experienceCobmobox.SelectedItem != null &&
                 categoryCombobox.SelectedItem != null)
@@ -46,10 +46,10 @@ namespace ChiefForms
                                                     "bus_driver");
 
                         _chief.InsertEmployeeInDatabase(usernameTextbox.Text,
-                                                            salary,
-                                                            int.Parse(experienceCobmobox.SelectedItem.ToString()));
+                                                        salary,
+                                                        int.Parse(experienceCobmobox.SelectedItem.ToString()));
 
-                        _chief.InsertBusDriverInInDatabase(usernameTextbox.Text);
+                        _chief.InsertBusDriverInDatabase(usernameTextbox.Text);
 
                         MessageBox.Show("Επιτυχής καταχώρηση.",
                                         "Επιτυχία",
@@ -91,11 +91,11 @@ namespace ChiefForms
 
                         if (prop == "quality_manager")
                         {
-                            _chief.InsertQualityManagerInInDatabase(usernameTextbox.Text);
+                            _chief.InsertQualityManagerInDatabase(usernameTextbox.Text);
                         }
                         else
                         {
-                            _chief.InsertItineraryDistributionManagerInInDatabase(usernameTextbox.Text);
+                            _chief.InsertItineraryDistributionManagerInDatabase(usernameTextbox.Text);
                         }
 
                         MessageBox.Show("Επιτυχής καταχώρηση.",

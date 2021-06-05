@@ -32,7 +32,7 @@ namespace Project.BusDriverForms
                     itinerary.TravelDatetime.ToString("HH:mm:ss dd-MM-yyyy"),
                     itinerary.ItineraryLine.Number.ToString(),
                     itinerary.ItineraryLine.Duration.ToString(),
-                    itinerary.ResponsibleBus.Id.ToString()
+                    itinerary.ResponsibleBus.ID.ToString()
                 }));
             }
         }

@@ -142,12 +142,12 @@ namespace DistributorForms
 
             var recBusDrivers = _busDrivers
                     .Select(x => x)
-                    .Where(x => x.HasItineraryEndTimeAndNoNextItineraryOnSpecificTime(databaseDateFormat, startingHour, startStop) && x.DoesntHaveImmidiatelyItinerary(databaseDateFormat, startingHour, duration, endStop))
+                    .Where(x => x.IsRecommended(databaseDateFormat, startingHour, startStop, endStop, duration))
                     .ToList();
 
             var recBuses = _buses
                 .Select(x => x)
-                .Where(x => x.HasItineraryEndTimeAndNoNextItineraryOnSpecificTime(databaseDateFormat, startingHour, startStop) && x.DoesntHaveImmidiatelyItinerary(databaseDateFormat, startingHour, duration, endStop))
+                .Where(x => x.IsRecommended(databaseDateFormat, startingHour, startStop, endStop, duration))
                 .ToList();
 
 
@@ -193,7 +193,7 @@ namespace DistributorForms
 
                         recommendedBusesListview.Items.Add(new ListViewItem(new string[]
                         {
-                            bus.Id.ToString(),
+                            bus.ID.ToString(),
                             size.ToString()
                         }));
                     }
@@ -204,7 +204,7 @@ namespace DistributorForms
 
             _busDrivers = _busDrivers
                 .Select(x => x)
-                .Where(x => x.FindIfCanBeAccepted(databaseDateFormat, startingHour, duration))
+                .Where(x => x.MeetsRequirements(databaseDateFormat, startingHour, duration))
                 .ToList();         
 
             _busDrivers = _busDrivers
@@ -238,7 +238,7 @@ namespace DistributorForms
 
                 recommendedBusesListview.Items.Add(new ListViewItem(new string[]
                 {
-                    bus.Id.ToString(),
+                    bus.ID.ToString(),
                     size.ToString()
                 }));
             }
@@ -263,7 +263,7 @@ namespace DistributorForms
                                                     DateTime.Parse(_selectedTravelDatetime),
                                                     _busDrivers[recommendedDriversListview.CheckedIndices[0]].Username,
                                                     _busLines[_selectedBusLine],
-                                                    _buses.Find(x => x.Id == int.Parse(recommendedBusesListview.Items[recommendedBusesListview.CheckedIndices[0]].SubItems[0].Text)),
+                                                    _buses.Find(x => x.ID == int.Parse(recommendedBusesListview.Items[recommendedBusesListview.CheckedIndices[0]].SubItems[0].Text)),
                                                     ItineraryStatus.NoDelayed,
                                                     availableSeats);
 

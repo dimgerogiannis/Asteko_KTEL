@@ -18,14 +18,14 @@ namespace ClassesFolder
         public int Duration => _duration;
         public List<string> Stops => _stops;
 
-        public BusLine(int number, 
-                       int duration, 
+        public BusLine(int number,
+                       int duration,
                        List<string> stops)
-                    {
-                        _number = number;
-                        _duration = duration;
-                        _stops = stops;
-                    }
+        {
+            _number = number;
+            _duration = duration;
+            _stops = stops;
+        }
 
         public void InsertBusLineInDatabase()
         {
@@ -75,10 +75,10 @@ namespace ClassesFolder
                 Application.Exit();
             }
         }
-    
+
         public void UpdateStops(List<string> stops)
         {
-            var oldStops = _stops.ToList();           
+            var oldStops = _stops.ToList();
             _stops = stops;
 
             foreach (var oldStop in oldStops)
@@ -88,11 +88,11 @@ namespace ClassesFolder
 
             foreach (var stop in _stops)
             {
-                InsertNewStopsInDatabase(stop);
+                InsertNewStopInDatabase(stop);
             }
         }
-        
-        private void InsertNewStopsInDatabase(string stop)
+
+        private void InsertNewStopInDatabase(string stop)
         {
             try
             {

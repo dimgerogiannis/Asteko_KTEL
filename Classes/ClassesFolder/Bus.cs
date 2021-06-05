@@ -8,7 +8,7 @@ namespace ClassesFolder
         private int _id;
         private BusSize _size;
 
-        public int Id => _id;
+        public int ID => _id;
         public BusSize Size => _size;
 
         public Bus(int id, BusSize size)
@@ -41,7 +41,7 @@ namespace ClassesFolder
             return reader.GetInt32(0) == 0;
         }
 
-        public bool HasItineraryEndTimeAndNoNextItineraryOnSpecificTime(string date, string startingHour, string targetStop)
+        public bool HasItineraryOnEndTimeAndNoNextItineraryOnSpecificTime(string date, string startingHour, string targetStop)
         {
             using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
             connection.Open();
@@ -62,7 +62,7 @@ namespace ClassesFolder
             return reader.GetInt32(0) == 1;
         }
 
-        public bool DoesntHaveImmidiatelyItinerary(string date, string startingHour, int duration, string targetStop)
+        public bool DoesntHaveItineraryOnWantedTimeInterval(string date, string startingHour, int duration, string targetStop)
         {
             using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
             connection.Open();
@@ -86,7 +86,7 @@ namespace ClassesFolder
             return reader.GetInt32(0) == 0;
         }
 
-        public bool FindIfCanBeAccepted(string date, string startingHour, int duration)
+        public bool MeetsRequirements(string date, string startingHour, int duration)
         {
             using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
             connection.Open();
@@ -107,6 +107,19 @@ namespace ClassesFolder
             reader.Read();
 
             return reader.GetInt32(0) == 0;
+        }
+
+        public bool IsRecommended(string date, string startingHour, string startStop, string endStop, int duration)
+        {
+            if (HasItineraryOnEndTimeAndNoNextItineraryOnSpecificTime(date, startingHour, startStop) &&
+                DoesntHaveItineraryOnWantedTimeInterval(date, startingHour, duration, endStop))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }

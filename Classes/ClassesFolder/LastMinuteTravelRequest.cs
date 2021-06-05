@@ -3,15 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static ClassesFolder.Enums;
 
 namespace ClassesFolder
 {
-    public enum Status
-    {
-        Pending,
-        Accepted,
-        Rejected
-    };
 
     public class LastMinuteTravelRequest
     {

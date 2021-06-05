@@ -12,12 +12,12 @@ namespace ClassesFolder
         private bool _isResponsibleForWeek;
         public bool IsResponsibleForWeek => _isResponsibleForWeek;
 
-        public ItineraryDistributionManager(string username, 
-                                            string name, 
-                                            string surname, 
-                                            string property, 
-                                            decimal salary, 
-                                            int experience, 
+        public ItineraryDistributionManager(string username,
+                                            string name,
+                                            string surname,
+                                            string property,
+                                            decimal salary,
+                                            int experience,
                                             string hireDate,
                                             bool isResponsibleForWeek) : base(username, name, surname, property, salary, experience, hireDate)
         {
@@ -56,7 +56,7 @@ namespace ClassesFolder
                 return null;
             }
         }
-    
+
         public void DeleteFeedback(Feedback feedback)
         {
             try
@@ -78,7 +78,7 @@ namespace ClassesFolder
                 Application.Exit();
             }
         }
-    
+
         public List<BusLine> GetBusLines()
         {
             try
@@ -147,7 +147,7 @@ namespace ClassesFolder
                 return null;
             }
         }
-    
+
         public List<Reservation> GetReservations()
         {
             try
@@ -180,7 +180,7 @@ namespace ClassesFolder
                 return null;
             }
         }
-    
+
         public bool CheckDuplicateBusLineNumber(int number)
         {
             try
@@ -211,7 +211,7 @@ namespace ClassesFolder
                 return false;
             }
         }
-    
+
         public List<BusDriver> GetBusDrivers()
         {
             try
@@ -252,7 +252,7 @@ namespace ClassesFolder
                 return null;
             }
         }
-    
+
         public List<Bus> GetBuses()
         {
             try
@@ -296,7 +296,7 @@ namespace ClassesFolder
                 return null;
             }
         }
-    
+
         public void InsertItineraryInDatabase(Itinerary itinerary)
         {
             try
@@ -314,7 +314,7 @@ namespace ClassesFolder
                 cmd.Parameters.AddWithValue("@distributorUsername", _username);
                 cmd.Parameters.AddWithValue("@busDriverUsername", itinerary.ResponsibleDriver);
                 cmd.Parameters.AddWithValue("@busLineNumber", itinerary.ItineraryLine.Number);
-                cmd.Parameters.AddWithValue("@busID", itinerary.ResponsibleBus.Id);
+                cmd.Parameters.AddWithValue("@busID", itinerary.ResponsibleBus.ID);
                 cmd.ExecuteNonQuery();
             }
             catch (MySqlException)
@@ -327,34 +327,6 @@ namespace ClassesFolder
             }
         }
 
-        public bool CheckDuplicateItinerary(string busLineNumber, string travelDatetime)
-        {
-            try
-            {
-                using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
-                connection.Open();
-                var statement = @"select count(*)
-                              from itinerary where busLineNumber = @busLineNumber and travelDatetime = @travelDatetime;";
-
-                using var cmd = new MySqlCommand(statement, connection);
-                cmd.Parameters.AddWithValue("@busLineNumber", busLineNumber);
-                cmd.Parameters.AddWithValue("@travelDatetime", travelDatetime);
-                using MySqlDataReader reader = cmd.ExecuteReader();
-                reader.Read();
-
-                return reader.GetInt32(0) == 1;
-            }
-            catch (MySqlException)
-            {
-                MessageBox.Show("Προκλήθηκε σφάλμα κατά την σύνδεση με τον server. Η εφαρμογή θα τερματιστεί!",
-                                 "Σφάλμα",
-                                 MessageBoxButtons.OK,
-                                 MessageBoxIcon.Error);
-                Application.Exit();
-                return false;
-            }
-        }
-    
         public Client GetClient(string username)
         {
             try
@@ -457,7 +429,7 @@ namespace ClassesFolder
                 using MySqlDataReader reader = cmd.ExecuteReader();
 
                 reader.Read();
-                return reader.GetInt32(0);       
+                return reader.GetInt32(0);
             }
             catch (MySqlException)
             {
@@ -469,7 +441,7 @@ namespace ClassesFolder
                 return -1;
             }
         }
-    
+
         public void DeleteReservation(Reservation reservation)
         {
             try
@@ -493,7 +465,7 @@ namespace ClassesFolder
                 Application.Exit();
             }
         }
-    
+
         public List<LastMinuteTravelRequest> GetLastMinuteTravelRequests()
         {
             try

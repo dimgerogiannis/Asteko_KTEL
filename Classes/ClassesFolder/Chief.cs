@@ -7,7 +7,7 @@ using static ClassesFolder.Enums;
 
 namespace ClassesFolder
 {
-    public class Chief : Employee, IChief
+    public class Chief : Employee
     {
         public Chief(string username,
                      string name,
@@ -160,7 +160,7 @@ namespace ClassesFolder
             }
         }
 
-        public void InsertEmployeeInDatabase(string username, int salary, int experience)
+        public void InsertEmployeeInDatabase(string username, decimal salary, int experience)
         {
             try
             {
@@ -183,7 +183,7 @@ namespace ClassesFolder
             }
         }
 
-        public void InsertBusDriverInInDatabase(string username)
+        public void InsertBusDriverInDatabase(string username)
         {
             try
             {
@@ -206,7 +206,7 @@ namespace ClassesFolder
             }
         }
 
-        public void InsertQualityManagerInInDatabase(string username)
+        public void InsertQualityManagerInDatabase(string username)
         {
             try
             {
@@ -227,7 +227,7 @@ namespace ClassesFolder
             }
         }
 
-        public void InsertItineraryDistributionManagerInInDatabase(string username)
+        public void InsertItineraryDistributionManagerInDatabase(string username)
         {
             try
             {

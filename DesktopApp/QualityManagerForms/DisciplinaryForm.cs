@@ -30,7 +30,7 @@ namespace QualityManagerForms
         {
             if (disciplinaryCommentRichTextbox.Text != "")
             {
-                _qualityManager.InsertDisciplinaryComplaintInDatabase(new DisciplinaryComplaint(_complaint.TargetUsername,
+                _qualityManager.InsertDisciplinaryCommentInDatabase(new DisciplinaryComment(_complaint.TargetUsername,
                                                                                                 disciplinaryCommentRichTextbox.Text,
                                                                                                 DateTime.Now));
                 _complaint.SetAsChecked();

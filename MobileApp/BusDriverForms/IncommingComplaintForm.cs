@@ -14,7 +14,7 @@ namespace Project.BusDriverForms
     public partial class IncommingComplaintForm : Form
     {
         private BusDriver _busDriver;
-        private List<DisciplinaryComplaint> _complaints;
+        private List<DisciplinaryComment> _complaints;
 
         public IncommingComplaintForm(BusDriver busDriver)
         {

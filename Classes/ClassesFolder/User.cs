@@ -1,6 +1,6 @@
 ﻿namespace ClassesFolder
 {
-    public class User : IUser
+    public class User
     {
         protected string _username;
         protected string _name;

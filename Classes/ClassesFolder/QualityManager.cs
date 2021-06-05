@@ -10,12 +10,12 @@ namespace ClassesFolder
     public class QualityManager : Employee
     {
 
-        public QualityManager(string username, 
-                              string name, 
-                              string surname, 
-                              string property, 
-                              decimal salary, 
-                              int experience, 
+        public QualityManager(string username,
+                              string name,
+                              string surname,
+                              string property,
+                              decimal salary,
+                              int experience,
                               string hireDate) : base(username, name, surname, property, salary, experience, hireDate)
         {
 
@@ -143,7 +143,7 @@ namespace ClassesFolder
                 return "";
             }
         }
-    
+
         public Client GetClient(string username)
         {
             try
@@ -174,7 +174,7 @@ namespace ClassesFolder
                 return null;
             }
         }
-    
+
         public Dictionary<string, List<SanitaryComplaint>> GetSanitaryComplaints()
         {
             try
@@ -223,7 +223,7 @@ namespace ClassesFolder
                 return null;
             }
         }
-    
+
         public Dictionary<string, List<ClientComplaint>> GetUnckeckedClientComplaints()
         {
             try
@@ -279,8 +279,8 @@ namespace ClassesFolder
                 return null;
             }
         }
-    
-        public void InsertDisciplinaryComplaintInDatabase(DisciplinaryComplaint complaint)
+
+        public void InsertDisciplinaryCommentInDatabase(DisciplinaryComment complaint)
         {
             try
             {
@@ -289,7 +289,7 @@ namespace ClassesFolder
                 var query = @"insert into DisciplinaryComplaint (targetUsername, submittedDatetime, comment, qualityManagerUsername) values
 	                      (@targetUsername, @submittedDatetime, @comment, @qualityManagerUsername);";
                 using var cmd = new MySqlCommand(query, connection);
-                cmd.Parameters.AddWithValue("@targetUsername", complaint.TargetUsername);
+                cmd.Parameters.AddWithValue("@targetUsername", complaint.Target);
                 cmd.Parameters.AddWithValue("@submittedDatetime", complaint.Datetime.ToString("yyyy-MM-dd HH:mm:ss"));
                 cmd.Parameters.AddWithValue("@comment", complaint.Summary);
                 cmd.Parameters.AddWithValue("@qualityManagerUsername", _username);
@@ -304,7 +304,7 @@ namespace ClassesFolder
                 Application.Exit();
             }
         }
-    
+
         public List<Poll> GetPolls()
         {
             try
@@ -378,7 +378,7 @@ namespace ClassesFolder
                 return null;
             }
         }
-    
+
         public void InsertPollInDatabase(Poll poll)
         {
             try
@@ -431,7 +431,7 @@ namespace ClassesFolder
                 Application.Exit();
             }
         }
-    
+
         public void InsertFeedbackInDatabase(Feedback feedback)
         {
             try

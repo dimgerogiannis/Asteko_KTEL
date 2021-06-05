@@ -393,7 +393,7 @@ namespace ClassesFolder
             }
         }
 
-        public List<DisciplinaryComplaint> GetDisciplinaryComplaints()
+        public List<DisciplinaryComment> GetDisciplinaryComplaints()
         {
             try
             {
@@ -406,11 +406,11 @@ namespace ClassesFolder
                 cmd.Parameters.AddWithValue("@busDriverUsername", _username);
                 using MySqlDataReader reader = cmd.ExecuteReader();
 
-                List<DisciplinaryComplaint> complaints = new List<DisciplinaryComplaint>();
+                List<DisciplinaryComment> complaints = new List<DisciplinaryComment>();
 
                 while (reader.Read())
                 {
-                    complaints.Add(new DisciplinaryComplaint(_username, reader.GetString(1), reader.GetDateTime(0)));
+                    complaints.Add(new DisciplinaryComment(_username, reader.GetString(1), reader.GetDateTime(0)));
                 }
 
                 return complaints;
@@ -778,7 +778,7 @@ namespace ClassesFolder
             }
         }
 
-        public bool DoesntHaveImmidiatelyItinerary(string date, string startingHour, int duration, string targetStop)
+        public bool DoesntHaveItineraryOnWantedTimeInterval(string date, string startingHour, int duration, string targetStop)
         {
             try
             {
@@ -814,7 +814,7 @@ namespace ClassesFolder
             }
         }
     
-        public bool FindIfCanBeAccepted(string date, string startingHour, int duration)
+        public bool MeetsRequirements(string date, string startingHour, int duration)
         {
             try
             {
@@ -846,6 +846,19 @@ namespace ClassesFolder
                 Application.Exit();
                 return false;
             }
-        }   
+        }
+
+        public bool IsRecommended(string date, string startingHour, string startStop, string endStop, int duration)
+        {
+            if (HasItineraryEndTimeAndNoNextItineraryOnSpecificTime(date, startingHour, startStop) &&
+                DoesntHaveItineraryOnWantedTimeInterval(date, startingHour, duration, endStop))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }
