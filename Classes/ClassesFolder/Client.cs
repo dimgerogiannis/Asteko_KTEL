@@ -12,11 +12,6 @@ namespace ClassesFolder
 {
     public class Client : User
     {
-        public string Username => _username;
-        public string Name => _name;
-        public string Surname => _surname;
-        public string Property => _property;
-
         private decimal _balance;
         private bool _montlyCard;
         private int _discount;
@@ -66,11 +61,6 @@ namespace ClassesFolder
             GetAvailablePolls();
             GetReservations();
             _ticketList = new List<Ticket>();
-        }
-
-        public string GetFullName()
-        {
-            return $"{_name} {_surname}";
         }
 
         public void GetInformation()

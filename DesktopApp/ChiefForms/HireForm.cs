@@ -45,7 +45,7 @@ namespace ChiefForms
                                                     surnameTextbox.Text,
                                                     "bus_driver");
 
-                        _chief.InsertEmployeeInInDatabase(usernameTextbox.Text,
+                        _chief.InsertEmployeeInDatabase(usernameTextbox.Text,
                                                             salary,
                                                             int.Parse(experienceCobmobox.SelectedItem.ToString()));
 
@@ -85,7 +85,7 @@ namespace ChiefForms
                                                     surnameTextbox.Text,
                                                     prop);
 
-                        _chief.InsertEmployeeInInDatabase(usernameTextbox.Text,
+                        _chief.InsertEmployeeInDatabase(usernameTextbox.Text,
                                                           salary,
                                                           int.Parse(experienceCobmobox.SelectedItem.ToString()));
 

@@ -21,11 +21,6 @@ namespace ClassesFolder
 
         }
 
-        public string GetFullName()
-        {
-            return $"{_name} {_surname}";
-        }
-
         public List<DiscountApplication> GetUncheckedDiscountApplications()
         {
             try

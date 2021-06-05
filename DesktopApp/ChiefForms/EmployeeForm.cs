@@ -24,7 +24,7 @@ namespace ChiefForms
             var prop = "";
             foreach (var employee in _chief.GetEmployees())
             {
-                switch (employee.Property)
+                switch (employee.Specialization)
                 {
                     case "bus_driver":
                         prop = "Οδηγώς λεωφορείων";

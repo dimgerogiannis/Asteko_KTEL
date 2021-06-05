@@ -7,7 +7,7 @@ using static ClassesFolder.Enums;
 
 namespace ClassesFolder
 {
-    public class Chief : Employee
+    public class Chief : Employee, IChief
     {
         public Chief(string username,
                      string name,
@@ -18,11 +18,6 @@ namespace ClassesFolder
                      string hireDate) : base(username, name, surname, property, salary, experience, hireDate)
         {
 
-        }
-
-        public string GetFullName()
-        {
-            return $"{_name} {_surname}";
         }
 
         public void SetNewTicketPrice(decimal value)
@@ -139,7 +134,7 @@ namespace ClassesFolder
                 return false;
             }
         }
-    
+
         public void InsertUserInDatabase(string username, string password, string name, string surname, string prop)
         {
             try
@@ -165,7 +160,7 @@ namespace ClassesFolder
             }
         }
 
-        public void InsertEmployeeInInDatabase(string username, int salary, int experience)
+        public void InsertEmployeeInDatabase(string username, int salary, int experience)
         {
             try
             {
@@ -253,7 +248,7 @@ namespace ClassesFolder
                 Application.Exit();
             }
         }
-    
+
         public List<Employee> GetEmployees()
         {
             try
@@ -291,7 +286,7 @@ namespace ClassesFolder
                 return null;
             }
         }
-    
+
         public List<ItineraryDistributionManager> GetDistributionManagers()
         {
             try
@@ -331,7 +326,7 @@ namespace ClassesFolder
                 return null;
             }
         }
-    
+
         public void ChangeDistributionManagerState(ItineraryDistributionManager distributor, bool state)
         {
             try
@@ -355,7 +350,7 @@ namespace ClassesFolder
                 Application.Exit();
             }
         }
-    
+
         public List<PaidLeaveApplication> GetUncheckedPaidLeaveApplications()
         {
             try
@@ -393,7 +388,7 @@ namespace ClassesFolder
                 return null;
             }
         }
-        
+
         public List<Transaction> GetTransactions(string startDate, string endDate)
         {
             try
@@ -427,7 +422,7 @@ namespace ClassesFolder
                 return null;
             }
         }
-    
+
         public List<DismissalPetition> GetDismissalPetitions()
         {
             try
@@ -459,7 +454,7 @@ namespace ClassesFolder
                 return null;
             }
         }
-    
+
         public void DeleteClientComplaints(List<ClientComplaint> complaints)
         {
             foreach (var complaint in complaints)
@@ -467,7 +462,7 @@ namespace ClassesFolder
                 complaint.DeleteClientComplaint();
             }
         }
-    
+
         public List<PaidLeaveApplication> GetPaidLeaveApplications(string username)
         {
             try
@@ -513,7 +508,7 @@ namespace ClassesFolder
                 application.DeletePaidLeaveApplication();
             }
         }
-    
+
         public void DeletePaidLeaveDates(string username)
         {
             try
@@ -536,7 +531,7 @@ namespace ClassesFolder
                 Application.Exit();
             }
         }
-    
+
         public void DeleteEmployee(string username)
         {
             try
@@ -642,7 +637,7 @@ namespace ClassesFolder
                 return null;
             }
         }
-    
+
         public string GetUserFullNameFromDatabase(string username)
         {
             try

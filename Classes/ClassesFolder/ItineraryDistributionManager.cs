@@ -24,11 +24,6 @@ namespace ClassesFolder
             _isResponsibleForWeek = isResponsibleForWeek;
         }
 
-        public string GetFullName()
-        {
-            return $"{_name} {_surname}";
-        }
-
         public List<Feedback> GetFeedbacks()
         {
             try
