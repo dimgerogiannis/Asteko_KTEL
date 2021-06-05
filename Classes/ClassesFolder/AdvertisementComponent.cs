@@ -15,7 +15,9 @@ namespace ClassesFolder
         public BusPart BusPart => _busPart;
         public int BusCount => _busCount;
 
-        public AdvertisementComponent(BusSize busSize, BusPart busPart, int BusCount)
+        public AdvertisementComponent(BusSize busSize,
+                                      BusPart busPart, 
+                                      int BusCount)
         {
             _busSize = busSize;
             _busPart = busPart;

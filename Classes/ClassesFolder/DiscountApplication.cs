@@ -34,17 +34,24 @@ namespace ClassesFolder
 #nullable enable
         public List<File>? Files => _files;
 
-        public DiscountApplication(string applicantUsername, DateTime? applicationDatetime, string? possibleRejectionReason ,Category category, string taxIdentificationNumber, string phoneNumber, Status status, List<File>? files)
-        {
-            _applicantUsername = applicantUsername;
-            _applicationDatetime = applicationDatetime;
-            _possibleRejectionReason = possibleRejectionReason;
-            _category = category;
-            _taxIdentificationNumber = taxIdentificationNumber;
-            _phoneNumber = phoneNumber;
-            _status = status;
-            _files = files;
-        }
+        public DiscountApplication(string applicantUsername, 
+                                   DateTime? applicationDatetime, 
+                                   string? possibleRejectionReason , 
+                                   Category category, 
+                                   string taxIdentificationNumber, 
+                                   string phoneNumber, 
+                                   Status status, 
+                                   List<File>? files)
+                                {
+                                    _applicantUsername = applicantUsername;
+                                    _applicationDatetime = applicationDatetime;
+                                    _possibleRejectionReason = possibleRejectionReason;
+                                    _category = category;
+                                    _taxIdentificationNumber = taxIdentificationNumber;
+                                    _phoneNumber = phoneNumber;
+                                    _status = status;
+                                    _files = files;
+                                }
 
         public void SetAsAccepted()
         {

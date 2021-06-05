@@ -18,12 +18,14 @@ namespace ClassesFolder
         public int Duration => _duration;
         public List<string> Stops => _stops;
 
-        public BusLine(int number, int duration, List<string> stops)
-        {
-            _number = number;
-            _duration = duration;
-            _stops = stops;
-        }
+        public BusLine(int number, 
+                       int duration, 
+                       List<string> stops)
+                    {
+                        _number = number;
+                        _duration = duration;
+                        _stops = stops;
+                    }
 
         public void InsertBusLineInDatabase()
         {

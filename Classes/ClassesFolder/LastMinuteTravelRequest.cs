@@ -27,7 +27,11 @@ namespace ClassesFolder
         public int TravelBusLine => _travelBusLine;
         public Status Status => _status;
 
-        public LastMinuteTravelRequest(string clientUsername, string applicationDate, DateTime travelDatetime, int travelBusLine, Status status)
+        public LastMinuteTravelRequest(string clientUsername, 
+                                       string applicationDate, 
+                                       DateTime travelDatetime, 
+                                       int travelBusLine, 
+                                       Status status)
         {
             _clientUsername = clientUsername;
             _applicationDate = applicationDate;

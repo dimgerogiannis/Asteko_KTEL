@@ -7,7 +7,10 @@
         protected string _surname;
         protected string _property;
 
-        public User(string username, string name, string surname, string property)
+        public User(string username, 
+                    string name, 
+                    string surname, 
+                    string property)
         {
             _username = username;
             _name = name;

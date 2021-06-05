@@ -18,7 +18,10 @@ namespace ClassesFolder
         public SanitaryComplaintCategory Category => _category;
         public string BusDriverUsername => _busDriverUsername;
 
-        public SanitaryComplaint(string targetUsername, string summary, SanitaryComplaintCategory category, string busDriverUsername) : base(targetUsername, summary)
+        public SanitaryComplaint(string targetUsername, 
+                                 string summary, 
+                                 SanitaryComplaintCategory category, 
+                                 string busDriverUsername) : base(targetUsername, summary)
         {
             _category = category;
             _busDriverUsername = busDriverUsername;

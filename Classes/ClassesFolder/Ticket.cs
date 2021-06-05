@@ -28,7 +28,10 @@ namespace ClassesFolder
         }
         public string ClientUsername => _clientUsername;
 
-        public Ticket(Itinerary correspondingItinerary, bool delayedItinerary, bool used, string clientUsername)
+        public Ticket(Itinerary correspondingItinerary, 
+                      bool delayedItinerary, 
+                      bool used, 
+                      string clientUsername)
         {
             _correspondingItinerary = correspondingItinerary;
             _delayedItinerary = delayedItinerary;

@@ -25,10 +25,10 @@ namespace ClassesFolder
         public bool Expired => _expired;
 
         public Poll(string title, 
-            DateTime startingDate, 
-            DateTime endingDate,
-            string question,
-            bool expired)
+                    DateTime startingDate, 
+                    DateTime endingDate,
+                    string question,
+                    bool expired)
         {
             _title = title;
             _startingDate = startingDate;

@@ -13,7 +13,9 @@ namespace ClassesFolder
         public Ticket? Ticket => _ticket;
         public DateTime PurchaseDatetime => _purchaseDatetime;
 
-        public Transaction(decimal price, Ticket? ticket, DateTime purchaseDatetime)
+        public Transaction(decimal price, 
+                           Ticket? ticket, 
+                           DateTime purchaseDatetime)
         {
             _price = price;
             _ticket = ticket;

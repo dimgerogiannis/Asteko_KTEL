@@ -15,7 +15,9 @@ namespace ClassesFolder
         public string TargetUsername => _targetUsername;
         public string Summary => _summary;
 
-        public DisciplinaryComplaint(string targetUsername, string summary, DateTime datetime) : base(targetUsername, summary)
+        public DisciplinaryComplaint(string targetUsername, 
+                                     string summary, 
+                                     DateTime datetime) : base(targetUsername, summary)
         {
             _datetime = datetime;
         }

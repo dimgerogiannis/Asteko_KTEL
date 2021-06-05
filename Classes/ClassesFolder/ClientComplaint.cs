@@ -17,12 +17,16 @@ namespace ClassesFolder
         public string ClientUsername => _clientUsername;
         public bool Checked => _checked;
 
-        public ClientComplaint(string targetUsername, bool gotChecked, string summary, ClientComplaintCategory category, string clientUsername) : base(targetUsername, summary)
-        {
-            _category = category;
-            _clientUsername = clientUsername;
-            _checked = false;
-        }
+        public ClientComplaint(string targetUsername, 
+                               bool gotChecked, 
+                               string summary, 
+                               ClientComplaintCategory category, 
+                               string clientUsername) : base(targetUsername, summary)
+                            {
+                                _category = category;
+                                _clientUsername = clientUsername;
+                                _checked = false;
+                            }
 
         public void DeleteClientComplaint()
         {
