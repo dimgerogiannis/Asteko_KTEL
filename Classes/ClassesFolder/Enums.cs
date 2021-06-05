@@ -13,6 +13,13 @@ namespace ClassesFolder
             LARGE
         };
 
+        public enum BusPart
+        {
+            Back,
+            Full,
+            Front
+        }
+
         public enum ClientComplaintCategory
         {
             Rude,

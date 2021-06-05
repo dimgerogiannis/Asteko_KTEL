@@ -22,7 +22,6 @@ namespace ClassesFolder
             set { _paidLeaveDates = value; }
         }
 
-
         public BusDriver(string username,
                          string name,
                          string surname,

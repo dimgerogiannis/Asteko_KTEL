@@ -113,9 +113,8 @@ namespace DistributorForms
                 var targetDate = dateTimePicker.Value.ToString("dd-MM-yyyy");
                 var targetDatetime = $"{targetDate} {availableStartingHoursCombobox.SelectedIndex}:00";
 
-
                 var busDrivers = _distributor.GetBusDrivers();
-                var duration = _busLines[busLineNumberCombobox.SelectedIndex].Duration;
+                var duration = _busLines.Find(x => x.Number == busLineNumberCombobox.SelectedIndex).Duration;
 
                 busDrivers = busDrivers
                     .Select(x => x)
@@ -339,9 +338,15 @@ namespace DistributorForms
                 int index = GetReservationIndex(targetDatetime);
                 if (index != -1)
                 {
-                    var clients = _reservations.Select(x => x).Where(x => x.TravelDatetime == targetDatetime).OrderBy(x => x.ReservationDatetime).ToList();
+                    var clients = _reservations
+                        .Select(x => x)
+                        .Where(x => x.TravelDatetime == targetDatetime)
+                        .OrderBy(x => x.ReservationDatetime)
+                        .ToList();
 
-                    var servedClients = clients.Take(size).ToList();
+                    var servedClients = clients
+                        .Take(size)
+                        .ToList();
 
                     foreach (var servedClient in servedClients)
                     {

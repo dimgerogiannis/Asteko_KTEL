@@ -85,7 +85,7 @@ namespace DistributorForms
             // 
             // programmingButton
             // 
-            this.programmingButton.Location = new System.Drawing.Point(17, 711);
+            this.programmingButton.Location = new System.Drawing.Point(14, 696);
             this.programmingButton.Name = "programmingButton";
             this.programmingButton.Size = new System.Drawing.Size(186, 34);
             this.programmingButton.TabIndex = 1;
@@ -96,7 +96,7 @@ namespace DistributorForms
             // busLineNumberLabel
             // 
             this.busLineNumberLabel.AutoSize = true;
-            this.busLineNumberLabel.Location = new System.Drawing.Point(17, 393);
+            this.busLineNumberLabel.Location = new System.Drawing.Point(14, 378);
             this.busLineNumberLabel.Name = "busLineNumberLabel";
             this.busLineNumberLabel.Size = new System.Drawing.Size(154, 25);
             this.busLineNumberLabel.TabIndex = 2;
@@ -106,7 +106,7 @@ namespace DistributorForms
             // 
             this.busLineNumberCombobox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.busLineNumberCombobox.FormattingEnabled = true;
-            this.busLineNumberCombobox.Location = new System.Drawing.Point(17, 421);
+            this.busLineNumberCombobox.Location = new System.Drawing.Point(14, 406);
             this.busLineNumberCombobox.Name = "busLineNumberCombobox";
             this.busLineNumberCombobox.Size = new System.Drawing.Size(154, 33);
             this.busLineNumberCombobox.TabIndex = 3;
@@ -116,7 +116,7 @@ namespace DistributorForms
             // availableStartingHoursLabel
             // 
             this.availableStartingHoursLabel.AutoSize = true;
-            this.availableStartingHoursLabel.Location = new System.Drawing.Point(14, 472);
+            this.availableStartingHoursLabel.Location = new System.Drawing.Point(11, 457);
             this.availableStartingHoursLabel.Name = "availableStartingHoursLabel";
             this.availableStartingHoursLabel.Size = new System.Drawing.Size(331, 25);
             this.availableStartingHoursLabel.TabIndex = 4;
@@ -126,7 +126,7 @@ namespace DistributorForms
             // 
             this.availableStartingHoursCombobox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.availableStartingHoursCombobox.FormattingEnabled = true;
-            this.availableStartingHoursCombobox.Location = new System.Drawing.Point(17, 500);
+            this.availableStartingHoursCombobox.Location = new System.Drawing.Point(14, 485);
             this.availableStartingHoursCombobox.Name = "availableStartingHoursCombobox";
             this.availableStartingHoursCombobox.Size = new System.Drawing.Size(154, 33);
             this.availableStartingHoursCombobox.TabIndex = 5;
@@ -134,7 +134,7 @@ namespace DistributorForms
             // dateLabel
             // 
             this.dateLabel.AutoSize = true;
-            this.dateLabel.Location = new System.Drawing.Point(17, 557);
+            this.dateLabel.Location = new System.Drawing.Point(14, 542);
             this.dateLabel.Name = "dateLabel";
             this.dateLabel.Size = new System.Drawing.Size(224, 25);
             this.dateLabel.TabIndex = 7;
@@ -142,7 +142,7 @@ namespace DistributorForms
             // 
             // dateTimePicker
             // 
-            this.dateTimePicker.Location = new System.Drawing.Point(17, 585);
+            this.dateTimePicker.Location = new System.Drawing.Point(14, 570);
             this.dateTimePicker.Name = "dateTimePicker";
             this.dateTimePicker.Size = new System.Drawing.Size(331, 31);
             this.dateTimePicker.TabIndex = 8;
@@ -155,7 +155,7 @@ namespace DistributorForms
             this.columnHeader5});
             this.recommendedDriversListview.FullRowSelect = true;
             this.recommendedDriversListview.HideSelection = false;
-            this.recommendedDriversListview.Location = new System.Drawing.Point(14, 763);
+            this.recommendedDriversListview.Location = new System.Drawing.Point(11, 748);
             this.recommendedDriversListview.Name = "recommendedDriversListview";
             this.recommendedDriversListview.Size = new System.Drawing.Size(458, 179);
             this.recommendedDriversListview.TabIndex = 9;
@@ -180,7 +180,7 @@ namespace DistributorForms
             this.columnHeader7});
             this.recommendedBusesListview.FullRowSelect = true;
             this.recommendedBusesListview.HideSelection = false;
-            this.recommendedBusesListview.Location = new System.Drawing.Point(478, 763);
+            this.recommendedBusesListview.Location = new System.Drawing.Point(475, 748);
             this.recommendedBusesListview.Name = "recommendedBusesListview";
             this.recommendedBusesListview.Size = new System.Drawing.Size(458, 179);
             this.recommendedBusesListview.TabIndex = 10;
@@ -200,7 +200,7 @@ namespace DistributorForms
             // sizeLabel
             // 
             this.sizeLabel.AutoSize = true;
-            this.sizeLabel.Location = new System.Drawing.Point(17, 633);
+            this.sizeLabel.Location = new System.Drawing.Point(14, 618);
             this.sizeLabel.Name = "sizeLabel";
             this.sizeLabel.Size = new System.Drawing.Size(189, 25);
             this.sizeLabel.TabIndex = 11;
@@ -210,7 +210,7 @@ namespace DistributorForms
             // 
             this.sizeCombobox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.sizeCombobox.FormattingEnabled = true;
-            this.sizeCombobox.Location = new System.Drawing.Point(17, 661);
+            this.sizeCombobox.Location = new System.Drawing.Point(14, 646);
             this.sizeCombobox.Name = "sizeCombobox";
             this.sizeCombobox.Size = new System.Drawing.Size(193, 33);
             this.sizeCombobox.TabIndex = 12;
@@ -233,12 +233,12 @@ namespace DistributorForms
             this.panel1.Controls.Add(this.busLineNumberLabel);
             this.panel1.Location = new System.Drawing.Point(12, 12);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(953, 998);
+            this.panel1.Size = new System.Drawing.Size(953, 978);
             this.panel1.TabIndex = 13;
             // 
             // createItineraryButton
             // 
-            this.createItineraryButton.Location = new System.Drawing.Point(14, 948);
+            this.createItineraryButton.Location = new System.Drawing.Point(11, 933);
             this.createItineraryButton.Name = "createItineraryButton";
             this.createItineraryButton.Size = new System.Drawing.Size(125, 34);
             this.createItineraryButton.TabIndex = 13;
@@ -251,7 +251,7 @@ namespace DistributorForms
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.ClientSize = new System.Drawing.Size(957, 1006);
+            this.ClientSize = new System.Drawing.Size(953, 1002);
             this.ControlBox = false;
             this.Controls.Add(this.panel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;

@@ -125,7 +125,7 @@ namespace DistributorForms
             var databaseDateFormat = DateTime.Parse(reqDate).ToString("yyyy-MM-dd");
 
             _busDrivers = _distributor.GetBusDrivers();
-            var duration = _busLines[int.Parse(selectedListviewItem.SubItems[2].Text)].Duration;
+            var duration = _busLines.Find(x => x.Number == int.Parse(selectedListviewItem.SubItems[2].Text)).Duration;
 
             _busDrivers = _busDrivers
                     .Select(x => x)

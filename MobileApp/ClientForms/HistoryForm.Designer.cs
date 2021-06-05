@@ -135,7 +135,7 @@ namespace Project.ClientForms
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.ClientSize = new System.Drawing.Size(512, 668);
+            this.ClientSize = new System.Drawing.Size(513, 715);
             this.Controls.Add(this.ticketNumber);
             this.Controls.Add(this.totalTicketCostLabel);
             this.Controls.Add(this.historyListview);
