@@ -38,6 +38,7 @@ namespace Project.ClientForms
 
             var today = DateTime.Parse(DateTime.Now.ToString("dd-MM-yyyy"));
             var selected = DateTime.Parse(dateTimePicker.Value.ToString("dd-MM-yyyy"));
+            var databaseDatetimeFormat = dateTimePicker.Value.ToString($"yyyy-MM-dd {timeCombobox.SelectedItem}:00");
 
             if (selected <= today)
             {
@@ -48,8 +49,7 @@ namespace Project.ClientForms
                 return;
             }
 
-            if (_client.CheckForDuplicateTicket(lineNumberCombobox.SelectedItem.ToString(), 
-                dateTimePicker.Value.ToString($"yyyy-MM-dd {timeCombobox.SelectedItem}:00")))
+            if (_client.CheckForDuplicateTicket(lineNumberCombobox.SelectedItem.ToString(), databaseDatetimeFormat))
             {
                 MessageBox.Show("Έχετε ήδη αγοράσει εισητήριο για αυτό το δρομολόγιο.", 
                                 "Σφάλμα", 
@@ -59,7 +59,7 @@ namespace Project.ClientForms
             }
 
             if (_client.ReservationList.Any(x => x.TravelBusLine.Number == int.Parse(lineNumberCombobox.SelectedItem.ToString()) && 
-                x.TravelDatetime.ToString("yyyy-MM-dd HH:mm:ss") == dateTimePicker.Value.ToString($"yyyy-MM-dd {timeCombobox.SelectedItem}:00")))
+                x.TravelDatetime.ToString("yyyy-MM-dd HH:mm:ss") == databaseDatetimeFormat))
             {
                 MessageBox.Show("Έχετε ήδη κάνει κράτηση θέσης για αυτό το δρομολόγιο.", 
                                 "Σφάλμα", 
@@ -68,8 +68,8 @@ namespace Project.ClientForms
                 return;
             }
 
-            if (_client.CheckForDuplicateLastMinuteTravelRequest(lineNumberCombobox.SelectedItem.ToString(),
-                dateTimePicker.Value.ToString($"yyyy-MM-dd {timeCombobox.SelectedItem}:00")))
+            if (_client.CheckForDuplicateLastMinuteTravelRequest(lineNumberCombobox.SelectedItem.ToString(), 
+                databaseDatetimeFormat))
             {
                 MessageBox.Show("Έχετε ήδη κάνει αίτημα καθυστερημένης εξυπηρέτησης για αυτό το δρομολόγιο.", 
                                 "Σφάλμα", 
@@ -90,7 +90,7 @@ namespace Project.ClientForms
             if (!lastMinuteDates.Contains(dateTimePicker.Value.ToString("dd-MM-yyyy")) &&
                 !reservationDates.Contains(dateTimePicker.Value.ToString("dd-MM-yyyy")))
             {
-                MessageBox.Show($"Παρακαλώ βάλτε σωστή ημερομηνία, δηλαδή στο διάστημα [{DateTime.Now.AddDays(1).ToString("dd-MM-yyyy")}, {reservationDates[reservationDates.Count - 1]}].",
+                MessageBox.Show($"Παρακαλώ συμπληρώστε σωστή ημερομηνία, δηλαδή στο διάστημα [{DateTime.Now.AddDays(1).ToString("dd-MM-yyyy")}, {reservationDates[reservationDates.Count - 1]}].",
                                 "Σφάλμα",
                                 MessageBoxButtons.OK,
                                 MessageBoxIcon.Error);
@@ -102,7 +102,7 @@ namespace Project.ClientForms
                 if (_client.CanAffordCost(price))
                 {
                     var itineraries = _client.GetMatchingItineraries(lineNumberCombobox.SelectedItem.ToString(),
-                                                                     DateTime.Parse($"{dateTimePicker.Value.ToShortDateString()} {timeCombobox.SelectedItem}").ToString("yyyy-MM-dd HH:mm:ss"));
+                                                                     DateTime.Parse($"{dateTimePicker.Value.ToString("yyyy-MM-dd")} {timeCombobox.SelectedItem}").ToString("yyyy-MM-dd HH:mm:ss"));
 
                     bool flag = false;
                     foreach (var itinerary in itineraries)
@@ -156,7 +156,7 @@ namespace Project.ClientForms
             }
             else if (reservationDates.Contains(dateTimePicker.Value.ToString("dd-MM-yyyy")))
             {
-                // Για επόμενη βδομαδα.
+                // Reservation
                 if (_client.MonthlyCard)
                 {
                     var result = MessageBox.Show("Θέλετε να προχωρήσετε στην αγορά;", 
@@ -166,14 +166,14 @@ namespace Project.ClientForms
                     
                     if (result == DialogResult.Yes)
                     {
-                        // Γίνεται reservation για δρομολόγιο της επόμενης εβδομάδας
+                        // Do reservation for next week
                         Reservation reservation = new Reservation(_client, 
                                                                   DateTime.Now,
                                                                   DateTime.Parse($"{dateTimePicker.Value.ToShortDateString()} {timeCombobox.SelectedItem}"),
                                                                   Functions.GetBusLine(int.Parse(lineNumberCombobox.SelectedItem.ToString())),
                                                                   0m);
-                        _client.InsertReservationToDatabase(reservation,
-                                                            0m);
+                        
+                        _client.InsertReservationToDatabase(reservation, 0m);
 
                         _client.ReservationList.Add(reservation);
 
@@ -250,6 +250,10 @@ namespace Project.ClientForms
             }
         }
 
+        /// <summary>
+        /// Method that generates all the dates from tomorrow until the last day of the week which is Sunday
+        /// </summary>
+        /// <returns>A List of strings that contains dates</returns>
         public static List<string> GetLastMinuteAvailableDates()
         {
             List<string> dates = new List<string>();
@@ -269,6 +273,10 @@ namespace Project.ClientForms
             return dates;
         }
 
+        /// <summary>
+        /// A method that returns all the dates of the current week and the next week
+        /// </summary>
+        /// <returns>A List of strings which are dates</returns>
         public static List<string> GetReservationAvailableDates()
         {
             List<string> dates = new List<string>();
