@@ -27,6 +27,30 @@ namespace ClassesFolder
             _stops = stops;
         }
 
+        public List<string> GetAvailableStartingHours()
+        {
+            List<string> hours = new List<string>();
+            TimeSpan time = new TimeSpan(8, 0, 0);
+            while (time.Hours != 23)
+            {
+                hours.Add(time.ToString("hh':'mm"));
+                time = time.Add(new TimeSpan(0, _duration, 0));
+            }
+
+            hours.Add(time.ToString("hh':'mm"));
+
+            return hours;
+        }
+
+        public List<string> GetFirstAndLastStop()
+        {
+            return new List<string>()
+            {
+                _stops[0],
+                _stops[_stops.Count - 1]
+            };
+        }
+
         public void InsertBusLineInDatabase()
         {
             try

@@ -137,8 +137,10 @@ namespace DistributorForms
                 .Where(x => x.IsAvailableOnHour(databaseDateFormat, startingHour, duration))
                 .ToList();
 
-            var startStop = _busLines[reqLine].Stops[0];
-            var endStop = _busLines[reqLine].Stops[_busLines[reqLine].Stops.Count - 1];
+            var firstAndLastStop = _busLines[reqLine].GetFirstAndLastStop();
+
+            var startStop = firstAndLastStop[0];
+            var endStop = firstAndLastStop[1];
 
             var recBusDrivers = _busDrivers
                     .Select(x => x)

@@ -251,37 +251,6 @@ namespace ClassesFolder
             }
         }
 
-        public Dictionary<string, int> GetBusLinesNumbers()
-        {
-            try
-            {
-                using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
-                connection.Open();
-
-                var statement = @"select number, duration
-                                 from busline;";
-
-                using var cmd = new MySqlCommand(statement, connection);
-                using MySqlDataReader reader = cmd.ExecuteReader();
-                Dictionary<string, int> busLines = new Dictionary<string, int>();
-
-                while (reader.Read())
-                {
-                    busLines.Add(reader.GetInt32(0).ToString(), reader.GetInt32(1));
-                }
-                return busLines;
-            }
-            catch (MySqlException)
-            {
-                MessageBox.Show("Προκλήθηκε σφάλμα κατά την σύνδεση με τον server. Η εφαρμογή θα τερματιστεί!",
-                                 "Σφάλμα",
-                                 MessageBoxButtons.OK,
-                                 MessageBoxIcon.Error);
-                Application.Exit();
-                return null;
-            }
-        }
-
         public decimal GetTicketPrice()
         {
             try

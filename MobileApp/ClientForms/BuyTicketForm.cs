@@ -17,7 +17,7 @@ namespace Project.ClientForms
     public partial class BuyTicketForm : Form
     {
         private Client _client;
-        private Dictionary<string, int> _dictionary;
+        private List<BusLine> _lines;
         public BuyTicketForm(Client client)
         {
             InitializeComponent();
@@ -222,25 +222,21 @@ namespace Project.ClientForms
                     }
                     else
                     {
-                        MessageBox.Show("Σφάλμα", 
-                                        "Μη επαρκές υπόλοιπο.", 
+                        MessageBox.Show("Μη επαρκές υπόλοιπο.", 
+                                        "Σφάλμα", 
                                         MessageBoxButtons.OK, 
                                         MessageBoxIcon.Error);
                     }
                 }
 
             }
-            else
-            {
-
-            }
         }
 
         private void BuyTicketForm_Load(object sender, EventArgs e)
         {
-            _dictionary = _client.GetBusLinesNumbers();
-            foreach (var key in _dictionary.Keys)
-                lineNumberCombobox.Items.Add(key);
+            _lines = Functions.GetBusLines();
+            foreach (var line in _lines)
+                lineNumberCombobox.Items.Add(line.Number.ToString());
         }
 
         private void LineNumberCombobox_SelectedValueChanged(object sender, EventArgs e)
@@ -248,17 +244,12 @@ namespace Project.ClientForms
             if (lineNumberCombobox.SelectedItem != null)
             {
                 timeCombobox.Items.Clear();
-                TimeSpan time = new TimeSpan(8, 0, 0);
-                while (time.Hours != 23)
+                foreach (var hour in _lines[int.Parse(lineNumberCombobox.SelectedItem.ToString()) - 1].GetAvailableStartingHours())
                 {
-                    timeCombobox.Items.Add(time.ToString("hh':'mm"));
-                    time = time.Add(new TimeSpan(0, _dictionary[lineNumberCombobox.SelectedItem.ToString()], 0));
-                }
-
-                timeCombobox.Items.Add(time.ToString("hh':'mm"));
+                    timeCombobox.Items.Add(hour);
+                }                
             }
         }
-
 
         public static List<string> GetLastMinuteAvailableDates()
         {

@@ -134,9 +134,10 @@ namespace DistributorForms
                                                     duration))
                     .ToList();
 
-                var startStop = _busLines[busLineNumberCombobox.SelectedIndex].Stops[0];
-                var endStop = _busLines[busLineNumberCombobox.SelectedIndex].Stops[_busLines[busLineNumberCombobox.SelectedIndex].Stops.Count - 1];
+                var firstAndLastStop = _busLines[busLineNumberCombobox.SelectedIndex].GetFirstAndLastStop();
 
+                var startStop = firstAndLastStop[0];
+                var endStop = firstAndLastStop[1];
 
                 var recBusDrivers = busDrivers
                     .Select(x => x)
@@ -270,12 +271,6 @@ namespace DistributorForms
             }
         }
 
-        //
-
-
-        //
-
-
         private void BusLineNumberCombobox_SelectedValueChanged(object sender, EventArgs e)
         {
             availableStartingHoursCombobox.Items.Clear();
@@ -284,13 +279,10 @@ namespace DistributorForms
             {
                 var busLine = _busLines.Find(x => x.Number == int.Parse(busLineNumberCombobox.SelectedItem.ToString()));
 
-                TimeSpan timeSpan = new TimeSpan(8, 0, 0);
-                while (timeSpan.Hours != 23)
+                foreach (var hour in busLine.GetAvailableStartingHours())
                 {
-                    availableStartingHoursCombobox.Items.Add(timeSpan.ToString("hh':'mm"));
-                    timeSpan = timeSpan.Add(new TimeSpan(0, busLine.Duration, 0));
+                    availableStartingHoursCombobox.Items.Add(hour);
                 }
-                availableStartingHoursCombobox.Items.Add(timeSpan.ToString("hh':'mm"));
             }
         }
 

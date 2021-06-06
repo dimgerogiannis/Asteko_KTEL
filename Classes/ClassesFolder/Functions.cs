@@ -171,5 +171,40 @@ namespace ClassesFolder
                 return null;
             }
         }
+
+        public static List<BusLine> GetBusLines()
+        {
+            try
+            {
+                using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
+                connection.Open();
+
+                var statement = @"select number, duration
+                                  from busline;";
+
+                using var cmd = new MySqlCommand(statement, connection);
+                using MySqlDataReader reader = cmd.ExecuteReader();
+                List<BusLine> busLines = new List<BusLine>();
+
+                while (reader.Read())
+                {
+                    int lineNumber = reader.GetInt32(0);
+                    busLines.Add(new BusLine(reader.GetInt32(0),
+                                             reader.GetInt32(1),
+                                             Functions.GetBusLineStops(lineNumber)));
+                }
+
+                return busLines;
+            }
+            catch (MySqlException)
+            {
+                MessageBox.Show("Προκλήθηκε σφάλμα κατά την σύνδεση με τον server. Η εφαρμογή θα τερματιστεί!",
+                                 "Σφάλμα",
+                                 MessageBoxButtons.OK,
+                                 MessageBoxIcon.Error);
+                Application.Exit();
+                return null;
+            }
+        }
     }
 }
