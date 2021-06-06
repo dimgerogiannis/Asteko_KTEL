@@ -235,9 +235,9 @@ namespace ClassesFolder
                 var query = @"insert into DisciplinaryComplaint (targetUsername, submittedDatetime, comment, qualityManagerUsername) values
 	                      (@targetUsername, @submittedDatetime, @comment, @qualityManagerUsername);";
                 using var cmd = new MySqlCommand(query, connection);
-                cmd.Parameters.AddWithValue("@targetUsername", complaint.Target);
+                cmd.Parameters.AddWithValue("@targetUsername", complaint.TargetDriver.Username);
                 cmd.Parameters.AddWithValue("@submittedDatetime", complaint.Datetime.ToString("yyyy-MM-dd HH:mm:ss"));
-                cmd.Parameters.AddWithValue("@comment", complaint.Summary);
+                cmd.Parameters.AddWithValue("@comment", complaint.Comment);
                 cmd.Parameters.AddWithValue("@qualityManagerUsername", _username);
                 cmd.ExecuteNonQuery();
             }

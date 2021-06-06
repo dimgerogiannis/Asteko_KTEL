@@ -30,9 +30,9 @@ namespace QualityManagerForms
         {
             if (disciplinaryCommentRichTextbox.Text != "")
             {
-                _qualityManager.InsertDisciplinaryCommentInDatabase(new DisciplinaryComment(_complaint.TargetDriver.Username,
-                                                                                                disciplinaryCommentRichTextbox.Text,
-                                                                                                DateTime.Now));
+                _qualityManager.InsertDisciplinaryCommentInDatabase(new DisciplinaryComment(_complaint.TargetDriver,
+                                                                                            disciplinaryCommentRichTextbox.Text,
+                                                                                            DateTime.Now));
                 _complaint.SetAsChecked();
 
                 MessageBox.Show("Επιτυχής καταχώρηση.",

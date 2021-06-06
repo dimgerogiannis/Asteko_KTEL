@@ -32,7 +32,7 @@ namespace Project.BusDriverForms
                         status = "Εκρεμμής";
                         break;
                     case Status.Accepted:
-                        status = "Αποδέχτηκε";
+                        status = "Εγκρίθηκε";
                         break;
                     case Status.Rejected:
                         status = "Απορρίφθηκε";

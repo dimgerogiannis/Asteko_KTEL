@@ -1,4 +1,5 @@
 ﻿using ClassesFolder;
+using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -50,7 +51,14 @@ namespace Project.BusDriverForms
                                 "Σφάλμα",
                                 MessageBoxButtons.OK,
                                 MessageBoxIcon.Error);
-            }     
+            }  
+            else if (HasItineraryOnSpecificDate(dateTimePicker.Value.ToString("yyyy-MM-dd")))
+            {
+                MessageBox.Show("Σας έχει ανατεθεί δρομολόγιο για αυτή τη μέρα.",
+                                "Σφάλμα",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Error);
+            }
             else if (_busDriver.CheckDuplicatePaidLeaveApplication(dateTimePicker.Value.ToString("yyyy-MM-dd")))
             {
                 MessageBox.Show("Έχετε ήδη κάνει αίτημα για άδεια τη συγκεκριμένη μέρα.",
@@ -81,6 +89,23 @@ namespace Project.BusDriverForms
                                     MessageBoxIcon.Information);
                 }
             }
+        }
+
+        public bool HasItineraryOnSpecificDate(string date)
+        {
+            using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
+            connection.Open();
+            var query = @"select count(*) 
+                         from itinerary 
+                         where busDriverUsername = @targetUsername and Substring(travelDatetime, 1, 10) = @targetDatetime;";
+
+            using var cmd = new MySqlCommand(query, connection);
+            cmd.Parameters.AddWithValue("@targetUsername", _busDriver.Username);
+            cmd.Parameters.AddWithValue("@targetDatetime", date);
+            using MySqlDataReader reader = cmd.ExecuteReader();
+            reader.Read();
+
+            return reader.GetInt32(0) > 0;
         }
     }
 }

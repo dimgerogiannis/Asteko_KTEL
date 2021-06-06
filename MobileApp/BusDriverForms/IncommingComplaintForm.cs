@@ -24,7 +24,7 @@ namespace Project.BusDriverForms
 
         private void IncommingComplaintForm_Load(object sender, EventArgs e)
         {
-            _complaints = _busDriver.GetDisciplinaryComplaints();
+            _complaints = _busDriver.GetDisciplinaryComments();
 
             foreach (var complaint in _complaints.OrderByDescending(x => x.Datetime))
                 datetimeCombobox.Items.Add(complaint.Datetime.ToString("dd-MM-yyyy HH:mm:ss"));
@@ -33,7 +33,7 @@ namespace Project.BusDriverForms
         private void DatetimeCombobox_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (datetimeCombobox.SelectedItem != null)
-                complaintRichTextbox.Text = _complaints.Find(x => x.Datetime == DateTime.Parse(datetimeCombobox.SelectedItem.ToString())).Summary;
+                complaintRichTextbox.Text = _complaints.Find(x => x.Datetime == DateTime.Parse(datetimeCombobox.SelectedItem.ToString())).Comment;
         }
     }
 }

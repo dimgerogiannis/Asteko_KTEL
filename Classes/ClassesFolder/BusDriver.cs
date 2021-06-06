@@ -393,7 +393,7 @@ namespace ClassesFolder
             }
         }
 
-        public List<DisciplinaryComment> GetDisciplinaryComplaints()
+        public List<DisciplinaryComment> GetDisciplinaryComments()
         {
             try
             {
@@ -410,7 +410,9 @@ namespace ClassesFolder
 
                 while (reader.Read())
                 {
-                    complaints.Add(new DisciplinaryComment(_username, reader.GetString(1), reader.GetDateTime(0)));
+                    complaints.Add(new DisciplinaryComment(this, 
+                                                           reader.GetString(1), 
+                                                           reader.GetDateTime(0)));
                 }
 
                 return complaints;
@@ -859,5 +861,6 @@ namespace ClassesFolder
                 return false;
             }
         }
+   
     }
 }
