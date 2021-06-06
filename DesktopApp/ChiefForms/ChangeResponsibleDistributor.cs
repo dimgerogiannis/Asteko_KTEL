@@ -22,7 +22,7 @@ namespace ChiefForms
 
         private void ChangeResponsibleDistributor_Load(object sender, EventArgs e)
         {
-            _distributors = _chief.GetDistributionManagers();
+            _distributors = _chief.FindDistributionManagers();
 
             distributorCombobox.Items.AddRange(_distributors.Select(x => $"{x.Name} {x.Surname}").ToArray());
         }

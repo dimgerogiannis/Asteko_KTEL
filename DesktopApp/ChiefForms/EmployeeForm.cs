@@ -22,7 +22,7 @@ namespace ChiefForms
         private void EmployeeForm_Load(object sender, EventArgs e)
         {
             var prop = "";
-            foreach (var employee in _chief.GetEmployees())
+            foreach (var employee in _chief.FindEmployees())
             {
                 switch (employee.Specialization)
                 {

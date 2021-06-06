@@ -89,7 +89,7 @@ namespace ChiefForms
                 if (!busDriver.HasAssignedItineraryForNextWeek())
                 {
                     _chief.DeleteClientComplaints(_complaints);
-                    _chief.DeletePaidLeaveApplications(_chief.GetPaidLeaveApplications(_petition.TargetDriver.Username));
+                    _chief.DeletePaidLeaveApplications(_chief.FindPaidLeaveApplications(_petition.TargetDriver.Username));
                     _chief.DeletePaidLeaveDates(_petition.TargetDriver.Username);
                     _petition.DeleteDismissalPetition();
                     _chief.SetBusDriverAsFired(_petition.TargetDriver);

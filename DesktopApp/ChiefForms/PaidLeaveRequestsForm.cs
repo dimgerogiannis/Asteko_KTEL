@@ -22,7 +22,7 @@ namespace ChiefForms
 
         private void PaidLeaveRequestsForm_Load(object sender, EventArgs e)
         {
-            _applications = _chief.GetUncheckedPaidLeaveApplications();
+            _applications = _chief.FindUncheckedPaidLeaveApplications();
             foreach (var application in _applications)
             {
                 applicationsListview.Items.Add(new ListViewItem(new string[]

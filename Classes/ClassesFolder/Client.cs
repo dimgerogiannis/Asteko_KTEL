@@ -57,13 +57,13 @@ namespace ClassesFolder
                       string surname,
                       string property) : base(username, name, surname, property)
         {
-            GetInformation();
-            GetAvailablePolls();
-            GetReservations();
+            FindClientInformation();
+            InitializeAvailablePolls();
+            InitializeReservationList();
             _ticketList = new List<Ticket>();
         }
 
-        public void GetInformation()
+        public void FindClientInformation()
         {
             try
             {
@@ -96,14 +96,14 @@ namespace ClassesFolder
             }
         }
 
-        public void GetTickets()
+        public void InitializeTicketList()
         {
             try
             {
                 using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
                 connection.Open();
 
-                var query = @"select itineraryID, used, delayedItinerary, clientUsername
+                var query = @"select itineraryID, used, delayedItinerary
                               from ticket
                               where clientUsername = @username;";
 
@@ -118,8 +118,7 @@ namespace ClassesFolder
                 {
                     _ticketList.Add(new Ticket(GetItineraryData(reader.GetInt32(0)),
                                                reader.GetBoolean(2),
-                                               reader.GetBoolean(1),
-                                               reader.GetString(3)));
+                                               reader.GetBoolean(1)));
                 }
             }
             catch (MySqlException)
@@ -177,7 +176,7 @@ namespace ClassesFolder
             }
         }
 
-        public void GetReservations()
+        public void InitializeReservationList()
         {
             try
             {
@@ -212,7 +211,7 @@ namespace ClassesFolder
             }
         }
 
-        public void GetTransactions()
+        public void InitializeTransactionHistory()
         {
             _transactionHistory = new List<Transaction>();
             foreach (var ticket in _ticketList)
@@ -251,7 +250,7 @@ namespace ClassesFolder
             }
         }
 
-        public decimal GetTicketPrice()
+        public decimal FindStandardTicketPrice()
         {
             try
             {
@@ -898,7 +897,7 @@ namespace ClassesFolder
             }
         }
 
-        public void GetAvailablePolls()
+        public void InitializeAvailablePolls()
         {
             try
             {
@@ -1048,8 +1047,7 @@ namespace ClassesFolder
                 {
                     tickets.Add(new Ticket(GetItineraryData(reader.GetInt32(0)),
                                            reader.GetBoolean(2),
-                                           reader.GetBoolean(1),
-                                           reader.GetString(3)));
+                                           reader.GetBoolean(1)));
                 }
 
                 return tickets;
@@ -1072,7 +1070,7 @@ namespace ClassesFolder
                 using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
                 connection.Open();
 
-                var query = @"select ticketID, ticket.itineraryID, used, delayedItinerary
+                var query = @"select ticket.itineraryID, delayedItinerary, used
                           from ticket
                           inner join itinerary on ticket.itineraryID = itinerary.itineraryID
                           where clientUsername = @username and travelDatetime >= @from and travelDatetime <= @to;";
@@ -1089,9 +1087,8 @@ namespace ClassesFolder
                 while (reader.Read())
                 {
                     tickets.Add(new Ticket(GetItineraryData(reader.GetInt32(0)),
-                                                            reader.GetBoolean(2),
                                                             reader.GetBoolean(1),
-                                                            reader.GetString(3)));
+                                                            reader.GetBoolean(2)));
                 }
 
                 return tickets;

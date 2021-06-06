@@ -13,7 +13,6 @@ namespace ClassesFolder
         private Itinerary _correspondingItinerary;
         private bool _delayedItinerary;
         private bool _used;
-        private string _clientUsername;
 
         public Itinerary CorrespondingItinerary => _correspondingItinerary;
         public bool DelayedItinerary
@@ -26,45 +25,19 @@ namespace ClassesFolder
             get { return _used; }
             set { _used = value; }
         }
-        public string ClientUsername => _clientUsername;
 
         public Ticket(Itinerary correspondingItinerary, 
                       bool delayedItinerary, 
-                      bool used, 
-                      string clientUsername)
+                      bool used)
         {
             _correspondingItinerary = correspondingItinerary;
             _delayedItinerary = delayedItinerary;
             _used = used;
-            _clientUsername = clientUsername;
         }
 
         public void SetAsUsed()
         {
-            try
-            {
-                _used = true;
 
-                using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
-                connection.Open();
-
-                var query = @"update Ticket
-                          set used = @used
-                          where itineraryID = @itineraryID and clientUsername = @username;";
-                using var cmd = new MySqlCommand(query, connection);
-                cmd.Parameters.AddWithValue("@used", _used);
-                cmd.Parameters.AddWithValue("@clientUsername", _clientUsername);
-                cmd.Parameters.AddWithValue("@itineraryID", _correspondingItinerary.ID);
-                cmd.ExecuteNonQuery();
-            }
-            catch (MySqlException)
-            {
-                MessageBox.Show("Προκλήθηκε σφάλμα κατά την σύνδεση με τον server. Η εφαρμογή θα τερματιστεί!",
-                                 "Σφάλμα",
-                                 MessageBoxButtons.OK,
-                                 MessageBoxIcon.Error);
-                Application.Exit();
-            }
         }
 
         public void SetAsDelayed()
@@ -77,11 +50,10 @@ namespace ClassesFolder
                 connection.Open();
 
                 var query = @"update Ticket 
-                          set delayedItinerary = @delayedItinerary
-                          where itineraryID = @itineraryID and clientUsername = @username;";
+                              set delayedItinerary = @delayedItinerary
+                              where itineraryID = @itineraryID;";
 
                 using var cmd = new MySqlCommand(query, connection);
-                cmd.Parameters.AddWithValue("@clientUsername", _clientUsername);
                 cmd.Parameters.AddWithValue("@itineraryID", _correspondingItinerary.ID);
                 cmd.Parameters.AddWithValue("@delayedItinerary", _delayedItinerary);
                 cmd.ExecuteNonQuery();
@@ -106,11 +78,10 @@ namespace ClassesFolder
                 connection.Open();
 
                 var query = @"update Ticket 
-                          set delayedItinerary = @delayedItinerary
-                          where itineraryID = @itineraryID and clientUsername = @username;";
+                              set delayedItinerary = @delayedItinerary
+                              where itineraryID = @itineraryID and clientUsername = @username;";
 
                 using var cmd = new MySqlCommand(query, connection);
-                cmd.Parameters.AddWithValue("@clientUsername", _clientUsername);
                 cmd.Parameters.AddWithValue("@itineraryID", _correspondingItinerary.ID);
                 cmd.Parameters.AddWithValue("@delayedItinerary", _delayedItinerary);
                 cmd.ExecuteNonQuery();
@@ -123,6 +94,16 @@ namespace ClassesFolder
                                  MessageBoxIcon.Error);
                 Application.Exit();
             }
+        }
+   
+        public bool CanBeUsed()
+        {
+            return _used;
+        }  
+        
+        public Transaction GetTransaction()
+        {
+            return null;
         }
     }
 }

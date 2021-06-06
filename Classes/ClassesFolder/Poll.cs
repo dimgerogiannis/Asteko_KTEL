@@ -36,10 +36,10 @@ namespace ClassesFolder
             _question = question;
             _expired = expired;
 
-            GetChoices();
+            FindPollChoices();
         }
 
-        private void GetChoices()
+        private void FindPollChoices()
         {
             try
             {

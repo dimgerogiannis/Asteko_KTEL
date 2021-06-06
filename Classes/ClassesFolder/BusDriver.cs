@@ -14,7 +14,6 @@ namespace ClassesFolder
         private int _complaintCounter;
         private List<string> _paidLeaveDates;
         private int _yearlyPaidLeaves = 15;
-
         public int ComplaintCounter => _complaintCounter;
         public List<string> PaidLeaveDates
         {
@@ -34,7 +33,7 @@ namespace ClassesFolder
             _complaintCounter = complaintCounter;
             _paidLeaveDates = new List<string>();
 
-            GetPaidLeaveDates();
+            InitializePaidLeaveDates();
             _yearlyPaidLeaves = 15 - PaidLeaveDates.Count;
         }
 
@@ -43,7 +42,7 @@ namespace ClassesFolder
             return _paidLeaveDates.Count <= 15;
         }
 
-        private void GetPaidLeaveDates()
+        private void InitializePaidLeaveDates()
         {
             try
             {

@@ -25,7 +25,7 @@ namespace Project.ClientForms
         private void Client_Load(object sender, EventArgs e)
         {
             this.Text = $"Καλωσόρισες {_client.GetFullName()}";
-            _client.GetTickets();
+            _client.InitializeTicketList();
             currentBoughtTicketsLabel.Text = $"Αγορασμένα εισιτηρία: {_client.TicketList.Select(x => x).Where(y => y.Used == false).Count()}";
             currentBoughtTicketsLabel.Location = new Point(this.Width / 2 - currentBoughtTicketsLabel.Width / 2,
                                                            currentBoughtTicketsLabel.Height);
@@ -35,7 +35,7 @@ namespace Project.ClientForms
 
         private void BuyTicketButton_Click(object sender, EventArgs e)
         {
-            _client.GetInformation();
+            _client.FindClientInformation();
             currentMoneyLabel.Text = $"{_client.Balance} Ευρώ";
             BuyTicketForm form = new BuyTicketForm(_client);
             form.ShowDialog();

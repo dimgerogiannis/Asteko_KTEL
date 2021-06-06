@@ -78,7 +78,7 @@ namespace Project.ClientForms
                 return;
             }
 
-            var price = _client.GetTicketPrice();
+            var price = _client.FindStandardTicketPrice();
 
             var lastMinuteDates = GetLastMinuteAvailableDates();
 
@@ -121,8 +121,7 @@ namespace Project.ClientForms
 
                             _client.AddToCollection(new Ticket(itinerary, 
                                                                false, 
-                                                               false, 
-                                                               _client.Username));
+                                                               false));
 
                             _client.DecrementItinerarySeats(itinerary.ID, itinerary.AvailableSeats);
                             _client.InsertTransactionToDatabase(_client.GetLastInsertedTicketID(), price);

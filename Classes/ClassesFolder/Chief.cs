@@ -249,7 +249,7 @@ namespace ClassesFolder
             }
         }
 
-        public List<Employee> GetEmployees()
+        public List<Employee> FindEmployees()
         {
             try
             {
@@ -287,7 +287,7 @@ namespace ClassesFolder
             }
         }
 
-        public List<ItineraryDistributionManager> GetDistributionManagers()
+        public List<ItineraryDistributionManager> FindDistributionManagers()
         {
             try
             {
@@ -351,7 +351,7 @@ namespace ClassesFolder
             }
         }
 
-        public List<PaidLeaveApplication> GetUncheckedPaidLeaveApplications()
+        public List<PaidLeaveApplication> FindUncheckedPaidLeaveApplications()
         {
             try
             {
@@ -389,7 +389,7 @@ namespace ClassesFolder
             }
         }
 
-        public List<Transaction> GetTransactions(string startDate, string endDate)
+        public List<Transaction> FindTransactions(string startDate, string endDate)
         {
             try
             {
@@ -423,7 +423,7 @@ namespace ClassesFolder
             }
         }
 
-        public List<DismissalPetition> GetDismissalPetitions()
+        public List<DismissalPetition> FindDismissalPetitions()
         {
             try
             {
@@ -463,7 +463,7 @@ namespace ClassesFolder
             }
         }
 
-        public List<PaidLeaveApplication> GetPaidLeaveApplications(string username)
+        public List<PaidLeaveApplication> FindPaidLeaveApplications(string username)
         {
             try
             {
@@ -555,7 +555,7 @@ namespace ClassesFolder
             }
         }
 
-        public BusDriver GetBusDriver(string username)
+        public BusDriver FindBusDriver(string username)
         {
             try
             {
@@ -592,7 +592,7 @@ namespace ClassesFolder
             }
         }
 
-        public string GetUserFullNameFromDatabase(string username)
+        public string FindUserFullNameFromDatabase(string username)
         {
             try
             {

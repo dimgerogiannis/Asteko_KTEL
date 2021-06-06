@@ -55,7 +55,7 @@ namespace ClassesFolder
                 using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
                 connection.Open();
 
-                var query = @"select used, delayedItinerary, clientUsername
+                var query = @"select delayedItinerary, used
                               from ticket
                               where itineraryID = @itineraryID;";
 
@@ -69,9 +69,8 @@ namespace ClassesFolder
                 while (reader.Read())
                 {
                     tickets.Add(new Ticket(this, 
-                                           reader.GetBoolean(1),
-                                           reader.GetBoolean(0), 
-                                           reader.GetString(2)));
+                                           reader.GetBoolean(0),
+                                           reader.GetBoolean(1)));
                 }
 
                 return tickets;

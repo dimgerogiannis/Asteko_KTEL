@@ -22,7 +22,7 @@ namespace Project.ClientForms
 
         private void FutureTickets_Load(object sender, EventArgs e)
         {
-            _client.GetTickets();
+            _client.InitializeTicketList();
             _client.UsableTicketList = new List<Ticket>();
 
             _client.TicketList = _client

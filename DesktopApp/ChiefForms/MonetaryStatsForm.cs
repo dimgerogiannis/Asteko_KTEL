@@ -23,8 +23,8 @@ namespace ChiefForms
         {
             if (startDateTimePicker.Value < endDateTimePicker.Value)
             {
-                var transactions = _chief.GetTransactions(startDateTimePicker.Value.ToString("yyyy-MM-dd"), endDateTimePicker.Value.ToString("yyyy-MM-dd"));
-                var employees = _chief.GetEmployees();
+                var transactions = _chief.FindTransactions(startDateTimePicker.Value.ToString("yyyy-MM-dd"), endDateTimePicker.Value.ToString("yyyy-MM-dd"));
+                var employees = _chief.FindEmployees();
 
                 var workMonths = 0;
                 var salarySum = 0m;

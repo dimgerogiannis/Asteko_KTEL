@@ -87,7 +87,7 @@ namespace DistributorForms
             _selectedRequestIndex = lastMinuteListview.CheckedIndices[0];
             _selectedBusLine = int.Parse(selectedListviewItem.SubItems[2].Text);
 
-            if (selectedClient.CanAffordCost(selectedClient.GetTicketPrice()))
+            if (selectedClient.CanAffordCost(selectedClient.FindStandardTicketPrice()))
             {
                 var result = MessageBox.Show($"Αποδέχεστε το αίτημα καθυστερημένης εξυπηρέτησης για τον πελάτη {selectedClient.GetFullName()};",
                                              "Ερώτηση",
@@ -261,7 +261,7 @@ namespace DistributorForms
             {
                 int availableSeats = int.Parse(recommendedBusesListview.Items[recommendedBusesListview.CheckedIndices[0]].SubItems[1].Text);
 
-                Itinerary itinerary = new Itinerary(_distributor.GetMaxItineraryID() + 1,
+                Itinerary itinerary = new Itinerary(_distributor.FindMaxItineraryID() + 1,
                                                     DateTime.Parse(_selectedTravelDatetime),
                                                     _busDrivers[recommendedDriversListview.CheckedIndices[0]].Username,
                                                     _busLines[_selectedBusLine],
@@ -275,13 +275,12 @@ namespace DistributorForms
 
                 Ticket ticket = new Ticket(itinerary, 
                                            false, 
-                                           false, 
-                                           _requests[_selectedRequestIndex].ApplicantClient.Username);
+                                           false);
 
                 client.AddToCollection(ticket);
-                client.AutomaticTicketPurchase(_distributor.GetMaxItineraryID());
+                client.AutomaticTicketPurchase(_distributor.FindMaxItineraryID());
                 client.InsertTransactionToDatabase(_distributor.GetClientsLastTicketID(client.Username), 
-                                                   client.GetTicketPrice());
+                                                   client.FindStandardTicketPrice());
                 client.DeleteLastMinuteTravelRequest(_requests[_selectedRequestIndex]);
                 _requests.RemoveAt(_selectedRequestIndex);
                 int counter = 1;
@@ -298,13 +297,12 @@ namespace DistributorForms
 
                     ticket = new Ticket(itinerary, 
                                         false, 
-                                        false, 
-                                        client.Username);
+                                        false);
 
                     client.AddToCollection(ticket);
-                    client.AutomaticTicketPurchase(_distributor.GetMaxItineraryID());
+                    client.AutomaticTicketPurchase(_distributor.FindMaxItineraryID());
                     client.InsertTransactionToDatabase(_distributor.GetClientsLastTicketID(client.Username), 
-                                                       client.GetTicketPrice());
+                                                       client.FindStandardTicketPrice());
                     client.DeleteLastMinuteTravelRequest(request);
                     _requests.Remove(request);
                     counter++;

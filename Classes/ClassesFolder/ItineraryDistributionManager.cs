@@ -392,7 +392,7 @@ namespace ClassesFolder
             }
         }
 
-        public int GetMaxItineraryID()
+        public int FindMaxItineraryID()
         {
             try
             {
