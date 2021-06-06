@@ -89,12 +89,10 @@ namespace ChiefForms
                 if (!busDriver.HasAssignedItineraryForNextWeek(NextMonday()))
                 {
                     _chief.DeleteClientComplaints(_complaints);
-                    _chief.DeletePaidLeaveApplications(_chief.GetPaidLeaveApplications(_petition.TargetUserame));
-                    _chief.DeletePaidLeaveDates(_petition.TargetUserame);
+                    _chief.DeletePaidLeaveApplications(_chief.GetPaidLeaveApplications(_petition.TargetDriver.Username));
+                    _chief.DeletePaidLeaveDates(_petition.TargetDriver.Username);
                     _petition.DeleteDismissalPetition();
-                    _chief.DeleteBusDriver(_petition.TargetUserame);
-                    _chief.DeleteEmployee(_petition.TargetUserame);
-                    _chief.DeleteUser(_petition.TargetUserame);
+                    _chief.SetBusDriverAsFired(_petition.TargetDriver);
 
                     MessageBox.Show("Επιτυχής απόλυση οδηγού.",
                                     "Επιτυχία",

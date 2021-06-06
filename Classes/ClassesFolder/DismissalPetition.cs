@@ -9,13 +9,13 @@ namespace ClassesFolder
 {
     public class DismissalPetition
     {
-        private string _targetUsername;
+        private BusDriver _targetDriver;
 
-        public string TargetUserame => _targetUsername;
+        public BusDriver TargetDriver => _targetDriver;
 
-        public DismissalPetition(string targetUsername)
+        public DismissalPetition(BusDriver targetDriver)
         {
-            _targetUsername = targetUsername;
+            _targetDriver = targetDriver;
         }
 
         public List<ClientComplaint> GetComplaintHistory()
@@ -30,7 +30,7 @@ namespace ClassesFolder
                              where targetUsername = @targetUsername and checked = @checked";
 
                 using var cmd = new MySqlCommand(query, connection);
-                cmd.Parameters.AddWithValue("@targetUsername", _targetUsername);
+                cmd.Parameters.AddWithValue("@targetUsername", _targetDriver.Username);
                 cmd.Parameters.AddWithValue("@checked", false);
 
                 using MySqlDataReader reader = cmd.ExecuteReader();
@@ -69,7 +69,7 @@ namespace ClassesFolder
                               where targetUsername = @targetUsername;";
 
                 using var cmd = new MySqlCommand(query, connection);
-                cmd.Parameters.AddWithValue("@targetUsername", _targetUsername);
+                cmd.Parameters.AddWithValue("@targetUsername", _targetDriver.Username);
                 cmd.ExecuteNonQuery();
             }
             catch (MySqlException)

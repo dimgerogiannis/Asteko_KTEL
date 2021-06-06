@@ -223,9 +223,11 @@ namespace ClassesFolder
                 var statement = @"select BusDriver.username, name, surname, salary, experience, hireDate, complaintsCounter
                                   from user 
                                   inner join Employee on User.username = Employee.username
-                                  inner join BusDriver on User.username = BusDriver.username;";
+                                  inner join BusDriver on User.username = BusDriver.username
+                                  where fired = @fired;";
 
                 using var cmd = new MySqlCommand(statement, connection);
+                cmd.Parameters.AddWithValue("@fired", false);
                 using MySqlDataReader reader = cmd.ExecuteReader();
 
                 while (reader.Read())

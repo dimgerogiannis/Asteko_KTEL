@@ -49,6 +49,17 @@ namespace Login
                     }
                     else if (existsInDatabase.Item2 == "bus_driver")
                     {
+                        var busDriver = FindBusDriverInfo(usernameTextbox.Text);
+
+                        if (busDriver == null)
+                        {
+                            MessageBox.Show("Δεν έχετε πλέον πρόσβαση στο σύστημα.",
+                                            "Σφάλμα",
+                                            MessageBoxButtons.OK,
+                                            MessageBoxIcon.Error);
+                            return;
+                        }
+
                         BusDriverForm form = new BusDriverForm(FindBusDriverInfo(usernameTextbox.Text));
                         form.ShowDialog();
                     }
@@ -143,7 +154,7 @@ namespace Login
             {
                 using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
                 connection.Open();
-                var statement = @"select name, surname, salary, experience, hireDate, complaintsCounter
+                var statement = @"select name, surname, salary, experience, hireDate, complaintsCounter, fired
                                   from user 
                                   inner join Employee on User.username = Employee.username
                                   inner join BusDriver on User.username = BusDriver.username
@@ -153,6 +164,11 @@ namespace Login
                 cmd.Parameters.AddWithValue("@username", username);
                 using MySqlDataReader reader = cmd.ExecuteReader();
                 reader.Read();
+
+                if (reader.GetBoolean(6))
+                {
+                    return null;
+                }
 
                 return new BusDriver(username,
                                      reader.GetString(0),

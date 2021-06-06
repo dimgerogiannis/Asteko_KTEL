@@ -40,6 +40,11 @@ namespace Project.ClientForms
 
         private void SubmitButton_Click(object sender, EventArgs e)
         {
+            if (_latestItinerary == null)
+            {
+                return;
+            }
+
             if (complaintListCombobox.SelectedItem == null || describeRichTextbox.Text == "")
             {
                 MessageBox.Show("Παρακαλώ εισάγετε όλα τα απαραίτητα πεδία.", 
@@ -92,7 +97,7 @@ namespace Project.ClientForms
                 if (busDriver.HasExceededToleratedComplaints())
                 {
                     complaint.SetAsChecked();
-                    DismissalPetition petition = new DismissalPetition(busDriver.Username);
+                    DismissalPetition petition = new DismissalPetition(busDriver);
                     if (!_client.CheckDuplicateDismissalPetition(petition))
                     {
                         _client.InsertDismissalPetitionInDatabase(petition);

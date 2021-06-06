@@ -1002,9 +1002,10 @@ namespace ClassesFolder
                 using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
                 connection.Open();
 
-                var query = @"select itinerary.itineraryID, status, travelDatetime, busDriverUsername, busLineNumber, busID , availableSeats
+                var query = @"select itinerary.itineraryID, status, travelDatetime, busDriverUsername, busLineNumber, busID , availableSeats, fired
                               from itinerary
                               inner join ticket on ticket.itineraryID = itinerary.itineraryID
+                              inner join busdriver on busdriver.username = itinerary.busDriverUsername
                               where clientUsername = @clientUsername and used = 1
                               order by itinerary.itineraryID desc limit 1;";
 
@@ -1013,7 +1014,7 @@ namespace ClassesFolder
 
                 using MySqlDataReader reader = cmd.ExecuteReader();
 
-                if (!reader.Read())
+                if (!reader.Read() || reader.GetBoolean(7))
                     return null;
 
                 int itineraryID = reader.GetInt32(0);
@@ -1408,7 +1409,7 @@ namespace ClassesFolder
                           from DismissalPetition 
                           where targetUsername = @targetUsername;";
                 using var cmd = new MySqlCommand(query, connection);
-                cmd.Parameters.AddWithValue("@targetUsername", petition.TargetUserame);
+                cmd.Parameters.AddWithValue("@targetUsername", petition.TargetDriver.Username);
                 using MySqlDataReader reader = cmd.ExecuteReader();
 
                 reader.Read();
@@ -1433,7 +1434,7 @@ namespace ClassesFolder
                 connection.Open();
                 var query = @"insert into DismissalPetition (targetUsername) values (@targetUsername);";
                 using var cmd = new MySqlCommand(query, connection);
-                cmd.Parameters.AddWithValue("@targetUsername", petition.TargetUserame);
+                cmd.Parameters.AddWithValue("@targetUsername", petition.TargetDriver.Username);
                 cmd.ExecuteNonQuery();
             }
             catch (MySqlException)
