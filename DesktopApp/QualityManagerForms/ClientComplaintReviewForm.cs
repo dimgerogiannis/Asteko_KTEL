@@ -24,7 +24,7 @@ namespace QualityManagerForms
             _complaints = _qualityManager.GetUnckeckedClientComplaints();
 
             foreach (var key in _complaints.Keys)
-                nameCombobox.Items.Add($"{_qualityManager.GetUserFullName(key)} ({_complaints[key][0].TargetUsername})");
+                nameCombobox.Items.Add($"{_qualityManager.GetUserFullName(key)} ({_complaints[key][0].TargetDriver.Username})");
         }
 
         private void NameCombobox_SelectedIndexChanged(object sender, EventArgs e)
@@ -60,7 +60,7 @@ namespace QualityManagerForms
                     infoListview.Items.Add(new ListViewItem(new string[]
                     {
                         category,
-                        _qualityManager.GetUserFullName(complaint.ClientUsername)
+                        complaint.ComplaintClient.GetFullName()
                     }));
                 }
 

@@ -294,7 +294,7 @@ namespace ClassesFolder
                 var query = @"insert into SanitaryComplaint (targetUsername, summary, category, busDriverUsername) values
 	                     (@targetUsername, @summary, @category, @busDriverUsername);";
                 using var cmd = new MySqlCommand(query, connection);
-                cmd.Parameters.AddWithValue("@busDriverUsername", complaint.BusDriverUsername);
+                cmd.Parameters.AddWithValue("@busDriverUsername", complaint.ComplaintDriver.Username);
                 cmd.Parameters.AddWithValue("@summary", complaint.Summary);
 
                 var cat = "";
@@ -312,7 +312,7 @@ namespace ClassesFolder
                 }
 
                 cmd.Parameters.AddWithValue("@category", cat);
-                cmd.Parameters.AddWithValue("@targetUsername", complaint.TargetUsername);
+                cmd.Parameters.AddWithValue("@targetUsername", complaint.TargetClient.Username);
                 cmd.ExecuteNonQuery();
             }
             catch (MySqlException)

@@ -8,12 +8,10 @@ namespace ClassesFolder
 {
     public class Complaint
     {
-        protected string _targetUsername;
         protected string _summary;
 
-        public Complaint(string targetUsername, string summary)
+        public Complaint(string summary)
         {
-            _targetUsername = targetUsername;
             _summary = summary;
         }
     }

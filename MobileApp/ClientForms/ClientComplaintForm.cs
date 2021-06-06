@@ -1,4 +1,5 @@
 ﻿using ClassesFolder;
+using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -41,7 +42,19 @@ namespace Project.ClientForms
         {
             if (complaintListCombobox.SelectedItem == null || describeRichTextbox.Text == "")
             {
-                MessageBox.Show("Παρακαλώ εισάγετε όλα τα απαραίτητα πεδία.", "Σφάλμα", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Παρακαλώ εισάγετε όλα τα απαραίτητα πεδία.", 
+                                "Σφάλμα", 
+                                MessageBoxButtons.OK, 
+                                MessageBoxIcon.Error);
+                return;
+            }
+
+            if (CheckForDuplicateClientComplaint(Functions.GetBusDriverByUsername(_latestItinerary.ResponsibleDriver), _client))
+            {
+                MessageBox.Show("Έχετε ήδη καταχωρήσει παράπονο για τον οδηγό του τελευταίου δρομολογίου για το οποίο ταξιδέψατε.",
+                                "Σφάλμα",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Error);
                 return;
             }
 
@@ -65,16 +78,13 @@ namespace Project.ClientForms
                         break;
                 }
 
-                ClientComplaint complaint = new ClientComplaint
-                (
-                    _latestItinerary.ResponsibleDriver,
-                    false,
-                    describeRichTextbox.Text,
-                    category,
-                    _client.Username
-                );
+                ClientComplaint complaint = new ClientComplaint(Functions.GetBusDriverByUsername(_latestItinerary.ResponsibleDriver),
+                                                                _client,
+                                                                false,
+                                                                describeRichTextbox.Text,
+                                                                category);
 
-                var busDriver = _client.GetBusDriver(_latestItinerary.ResponsibleDriver);
+                var busDriver = Functions.GetBusDriverByUsername(_latestItinerary.ResponsibleDriver);
                 _client.InsertClientComplaint(complaint);
                 busDriver.IncreaseComplaintCounter();
                 busDriver.UpdateComplaintCounter();
@@ -89,17 +99,43 @@ namespace Project.ClientForms
                     }
                 }
 
-                MessageBox.Show("Επιτυχής καταχώρηση παραπόνου.", "Επιτυχία", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Επιτυχής καταχώρηση παραπόνου.", 
+                                "Επιτυχία", 
+                                MessageBoxButtons.OK, 
+                                MessageBoxIcon.Information);
             }
             else
             {
-                MessageBox.Show("Δεν βρέθηκε το τελευταίο δρομολόγιο για το οποίο ταξιδέψατα.", "Σφάλμα", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Δεν βρέθηκε το τελευταίο δρομολόγιο για το οποίο ταξιδέψατα.", 
+                                "Σφάλμα", 
+                                MessageBoxButtons.OK, 
+                                MessageBoxIcon.Error);
             }
         }
 
         private void DescribeRichTextbox_TextChanged(object sender, EventArgs e)
         {
             describeLabel.Text = $"Περιγράψτε με λίγα λόγια τον λόγο καταγγελίας. ({300 - describeRichTextbox.Text.Length})";
+        }
+    
+        public bool CheckForDuplicateClientComplaint(BusDriver targetDriver, Client complaintClient)
+        {
+            using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
+            connection.Open();
+
+            var query = @"select count(*) 
+                          from clientcomplaint 
+                          where targetUsername = @driverUsername and clientUsername = @clientUsername;";
+
+            using var cmd = new MySqlCommand(query, connection);
+
+            cmd.Parameters.AddWithValue("@driverUsername", targetDriver.Username);
+            cmd.Parameters.AddWithValue("@clientUsername", complaintClient.Username);
+
+            using MySqlDataReader reader = cmd.ExecuteReader();
+            reader.Read();
+
+            return reader.GetInt32(0) != 0;
         }
     }
 }

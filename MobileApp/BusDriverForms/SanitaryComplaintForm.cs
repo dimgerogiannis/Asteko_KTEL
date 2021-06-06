@@ -49,13 +49,10 @@ namespace Project.BusDriverForms
                             break;
                     }
 
-                    SanitaryComplaint complaint = new SanitaryComplaint
-                    (
-                        username,
-                        violationDescriptionRichTextbox.Text,
-                        category,
-                        _busDriver.Username
-                    );
+                    SanitaryComplaint complaint = new SanitaryComplaint(Functions.GetClientByUsername(username),
+                                                                        Functions.GetBusDriverByUsername(_busDriver.Username),
+                                                                        violationDescriptionRichTextbox.Text,
+                                                                        category);
 
                     _busDriver.InsertSanitaryComplaintInDatabase(complaint);
 

@@ -26,8 +26,8 @@ namespace ClassesFolder
                 connection.Open();
 
                 var query = @"select targetUsername, summary, category, clientUsername 
-                         from ClientComplaint
-                         where targetUsername = @targetUsername and checked = @checked";
+                             from ClientComplaint
+                             where targetUsername = @targetUsername and checked = @checked";
 
                 using var cmd = new MySqlCommand(query, connection);
                 cmd.Parameters.AddWithValue("@targetUsername", _targetUsername);
@@ -39,27 +39,11 @@ namespace ClassesFolder
 
                 while (reader.Read())
                 {
-                    ClientComplaintCategory category = ClientComplaintCategory.AggresiveBehaviour;
-                    switch (reader.GetString(2))
-                    {
-                        case "rude_bus_driver":
-                            category = ClientComplaintCategory.AggresiveBehaviour;
-                            break;
-                        case "late_for_no_reason":
-                            category = ClientComplaintCategory.LateForNoReason;
-                            break;
-                        case "aggresive_behavior":
-                            category = ClientComplaintCategory.AggresiveBehaviour;
-                            break;
-                        case "aggresive_driving":
-                            category = ClientComplaintCategory.CarelessDriving;
-                            break;
-                        case "driving_rules_violation":
-                            category = ClientComplaintCategory.DrivingRuleViolation;
-                            break;
-                    }
-
-                    complaints.Add(new ClientComplaint(reader.GetString(0), false, reader.GetString(1), category, reader.GetString(3)));
+                    complaints.Add(new ClientComplaint(Functions.GetBusDriverByUsername(reader.GetString(0)),
+                                                       Functions.GetClientByUsername(reader.GetString(3)),
+                                                       false, 
+                                                       reader.GetString(1),
+                                                       Enums.ClientComplaintCategoryFromDatabaseToEnumEquivalant(reader.GetString(2))));
                 }
 
                 return complaints;               

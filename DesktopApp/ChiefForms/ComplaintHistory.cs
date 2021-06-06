@@ -50,9 +50,9 @@ namespace ChiefForms
 
                 complaintsListview.Items.Add(new ListViewItem(new string[]
                 {
-                    _chief.GetUserFullNameFromDatabase(complaint.TargetUsername),
+                    complaint.TargetDriver.GetFullName(),
                     category,
-                    _chief.GetUserFullNameFromDatabase(complaint.ClientUsername)
+                    complaint.ComplaintClient.GetFullName()
                 }));
             }
 
@@ -82,7 +82,7 @@ namespace ChiefForms
                                          MessageBoxButtons.YesNo,
                                          MessageBoxIcon.Question);
             
-            var busDriver = _chief.GetBusDriver(_complaints[0].TargetUsername);
+            var busDriver = _complaints[0].TargetDriver;
 
             if (result == DialogResult.Yes)
             {

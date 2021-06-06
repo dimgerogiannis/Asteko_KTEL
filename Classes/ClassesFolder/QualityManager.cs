@@ -195,19 +195,10 @@ namespace ClassesFolder
                     if (!dictionary.ContainsKey(username))
                         dictionary.Add(username, new List<SanitaryComplaint>());
 
-                    var cat = reader.GetString(2);
-                    SanitaryComplaintCategory category = SanitaryComplaintCategory.CloseDistance;
-                    switch (cat)
-                    {
-                        case "wear_mask_refusal":
-                            category = SanitaryComplaintCategory.WeakMaskRefusal;
-                            break;
-                        case "has_illness_symptoms":
-                            category = SanitaryComplaintCategory.HasIllnessSymptoms;
-                            break;
-                    }
-
-                    dictionary[username].Add(new SanitaryComplaint(username, reader.GetString(1), category, reader.GetString(3)));
+                    dictionary[username].Add(new SanitaryComplaint(Functions.GetClientByUsername(username), 
+                                                                   Functions.GetBusDriverByUsername(reader.GetString(3)),
+                                                                   reader.GetString(1),
+                                                                   Enums.SanitaryComplaintCategoryFromDatabaseToEnumEquivalant(reader.GetString(2))));
 
                 }
 
@@ -246,25 +237,11 @@ namespace ClassesFolder
                     if (!dictionary.ContainsKey(username))
                         dictionary.Add(username, new List<ClientComplaint>());
 
-                    var cat = reader.GetString(2);
-                    ClientComplaintCategory category = ClientComplaintCategory.AggresiveBehaviour;
-                    switch (cat)
-                    {
-                        case "rude_bus_driver":
-                            category = ClientComplaintCategory.Rude;
-                            break;
-                        case "late_for_no_reason":
-                            category = ClientComplaintCategory.LateForNoReason;
-                            break;
-                        case "aggresive_driving":
-                            category = ClientComplaintCategory.CarelessDriving;
-                            break;
-                        case "driving_rules_violation":
-                            category = ClientComplaintCategory.DrivingRuleViolation;
-                            break;
-                    }
-
-                    dictionary[username].Add(new ClientComplaint(username, false, reader.GetString(1), category, reader.GetString(3)));
+                    dictionary[username].Add(new ClientComplaint(Functions.GetBusDriverByUsername(username), 
+                                                                 Functions.GetClientByUsername(reader.GetString(3)), 
+                                                                 false, 
+                                                                 reader.GetString(1), 
+                                                                 Enums.ClientComplaintCategoryFromDatabaseToEnumEquivalant(reader.GetString(2))));
                 }
 
                 return dictionary;

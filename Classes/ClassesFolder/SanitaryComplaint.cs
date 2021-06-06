@@ -9,22 +9,24 @@ namespace ClassesFolder
 {
     public class SanitaryComplaint : Complaint
     {
+        private Client _targetClient;
+        private BusDriver _complaintDriver;
         private SanitaryComplaintCategory _category;
-        private string _busDriverUsername;
 
-        public string TargetUsername => _targetUsername;
+
+        public Client TargetClient;
+        public BusDriver ComplaintDriver;
         public string Summary => _summary;
-
         public SanitaryComplaintCategory Category => _category;
-        public string BusDriverUsername => _busDriverUsername;
 
-        public SanitaryComplaint(string targetUsername, 
+        public SanitaryComplaint(Client targetClient,
+                                 BusDriver complaintDriver,
                                  string summary, 
-                                 SanitaryComplaintCategory category, 
-                                 string busDriverUsername) : base(targetUsername, summary)
+                                 SanitaryComplaintCategory category) : base(summary)
         {
+            _targetClient = targetClient;
+            _complaintDriver = complaintDriver;
             _category = category;
-            _busDriverUsername = busDriverUsername;
         }
     }
 }

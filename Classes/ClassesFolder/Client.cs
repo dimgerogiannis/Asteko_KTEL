@@ -1136,8 +1136,8 @@ namespace ClassesFolder
                 var query = @"insert into ClientComplaint (targetUsername, checked, summary, category, clientUsername) values
                           (@targetUsername, @checked, @summary, @category, @clientUsername);";
                 using var cmd = new MySqlCommand(query, connection);
-                cmd.Parameters.AddWithValue("@clientUsername", complaint.ClientUsername);
-                cmd.Parameters.AddWithValue("@targetUsername", complaint.TargetUsername);
+                cmd.Parameters.AddWithValue("@clientUsername", complaint.ComplaintClient.Username);
+                cmd.Parameters.AddWithValue("@targetUsername", complaint.TargetDriver.Username);
                 cmd.Parameters.AddWithValue("@checked", false);
                 cmd.Parameters.AddWithValue("@summary", complaint.Summary);
                 var category = "";

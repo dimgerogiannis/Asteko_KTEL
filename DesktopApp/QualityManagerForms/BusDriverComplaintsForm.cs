@@ -54,7 +54,7 @@ namespace QualityManagerForms
                     infoListview.Items.Add(new ListViewItem(new string[]
                     {
                         cat,
-                        _qualityManager.GetUserFullName(complaint.BusDriverUsername)
+                        complaint.ComplaintDriver.GetFullName()
                     }));
                 }
             }

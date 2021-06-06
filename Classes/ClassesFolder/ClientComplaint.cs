@@ -6,27 +6,32 @@ namespace ClassesFolder
 {
     public class ClientComplaint : Complaint
     {
+        private BusDriver _targetDriver;
+        private Client _complaintClient;
+
         private ClientComplaintCategory _category;
-        private string _clientUsername;
         private bool _checked;
 
-        public string TargetUsername => _targetUsername;
-        public string Summary => _summary;
 
+        public BusDriver TargetDriver => _targetDriver;
+        public Client ComplaintClient => _complaintClient;
+
+        public string Summary => _summary;
         public ClientComplaintCategory Category => _category;
-        public string ClientUsername => _clientUsername;
         public bool Checked => _checked;
 
-        public ClientComplaint(string targetUsername, 
+        public ClientComplaint(BusDriver targetDriver,
+                               Client complaintClient,
                                bool gotChecked, 
                                string summary, 
-                               ClientComplaintCategory category, 
-                               string clientUsername) : base(targetUsername, summary)
-                            {
-                                _category = category;
-                                _clientUsername = clientUsername;
-                                _checked = false;
-                            }
+                               ClientComplaintCategory category
+                               ) : base(summary)
+        {
+            _targetDriver = targetDriver;
+            _complaintClient = complaintClient;
+            _category = category;
+            _checked = false;
+        }
 
         public void DeleteClientComplaint()
         {
@@ -38,7 +43,7 @@ namespace ClassesFolder
                               where targetUsername = @targetUsername;";
 
                 using var cmd = new MySqlCommand(query, connection);
-                cmd.Parameters.AddWithValue("@targetUsername", _targetUsername);
+                cmd.Parameters.AddWithValue("@targetUsername", _targetDriver.Username);
                 cmd.ExecuteNonQuery();
             }
             catch (MySqlException)
@@ -63,9 +68,9 @@ namespace ClassesFolder
                           where targetUsername = @targetUsername and clientUsername = @clientUsername;";
 
                 using var cmd = new MySqlCommand(query, connection);
-                cmd.Parameters.AddWithValue("@targetUsername", _targetUsername);
+                cmd.Parameters.AddWithValue("@targetUsername", _targetDriver.Username);
                 cmd.Parameters.AddWithValue("@checked", true);
-                cmd.Parameters.AddWithValue("@clientUsername", _clientUsername);
+                cmd.Parameters.AddWithValue("@clientUsername", _complaintClient.Username);
                 cmd.ExecuteNonQuery();
             }
             catch (MySqlException)

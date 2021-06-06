@@ -6,6 +6,15 @@ namespace ClassesFolder
 {
     public static class Enums
     {
+        public enum Specialization
+        {
+            Client,
+            BusDriver,
+            Chief,
+            QualityManager,
+            Distributor
+        }
+
         public enum BusSize
         {
             SMALL,
@@ -81,6 +90,43 @@ namespace ClassesFolder
                     return SanitaryComplaintCategory.HasIllnessSymptoms;
                 default:
                     return SanitaryComplaintCategory.WeakMaskRefusal;
+            }
+        }
+        #endregion
+
+        #region Specialization
+        public static string SpecializationFromEnumToDatabaseEquivalant(Specialization spec)
+        {
+            switch (spec)
+            {
+                case Specialization.BusDriver:
+                    return "bus_driver";
+                case Specialization.Chief:
+                    return "chief";
+                case Specialization.Client:
+                    return "client";
+                case Specialization.Distributor:
+                    return "itinerary_distributor";
+                default:
+                    return "quality_manager";
+            }
+        }
+
+        public static Specialization SpecializationFromDatabaseToEnumEquivalant(string spec)
+        {
+            switch (spec)
+            {
+                case "bus_driver":
+                    return Specialization.BusDriver;
+                case "chief":
+                    return Specialization.Chief;
+                case "client":
+                    return Specialization.Client;
+                case "itinerary_distributor":
+                    return Specialization.Distributor;
+                default:
+                    return Specialization.QualityManager;
+
             }
         }
         #endregion
