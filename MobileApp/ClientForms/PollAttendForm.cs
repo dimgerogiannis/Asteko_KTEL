@@ -77,19 +77,19 @@ namespace Project.ClientForms
 
                 if (firstChoiceRadioButton.Checked)
                 {
-                    poll.IncreaseVotes(poll.Choices[firstChoiceRadioButton.Text], _client.Username);
+                    poll.IncreaseVotes(poll.Choices[firstChoiceRadioButton.Text], _client);
                 }
                 else if (secondChoiceRadioButton.Checked)
                 {
-                    poll.IncreaseVotes(poll.Choices[secondChoiceRadioButton.Text], _client.Username);
+                    poll.IncreaseVotes(poll.Choices[secondChoiceRadioButton.Text], _client);
                 }
                 else if (thirdChoiceRadioButton.Checked)
                 {
-                    poll.IncreaseVotes(poll.Choices[thirdChoiceRadioButton.Text], _client.Username);
+                    poll.IncreaseVotes(poll.Choices[thirdChoiceRadioButton.Text], _client);
                 }
                 else
                 {
-                    poll.IncreaseVotes(poll.Choices[forthChoiceRadioButton.Text], _client.Username);
+                    poll.IncreaseVotes(poll.Choices[forthChoiceRadioButton.Text], _client);
                 }
 
                 MessageBox.Show("Επιτυχής καταχώρηση ψήφου!", "Επιτυχία", MessageBoxButtons.OK, MessageBoxIcon.Information);

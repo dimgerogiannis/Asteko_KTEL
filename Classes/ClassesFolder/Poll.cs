@@ -107,7 +107,7 @@ namespace ClassesFolder
             }
         }
 
-        public void IncreaseVotes(int pollChoiceID, string clientUsername)
+        public void IncreaseVotes(int pollChoiceID, Client client)
         {
             try
             {
@@ -116,7 +116,7 @@ namespace ClassesFolder
                 var query = @"insert into PollVote values (@pollChoiceID, @clientUsername)";
                 using var cmd = new MySqlCommand(query, connection);
                 cmd.Parameters.AddWithValue("@pollChoiceID", pollChoiceID);
-                cmd.Parameters.AddWithValue("@clientUsername", clientUsername);
+                cmd.Parameters.AddWithValue("@clientUsername", client.Username);
                 cmd.ExecuteNonQuery();
             }
             catch (MySqlException)
