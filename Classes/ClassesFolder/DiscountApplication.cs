@@ -11,7 +11,7 @@ namespace ClassesFolder
 {
     public class DiscountApplication
     {
-        private string _applicantUsername;
+        private Client _applicantClient;
 #nullable enable
         private DateTime? _applicationDatetime;
         private string? _possibleRejectionReason;
@@ -22,8 +22,7 @@ namespace ClassesFolder
         private Status _status;
         private List<File>? _files;
 
-        public string ApplicantUsername => _applicantUsername;
-
+        public Client ApplicantClient => _applicantClient;
         public DateTime? ApplicationDatetime => _applicationDatetime;
         public string? PossibleRejectionReason => _possibleRejectionReason;
 
@@ -34,7 +33,7 @@ namespace ClassesFolder
 #nullable enable
         public List<File>? Files => _files;
 
-        public DiscountApplication(string applicantUsername, 
+        public DiscountApplication(Client applicantClient, 
                                    DateTime? applicationDatetime, 
                                    string? possibleRejectionReason , 
                                    Category category, 
@@ -42,16 +41,16 @@ namespace ClassesFolder
                                    string phoneNumber, 
                                    Status status, 
                                    List<File>? files)
-                                {
-                                    _applicantUsername = applicantUsername;
-                                    _applicationDatetime = applicationDatetime;
-                                    _possibleRejectionReason = possibleRejectionReason;
-                                    _category = category;
-                                    _taxIdentificationNumber = taxIdentificationNumber;
-                                    _phoneNumber = phoneNumber;
-                                    _status = status;
-                                    _files = files;
-                                }
+            {
+                _applicantClient = applicantClient;
+                _applicationDatetime = applicationDatetime;
+                _possibleRejectionReason = possibleRejectionReason;
+                _category = category;
+                _taxIdentificationNumber = taxIdentificationNumber;
+                _phoneNumber = phoneNumber;
+                _status = status;
+                _files = files;
+            }
 
         public void SetAsAccepted()
         {
@@ -69,7 +68,7 @@ namespace ClassesFolder
                 using var cmd = new MySqlCommand(query, connection);
 
                 cmd.Parameters.AddWithValue("@status", "accepted");
-                cmd.Parameters.AddWithValue("@username", ApplicantUsername);
+                cmd.Parameters.AddWithValue("@username", _applicantClient.Username);
                 cmd.ExecuteNonQuery();
             }
             catch (MySqlException)
@@ -98,7 +97,7 @@ namespace ClassesFolder
                 using var cmd = new MySqlCommand(query, connection);
 
                 cmd.Parameters.AddWithValue("@status", "rejected");
-                cmd.Parameters.AddWithValue("@username", ApplicantUsername);
+                cmd.Parameters.AddWithValue("@username", ApplicantClient.Username);
                 cmd.Parameters.AddWithValue("@reason", _possibleRejectionReason);
                 cmd.ExecuteNonQuery();
             }

@@ -768,26 +768,10 @@ namespace ClassesFolder
                           (current_timestamp(), @category, @phoneNumber, 'pending', @taxID, @clientUsername);";
                 using var cmd = new MySqlCommand(query, connection);
 
-                string category = "student";
-                switch (application.Category)
-                {
-                    case 0:
-                        category = "student";
-                        break;
-                    case (Category)1:
-                        category = "soldier";
-                        break;
-                    case (Category)2:
-                        category = "dissabilities";
-                        break;
-                    case (Category)3:
-                        category = "low_income";
-                        break;
-                }
-                cmd.Parameters.AddWithValue("@category", category);
+                cmd.Parameters.AddWithValue("@category", Enums.CategoryFromEnumToDatabaseEquivalant(application.Category));
                 cmd.Parameters.AddWithValue("@phoneNumber", application.PhoneNumber);
                 cmd.Parameters.AddWithValue("@taxID", application.TaxIdentificationNumber);
-                cmd.Parameters.AddWithValue("@clientUsername", application.ApplicantUsername);
+                cmd.Parameters.AddWithValue("@clientUsername", application.ApplicantClient.Username);
                 cmd.ExecuteNonQuery();
             }
             catch (MySqlException)
@@ -949,17 +933,14 @@ namespace ClassesFolder
                             break;
                     }
 
-                    discountApplications.Add(new DiscountApplication
-                    (
-                        _username,
-                        applicationDatetime,
-                        possibleRejectionReason,
-                        cat,
-                        taxID,
-                        phoneNumber,
-                        st,
-                        null
-                    ));
+                    discountApplications.Add(new DiscountApplication(this,
+                                                                     applicationDatetime,
+                                                                     possibleRejectionReason,
+                                                                     cat,
+                                                                     taxID,
+                                                                     phoneNumber,
+                                                                     st,
+                                                                     null));
                 }
 
                 return discountApplications;

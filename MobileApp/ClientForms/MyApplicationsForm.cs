@@ -48,7 +48,7 @@ namespace Project.ClientForms
                         statusLabel.Text = $"Κατάσταση αίτησης: Εκκρεμής";
                         break;
                     case Status.Accepted:
-                        statusLabel.Text = $"Κατάσταση αίτησης: Αποδέχτηκε";
+                        statusLabel.Text = $"Κατάσταση αίτησης: Εγκρίθηκε";
                         deleteButton.Enabled = true;
                         break;
                     case Status.Rejected:

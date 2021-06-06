@@ -56,7 +56,7 @@ namespace ClassesFolder
                             break;
                     }
 
-                    applications.Add(new DiscountApplication(reader.GetString(1),
+                    applications.Add(new DiscountApplication(Functions.GetClientByUsername(reader.GetString(1)),
                                                              reader.GetDateTime(2),
                                                              null,
                                                              category,
@@ -141,37 +141,6 @@ namespace ClassesFolder
                                 MessageBoxIcon.Error);
                 Application.Exit();
                 return "";
-            }
-        }
-
-        public Client GetClient(string username)
-        {
-            try
-            {
-                using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
-                connection.Open();
-                var statement = @"select name, surname
-                                from user
-                                where username = @username;";
-                using var cmd = new MySqlCommand(statement, connection);
-
-                cmd.Parameters.AddWithValue("@username", username);
-                using MySqlDataReader reader = cmd.ExecuteReader();
-                reader.Read();
-
-                return new Client(username,
-                                    reader.GetString(0),
-                                    reader.GetString(1),
-                                    "Client");
-            }
-            catch (MySqlException)
-            {
-                MessageBox.Show("Προκλήθηκε σφάλμα κατά την σύνδεση με τον server. Η εφαρμογή θα τερματιστεί!",
-                                "Σφάλμα",
-                                MessageBoxButtons.OK,
-                                MessageBoxIcon.Error);
-                Application.Exit();
-                return null;
             }
         }
 

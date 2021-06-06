@@ -107,17 +107,14 @@ namespace Project.ClientForms
                 foreach (var key in _files.Keys)
                     files.Add(new File(key, _files[key]));
 
-                DiscountApplication application = new DiscountApplication
-                (
-                    _client.Username,
-                    null,
-                    null,
-                    category,
-                    taxIDTextbox.Text,
-                    phoneTextbox.Text,
-                    Status.Pending,
-                    files
-                );
+                DiscountApplication application = new DiscountApplication(_client,
+                                                                          null,
+                                                                          null,
+                                                                          category,
+                                                                          taxIDTextbox.Text,
+                                                                          phoneTextbox.Text,
+                                                                          Status.Pending,
+                                                                          files);
 
                 var result = MessageBox.Show("Θέλετε να καταχωρήσετε την αίτηση σας;", "Ερώτηση", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 

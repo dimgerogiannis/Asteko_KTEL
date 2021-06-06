@@ -26,7 +26,7 @@ namespace QualityManagerForms
             _applications = _qualityManager.GetUncheckedDiscountApplications();
             foreach (var application in _applications)
             {
-                namesCombobox.Items.Add(_qualityManager.GetUserFullName(application.ApplicantUsername));
+                namesCombobox.Items.Add(application.ApplicantClient.GetFullName());
             }
         }
 
@@ -80,7 +80,7 @@ namespace QualityManagerForms
 
                 if (result == DialogResult.Yes)
                 {
-                    var client = _qualityManager.GetClient(_applications[namesCombobox.SelectedIndex].ApplicantUsername);
+                    var client = _applications[namesCombobox.SelectedIndex].ApplicantClient;
                     client.UpdateDiscount(_applications[namesCombobox.SelectedIndex].Category);
                     _applications[namesCombobox.SelectedIndex].SetAsAccepted();
                 }
