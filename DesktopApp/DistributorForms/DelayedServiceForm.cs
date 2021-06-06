@@ -36,7 +36,7 @@ namespace DistributorForms
             _requests = _distributor
                 .GetLastMinuteTravelRequests()
                 .OrderBy(x=> x.TravelDatetime)
-                .OrderBy(y => y.TravelBusLine)
+                .OrderBy(y => y.TravelBusLine.Number)
                 .OrderBy(y => y.ApplicationDate)
                 .ToList();
 
@@ -44,7 +44,7 @@ namespace DistributorForms
 
             _clients = new List<Client>();
             foreach (var request in _requests)
-                _clients.Add(_distributor.GetClient(request.ClientUsername));
+                _clients.Add(_distributor.GetClient(request.ApplicantClient.Username));
 
             DisplayLastMinuteTravelRequests();
         }
@@ -58,8 +58,8 @@ namespace DistributorForms
                 {
                     request.ApplicationDate,
                     request.TravelDatetime.ToString("HH:mm:ss dd-MM-yyyy"),
-                    request.TravelBusLine.ToString(),
-                    _clients.Find(x=>x.Username == request.ClientUsername).GetFullName()
+                    request.TravelBusLine.Number.ToString(),
+                    _clients.Find(x => x.Username == request.ApplicantClient.Username).GetFullName()
                 }));
             }
         }
@@ -248,7 +248,7 @@ namespace DistributorForms
         {
             return _requests
                 .Select(x => x)
-                .Where(x => x.TravelBusLine == _selectedBusLine && x.TravelDatetime == DateTime.Parse(_selectedTravelDatetime))
+                .Where(x => x.TravelBusLine.Number == _selectedBusLine && x.TravelDatetime == DateTime.Parse(_selectedTravelDatetime))
                 .ToList();
         }
 
@@ -269,12 +269,12 @@ namespace DistributorForms
 
                 _distributor.InsertItineraryInDatabase(itinerary);
 
-                var client = _distributor.GetClient(_requests[_selectedRequestIndex].ClientUsername);
+                var client = _distributor.GetClient(_requests[_selectedRequestIndex].ApplicantClient.Username);
 
                 Ticket ticket = new Ticket(itinerary, 
                                            false, 
                                            false, 
-                                           _requests[_selectedRequestIndex].ClientUsername);
+                                           _requests[_selectedRequestIndex].ApplicantClient.Username);
 
                 client.AddToCollection(ticket);
                 client.AutomaticTicketPurchase(_distributor.GetMaxItineraryID());
@@ -286,18 +286,18 @@ namespace DistributorForms
 
                 var requests = _requests
                     .Select(x => x)
-                    .Where(x => x.TravelBusLine == _selectedBusLine && x.TravelDatetime == DateTime.Parse(_selectedTravelDatetime))
+                    .Where(x => x.TravelBusLine.Number == _selectedBusLine && x.TravelDatetime == DateTime.Parse(_selectedTravelDatetime))
                     .Take(--availableSeats)
                     .ToList();
 
                 foreach (var request in requests)
                 {
-                    client = _distributor.GetClient(request.ClientUsername);
+                    client = request.ApplicantClient;
 
                     ticket = new Ticket(itinerary, 
                                         false, 
                                         false, 
-                                        request.ClientUsername);
+                                        client.Username);
 
                     client.AddToCollection(ticket);
                     client.AutomaticTicketPurchase(_distributor.GetMaxItineraryID());

@@ -59,7 +59,7 @@ namespace Project.ClientForms
             }
 
             if (_client.ReservationList.Any(x => 
-                x.TravelBusLine == int.Parse(lineNumberCombobox.SelectedItem.ToString()) && 
+                x.TravelBusLine.Number == int.Parse(lineNumberCombobox.SelectedItem.ToString()) && 
                 x.TravelDatetime.ToString("yyyy-MM-dd HH:mm:ss") == dateTimePicker.Value.ToString($"yyyy-MM-dd {timeCombobox.SelectedItem}:00")))
             {
                 MessageBox.Show("Έχετε ήδη κάνει κράτηση θέσης για αυτό το δρομολόγιο.", 
@@ -133,10 +133,10 @@ namespace Project.ClientForms
 
                     if (!flag)
                     {
-                        LastMinuteTravelRequest lastMinuteTravelRequest = new LastMinuteTravelRequest(_client.Username,
+                        LastMinuteTravelRequest lastMinuteTravelRequest = new LastMinuteTravelRequest(_client,
                                                                                                       DateTime.Today.ToString("yyyy-MM-dd"),
-                                                                                                      DateTime.Parse($"{dateTimePicker.Value.ToShortDateString()} {timeCombobox.SelectedItem}"),
-                                                                                                      int.Parse(lineNumberCombobox.SelectedItem.ToString()),
+                                                                                                      DateTime.Parse($"{dateTimePicker.Value.ToString("yyyy-MM-dd")} {timeCombobox.SelectedItem}:00"),
+                                                                                                      Functions.GetBusLine(int.Parse(lineNumberCombobox.SelectedItem.ToString())),
                                                                                                       Status.Pending);
 
                         _client.InsertLastMinuteTravelRequestToDatabase(lastMinuteTravelRequest);
@@ -171,7 +171,7 @@ namespace Project.ClientForms
                         Reservation reservation = new Reservation(_client, 
                                                                   DateTime.Now,
                                                                   DateTime.Parse($"{dateTimePicker.Value.ToShortDateString()} {timeCombobox.SelectedItem}"),
-                                                                  int.Parse(lineNumberCombobox.SelectedItem.ToString()),
+                                                                  Functions.GetBusLine(int.Parse(lineNumberCombobox.SelectedItem.ToString())),
                                                                   0m);
                         _client.InsertReservationToDatabase(reservation,
                                                             0m);
@@ -205,7 +205,7 @@ namespace Project.ClientForms
                             Reservation reservation = new Reservation(_client,
                                                                       DateTime.Now,
                                                                       DateTime.Parse($"{dateTimePicker.Value.ToShortDateString()} {timeCombobox.SelectedItem}"),
-                                                                      int.Parse(lineNumberCombobox.SelectedItem.ToString()),
+                                                                      Functions.GetBusLine(int.Parse(lineNumberCombobox.SelectedItem.ToString())),
                                                                       ticketPrice);
 
                             _client.PayForTicket(ticketPrice);

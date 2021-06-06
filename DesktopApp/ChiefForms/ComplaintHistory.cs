@@ -86,7 +86,7 @@ namespace ChiefForms
 
             if (result == DialogResult.Yes)
             {
-                if (!busDriver.HasAssignedItineraryForNextWeek(DateTime.Today.ToString("yyyy-MM-dd")))
+                if (!busDriver.HasAssignedItineraryForNextWeek())
                 {
                     _chief.DeleteClientComplaints(_complaints);
                     _chief.DeletePaidLeaveApplications(_chief.GetPaidLeaveApplications(_petition.TargetDriver.Username));

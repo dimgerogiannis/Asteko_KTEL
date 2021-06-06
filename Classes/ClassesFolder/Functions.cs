@@ -75,5 +75,70 @@ namespace ClassesFolder
                 return null;
             }
         }
+
+        public static BusLine GetBusLine(int number)
+        {
+            try
+            {
+                using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
+                connection.Open();
+
+                var query = @"select duration 
+                          from busline 
+                          where number = @number;";
+
+                using var cmd = new MySqlCommand(query, connection);
+                cmd.Parameters.AddWithValue("@number", number);
+
+                using MySqlDataReader reader = cmd.ExecuteReader();
+
+                reader.Read();
+                return new BusLine(number, reader.GetInt32(0), GetBusLineStops(number));
+            }
+            catch (MySqlException)
+            {
+                MessageBox.Show("Προκλήθηκε σφάλμα κατά την σύνδεση με τον server. Η εφαρμογή θα τερματιστεί!",
+                                 "Σφάλμα",
+                                 MessageBoxButtons.OK,
+                                 MessageBoxIcon.Error);
+                Application.Exit();
+                return null;
+            }
+        }
+
+        public static List<string> GetBusLineStops(int number)
+        {
+            try
+            {
+                using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
+                connection.Open();
+
+                var query = @"select stopName 
+                              from stop 
+                              where number = @number;";
+
+                using var cmd = new MySqlCommand(query, connection);
+                cmd.Parameters.AddWithValue("@number", number);
+                using MySqlDataReader reader = cmd.ExecuteReader();
+
+                List<string> stops = new List<string>();
+
+                while (reader.Read())
+                {
+                    stops.Add(reader.GetString(0));
+                }
+
+                return stops;
+            }
+            catch (MySqlException)
+            {
+                MessageBox.Show("Προκλήθηκε σφάλμα κατά την σύνδεση με τον server. Η εφαρμογή θα τερματιστεί!",
+                                 "Σφάλμα",
+                                 MessageBoxButtons.OK,
+                                 MessageBoxIcon.Error);
+                Application.Exit();
+                return null;
+            }
+        }
     }
 }

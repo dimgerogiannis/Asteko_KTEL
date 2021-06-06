@@ -168,7 +168,7 @@ namespace ClassesFolder
                     reservations.Add(new Reservation(Functions.GetClientByUsername(reader.GetString(0)), 
                                                      reader.GetDateTime(1), 
                                                      reader.GetDateTime(2), 
-                                                     reader.GetInt32(3),
+                                                     Functions.GetBusLine(reader.GetInt32(3)),
                                                      reader.GetDecimal(4)));
                 }
 
@@ -428,9 +428,9 @@ namespace ClassesFolder
                 var statement = @"delete from reservation
                               where clientUsername = @username and travelDatetime = @travelDatetime and travelBusLine = @travelBusLine;";
                 using var cmd = new MySqlCommand(statement, connection);
-                cmd.Parameters.AddWithValue("@username", reservation.ReserveringClient);
+                cmd.Parameters.AddWithValue("@username", reservation.ReserveringClient.Username);
                 cmd.Parameters.AddWithValue("@travelDatetime", reservation.TravelDatetime.ToString("yyyy-MM-dd HH:mm:ss"));
-                cmd.Parameters.AddWithValue("@travelBusLine", reservation.TravelBusLine);
+                cmd.Parameters.AddWithValue("@travelBusLine", reservation.TravelBusLine.Number);
                 cmd.ExecuteNonQuery();
             }
             catch (MySqlException)
@@ -460,10 +460,10 @@ namespace ClassesFolder
 
                 while (reader.Read())
                 {
-                    lastMinuteRequests.Add(new LastMinuteTravelRequest(reader.GetString(0),
+                    lastMinuteRequests.Add(new LastMinuteTravelRequest(Functions.GetClientByUsername(reader.GetString(0)),
                                                                        reader.GetDateTime(1).ToString("dd-MM-yyyy"),
                                                                        reader.GetDateTime(2),
-                                                                       reader.GetInt32(3),
+                                                                       Functions.GetBusLine(reader.GetInt32(3)),
                                                                        Status.Pending));
                 }
 

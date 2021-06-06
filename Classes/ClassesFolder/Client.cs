@@ -305,7 +305,7 @@ namespace ClassesFolder
                     _reservationList.Add(new Reservation(this, 
                                                          reader.GetDateTime(1), 
                                                          reader.GetDateTime(2), 
-                                                         reader.GetInt32(3),
+                                                         Functions.GetBusLine(reader.GetInt32(3)),
                                                          reader.GetDecimal(4)));
                 }
             }
@@ -569,7 +569,7 @@ namespace ClassesFolder
 
                 using var cmd = new MySqlCommand(query, connection);
                 cmd.Parameters.AddWithValue("@travelDatetime", reservation.TravelDatetime.ToString("yyyy-MM-dd HH:mm:ss"));
-                cmd.Parameters.AddWithValue("@travelBusLine", reservation.TravelBusLine);
+                cmd.Parameters.AddWithValue("@travelBusLine", reservation.TravelBusLine.Number);
                 cmd.Parameters.AddWithValue("@chargedPrice", chargedPrice);
                 cmd.Parameters.AddWithValue("@clientUsername", _username);
                 cmd.ExecuteNonQuery();
@@ -645,10 +645,10 @@ namespace ClassesFolder
                           (@applicationDate, @travelDatetime, @travelBusLine, @status, @clientUsername);";
                 using var cmd = new MySqlCommand(query, connection);
                 cmd.Parameters.AddWithValue("@applicationDate", request.ApplicationDate);
-                cmd.Parameters.AddWithValue("@travelDatetime", request.TravelDatetime);
-                cmd.Parameters.AddWithValue("@travelBusLine", request.TravelBusLine);
+                cmd.Parameters.AddWithValue("@travelDatetime", request.TravelDatetime.ToString("yyyy-MM-dd HH:mm:ss"));
+                cmd.Parameters.AddWithValue("@travelBusLine", request.TravelBusLine.Number);
                 cmd.Parameters.AddWithValue("@status", "pending");
-                cmd.Parameters.AddWithValue("@clientUsername", request.ClientUsername);
+                cmd.Parameters.AddWithValue("@clientUsername", request.ApplicantClient.Username);
                 cmd.ExecuteNonQuery();
             }
             catch (MySqlException)
@@ -1497,8 +1497,8 @@ namespace ClassesFolder
                 connection.Open();
 
                 var query = @"select applicationDate, travelDatetime, travelBusLine, status
-                          from LastMinuteTravelRequest
-                          where clientUsername = @username;";
+                              from LastMinuteTravelRequest
+                              where clientUsername = @username;";
 
                 using var cmd = new MySqlCommand(query, connection);
                 cmd.Parameters.AddWithValue("@username", _username);
@@ -1508,24 +1508,11 @@ namespace ClassesFolder
 
                 while (reader.Read())
                 {
-                    var status = reader.GetString(3);
-                    Status _status = Status.Pending;
-
-                    switch (status)
-                    {
-                        case "accepted":
-                            _status = Status.Accepted;
-                            break;
-                        case "rejected":
-                            _status = Status.Rejected;
-                            break;
-                    }
-
-                    lastMinuteTravelRequests.Add(new LastMinuteTravelRequest(_username,
+                    lastMinuteTravelRequests.Add(new LastMinuteTravelRequest(this,
                                                                              reader.GetDateTime(0).ToString("dd-MM-yyyy"),
                                                                              reader.GetDateTime(1),
-                                                                             reader.GetInt32(2),
-                                                                             _status));
+                                                                             Functions.GetBusLine(reader.GetInt32(2)),
+                                                                             Enums.StatusFromDatabaseToEnumEquivalant(reader.GetString(3))));
                 }
 
                 return lastMinuteTravelRequests;
@@ -1554,7 +1541,7 @@ namespace ClassesFolder
                 using var cmd = new MySqlCommand(query, connection);
                 cmd.Parameters.AddWithValue("@username", _username);
                 cmd.Parameters.AddWithValue("@travelDatetime", request.TravelDatetime.ToString("yyyy-MM-dd HH:mm:ss"));
-                cmd.Parameters.AddWithValue("@travelBusLine", request.TravelBusLine);
+                cmd.Parameters.AddWithValue("@travelBusLine", request.TravelBusLine.Number);
                 cmd.ExecuteNonQuery();
             }
             catch (MySqlException)

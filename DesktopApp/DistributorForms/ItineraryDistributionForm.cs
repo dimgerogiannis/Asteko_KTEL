@@ -40,7 +40,7 @@ namespace DistributorForms
 
             foreach (var reservation in _reservations)
             {
-                var key = $"{reservation.TravelDatetime.ToString("HH:mm:ss dd-MM-yyyy")}{reservation.TravelBusLine}";
+                var key = $"{reservation.TravelDatetime.ToString("HH:mm:ss dd-MM-yyyy")}{reservation.TravelBusLine.Number}";
                 if (!_dictionary.ContainsKey(key))
                 {
                     _dictionary.Add(key, new List<Reservation>());
@@ -72,7 +72,7 @@ namespace DistributorForms
                 rereservationsListview.Items.Add(new ListViewItem(new string[]
                 {
                     item[0].TravelDatetime.ToString("HH:mm:ss dd-MM-yyyy"),
-                    item[0].TravelBusLine.ToString(),
+                    item[0].TravelBusLine.Number.ToString(),
                     _dictionary[key].Count.ToString()
                 }));
             }
@@ -353,7 +353,7 @@ namespace DistributorForms
 
                         _distributor.DeleteReservation(servedClient);
                          _reservations.Remove(servedClient);
-                        _dictionary[$"{targetDatetimeAsString}{servedClient.TravelBusLine}"].Remove(servedClient);
+                        _dictionary[$"{targetDatetimeAsString}{servedClient.TravelBusLine.Number}"].Remove(servedClient);
                     }
 
                     FillReservationListview();

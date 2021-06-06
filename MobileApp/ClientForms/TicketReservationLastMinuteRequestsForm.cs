@@ -69,7 +69,7 @@ namespace ClientForms
                 infoListview.Items.Add(new ListViewItem(new string[]
                 {
                     reservation.TravelDatetime.ToString("HH:mm:ss dd-MM-yyyy"),
-                    reservation.TravelBusLine.ToString(),
+                    reservation.TravelBusLine.Number.ToString(),
                     "-"
                 }));
 
@@ -96,7 +96,7 @@ namespace ClientForms
                 infoListview.Items.Add(new ListViewItem(new string[]
                 {
                     lastMinuteTravelRequest.TravelDatetime.ToString("HH:mm:ss dd-MM-yyyy"),
-                    lastMinuteTravelRequest.TravelBusLine.ToString(),
+                    lastMinuteTravelRequest.TravelBusLine.Number.ToString(),
                     status
                 }));
             }

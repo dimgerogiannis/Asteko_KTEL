@@ -10,28 +10,28 @@ namespace ClassesFolder
 
     public class LastMinuteTravelRequest
     {
-        private string _clientUsername;
+        private Client _applicantClient;
         private string _applicationDate;
-        private DateTime _travelDatetime;
-        private int _travelBusLine;
+        private DateTime _wantedDatetime;
+        private BusLine _wantedBusLine;
         private Status _status;
 
-        public string ClientUsername => _clientUsername;
+        public Client ApplicantClient => _applicantClient;
         public string ApplicationDate => _applicationDate;
-        public DateTime TravelDatetime => _travelDatetime;
-        public int TravelBusLine => _travelBusLine;
+        public DateTime TravelDatetime => _wantedDatetime;
+        public BusLine TravelBusLine => _wantedBusLine;
         public Status Status => _status;
 
-        public LastMinuteTravelRequest(string clientUsername, 
+        public LastMinuteTravelRequest(Client applicantClient, 
                                        string applicationDate, 
                                        DateTime travelDatetime, 
-                                       int travelBusLine, 
+                                       BusLine travelBusLine, 
                                        Status status)
         {
-            _clientUsername = clientUsername;
+            _applicantClient = applicantClient;
             _applicationDate = applicationDate;
-            _travelDatetime = travelDatetime;
-            _travelBusLine = travelBusLine;
+            _wantedDatetime = travelDatetime;
+            _wantedBusLine = travelBusLine;
             _status = status;
         }
     }

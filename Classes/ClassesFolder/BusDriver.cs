@@ -623,18 +623,17 @@ namespace ClassesFolder
             }
         }
 
-        public bool HasAssignedItineraryForNextWeek(string startingDate)
+        public bool HasAssignedItineraryForNextWeek()
         {
             try
             {
                 using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
                 connection.Open();
                 var query = @"select count(*) 
-                          from itinerary 
-                          where busDriverUsername = @username and travelDatetime >= @startingDate;";
+                              from itinerary 
+                              where busDriverUsername = @username and travelDatetime >= current_timestamp();";
                 using var cmd = new MySqlCommand(query, connection);
                 cmd.Parameters.AddWithValue("@username", _username);
-                cmd.Parameters.AddWithValue("@startingDate", startingDate);
                 using MySqlDataReader reader = cmd.ExecuteReader();
                 reader.Read();
 

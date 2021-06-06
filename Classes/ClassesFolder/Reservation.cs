@@ -11,19 +11,19 @@ namespace ClassesFolder
         private Client _reservingClient;
         private DateTime _reservationDatetime;
         private DateTime _travelDatetime;
-        private int _travelBusLine;
+        private BusLine _travelBusLine;
         private decimal _chargedPrice;
 
         public Client ReserveringClient => _reservingClient;
         public DateTime ReservationDatetime => _reservationDatetime;
         public DateTime TravelDatetime => _travelDatetime;
-        public int TravelBusLine => _travelBusLine;
+        public BusLine TravelBusLine => _travelBusLine;
         public decimal ChargedPrice => _chargedPrice;
 
         public Reservation(Client reservingClient, 
                            DateTime reservationDatetime, 
                            DateTime travelDatetime, 
-                           int travelBusLine,
+                           BusLine travelBusLine,
                            decimal chargedPrice)
         {
             _reservingClient = reservingClient;
