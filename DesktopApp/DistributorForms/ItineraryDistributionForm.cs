@@ -115,22 +115,25 @@ namespace DistributorForms
 
                 var busDrivers = _distributor.GetBusDrivers();
                 var duration = _busLines.Find(x => x.Number == busLineNumberCombobox.SelectedIndex).Duration;
+                
+                _hour = availableStartingHoursCombobox.SelectedItem.ToString();
+                _date = dateTimePicker.Value.ToString("yyyy-MM-dd");
 
                 busDrivers = busDrivers
                     .Select(x => x)
-                    .Where(x => !x.IsOnPaidLeave(dateTimePicker.Value.ToString("yyyy-MM-dd")) && 
-                                x.IsAvailableOnHour(dateTimePicker.Value.ToString("yyyy-MM-dd"), 
-                                                    availableStartingHoursCombobox.SelectedItem.ToString(),
+                    .Where(x => !x.IsOnPaidLeave(_date) && 
+                                x.IsAvailableOnHour(_date, 
+                                                    _hour,
                                                     duration) &&
-                                !x.IsLedToOverWorking(duration, dateTimePicker.Value.ToString("yyyy-MM-dd")))
+                                !x.IsLedToOverWorking(duration, _date))
                     .ToList();
 
                 var buses = _distributor.GetBuses();
 
                 buses = buses
                     .Select(x => x)
-                    .Where(x => x.IsAvailableOnHour(dateTimePicker.Value.ToString("yyyy-MM-dd"),
-                                                    availableStartingHoursCombobox.SelectedItem.ToString(),
+                    .Where(x => x.IsAvailableOnHour(_date,
+                                                    _hour,
                                                     duration))
                     .ToList();
 
@@ -141,17 +144,15 @@ namespace DistributorForms
 
                 var recBusDrivers = busDrivers
                     .Select(x => x)
-                    .Where(x => x.IsRecommended(dateTimePicker.Value.ToString("yyyy-MM-dd"), availableStartingHoursCombobox.SelectedItem.ToString(), startStop, endStop, duration))
+                    .Where(x => x.IsRecommended(_date, _hour, startStop, endStop, duration))
                     .ToList();
 
 
                 var recBuses = buses
                     .Select(x => x)
-                    .Where(x => x.IsRecommended(dateTimePicker.Value.ToString("yyyy-MM-dd"), availableStartingHoursCombobox.SelectedItem.ToString(), startStop, endStop, duration))
+                    .Where(x => x.IsRecommended(_date, _hour, startStop, endStop, duration))
                     .ToList();
 
-                _hour = availableStartingHoursCombobox.SelectedItem.ToString();
-                _date = dateTimePicker.Value.ToString("yyyy-MM-dd");
 
                 if (recBusDrivers.Count > 0 && recBuses.Count > 0)
                 {
@@ -161,13 +162,13 @@ namespace DistributorForms
                                                  MessageBoxIcon.Question);
                     if (result == DialogResult.Yes)
                     {
-                        _busDrivers = recBusDrivers.OrderBy(x => x.GetAvailableWorkingHours(dateTimePicker.Value.ToString("yyyy-MM-dd"))).ToList();
+                        _busDrivers = recBusDrivers.OrderBy(x => x.GetAvailableWorkingHours(_date)).ToList();
                         foreach (var busDriver in _busDrivers)
                         {
                             recommendedDriversListview.Items.Add(new ListViewItem(new string[]
                             {
                                 $"{busDriver.Name} {busDriver.Surname}",
-                                (busDriver.GetAvailableWorkingHours(dateTimePicker.Value.ToString("yyyy-MM-dd"))).ToString("#.##")
+                                (busDriver.GetAvailableWorkingHours(_date)).ToString("#.##")
                             }));
                         }
 
@@ -202,9 +203,9 @@ namespace DistributorForms
 
                 busDrivers = busDrivers
                     .Select(x => x)
-                    .Where(x => x.MeetsRequirements(dateTimePicker.Value.ToString("yyyy-MM-dd"),
-                                                      availableStartingHoursCombobox.SelectedItem.ToString(),
-                                                      duration))
+                    .Where(x => x.MeetsRequirements(_date,
+                                                    _hour,
+                                                    duration))
                     .ToList();
 
                 if (sizeCombobox.SelectedItem != null)
@@ -222,18 +223,20 @@ namespace DistributorForms
 
                     buses = buses
                         .Select(x => x)
-                        .Where(x => x.MeetsRequirements(dateTimePicker.Value.ToString("yyyy-MM-dd"), availableStartingHoursCombobox.SelectedItem.ToString(), duration) &&
+                        .Where(x => x.MeetsRequirements(_date, _hour, duration) &&
                                     x.Size == size)
                         .ToList();
                 }
 
-                _busDrivers = busDrivers.OrderByDescending(x => x.GetAvailableWorkingHours(dateTimePicker.Value.ToString("yyyy-MM-dd"))).ToList();
+                _busDrivers = busDrivers
+                    .OrderByDescending(x => x.GetAvailableWorkingHours(_date))
+                    .ToList();
                 foreach (var busDriver in _busDrivers)
                 {
                     recommendedDriversListview.Items.Add(new ListViewItem(new string[]
                     {
                                 $"{busDriver.Name} {busDriver.Surname}",
-                                (busDriver.GetAvailableWorkingHours(dateTimePicker.Value.ToString("yyyy-MM-dd"))).ToString("#.##")
+                                (busDriver.GetAvailableWorkingHours(_date)).ToString("#.##")
                     }));
                 }
 
@@ -243,13 +246,13 @@ namespace DistributorForms
                     int size = -1;
                     switch (bus.Size)
                     {
-                        case Enums.BusSize.SMALL:
+                        case BusSize.SMALL:
                             size = 2;
                             break;
-                        case Enums.BusSize.MEDIUM:
+                        case BusSize.MEDIUM:
                             size = 3;
                             break;
-                        case Enums.BusSize.LARGE:
+                        case BusSize.LARGE:
                             size = 5;
                             break;
                     }
@@ -309,7 +312,6 @@ namespace DistributorForms
                         break;
                 }
 
-
                 Itinerary itinerary = new Itinerary(_distributor.FindMaxItineraryID(),
                                                     targetDatetime,
                                                     busDriverUsername,
@@ -366,6 +368,11 @@ namespace DistributorForms
                                 MessageBoxButtons.OK,
                                 MessageBoxIcon.Error);
             }
+        }
+        private void BusLineNumberCombobox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            recommendedBusesListview.Items.Clear();
+            recommendedDriversListview.Items.Clear();
         }
 
         public int GetReservationIndex(DateTime targetDatetime)
@@ -428,10 +435,5 @@ namespace DistributorForms
             return dates;
         }
 
-        private void BusLineNumberCombobox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            recommendedBusesListview.Items.Clear();
-            recommendedDriversListview.Items.Clear();
-        }
     }
 }
