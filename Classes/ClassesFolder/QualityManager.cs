@@ -39,31 +39,14 @@ namespace ClassesFolder
 
                 while (reader.Read())
                 {
-                    int id = reader.GetInt32(0);
-                    var cat = reader.GetString(3);
-
-                    Category category = Category.Student;
-                    switch (cat)
-                    {
-                        case "soldier":
-                            category = Category.Soldier;
-                            break;
-                        case "low_income":
-                            category = Category.LowIncome;
-                            break;
-                        case "dissabilities":
-                            category = Category.DissabilityIssues;
-                            break;
-                    }
-
                     applications.Add(new DiscountApplication(Functions.GetClientByUsername(reader.GetString(1)),
                                                              reader.GetDateTime(2),
                                                              null,
-                                                             category,
+                                                             Enums.CategoryFromDatabaseToEnumEquivalant(reader.GetString(3)),
                                                              reader.GetString(4),
                                                              reader.GetString(5),
                                                              Status.Pending,
-                                                             GetDiscountApplicationFiles(id)));
+                                                             GetDiscountApplicationFiles(reader.GetInt32(0))));
                 }
 
                 return applications;

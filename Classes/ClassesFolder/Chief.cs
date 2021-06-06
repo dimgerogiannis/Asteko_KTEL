@@ -76,26 +76,7 @@ namespace ClassesFolder
                               where category = @category;";
                 using var cmd = new MySqlCommand(query, connection);
                 cmd.Parameters.AddWithValue("@percentage", percentage);
-
-                var cat = "";
-
-                switch (category)
-                {
-                    case Category.Student:
-                        cat = "student";
-                        break;
-                    case Category.Soldier:
-                        cat = "soldier";
-                        break;
-                    case Category.LowIncome:
-                        cat = "low_income";
-                        break;
-                    case Category.DissabilityIssues:
-                        cat = "dissabilities";
-                        break;
-                }
-
-                cmd.Parameters.AddWithValue("@category", cat);
+                cmd.Parameters.AddWithValue("@category", Enums.CategoryFromEnumToDatabaseEquivalant(category));
                 cmd.ExecuteNonQuery();
             }
             catch (MySqlException)

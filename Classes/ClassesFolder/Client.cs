@@ -758,49 +758,16 @@ namespace ClassesFolder
                 {
                     DateTime applicationDatetime = reader.GetDateTime(0);
                     string possibleRejectionReason = reader.IsDBNull(1) ? null : reader.GetString(1);
-                    string category = reader.GetString(2);
                     string phoneNumber = reader.GetInt64(3).ToString();
-                    string status = reader.GetString(4);
                     string taxID = reader.GetInt64(5).ToString();
-
-                    Category cat = Category.Student;
-                    switch (category)
-                    {
-                        case "student":
-                            cat = Category.Student;
-                            break;
-                        case "soldier":
-                            cat = Category.Soldier;
-                            break;
-                        case "low_income":
-                            cat = Category.LowIncome;
-                            break;
-                        case "dissabilities":
-                            cat = Category.DissabilityIssues;
-                            break;
-                    }
-
-                    Status st = Status.Pending;
-                    switch (status)
-                    {
-                        case "pending":
-                            st = Status.Pending;
-                            break;
-                        case "accepted":
-                            st = Status.Accepted;
-                            break;
-                        case "rejected":
-                            st = Status.Rejected;
-                            break;
-                    }
 
                     discountApplications.Add(new DiscountApplication(this,
                                                                      applicationDatetime,
                                                                      possibleRejectionReason,
-                                                                     cat,
+                                                                     Enums.CategoryFromDatabaseToEnumEquivalant(reader.GetString(2)),
                                                                      taxID,
                                                                      phoneNumber,
-                                                                     st,
+                                                                     Enums.StatusFromDatabaseToEnumEquivalant(reader.GetString(4)),
                                                                      null));
                 }
 
@@ -1134,23 +1101,6 @@ namespace ClassesFolder
         {
             try
             {
-                string cat = "";
-                switch (category)
-                {
-                    case Category.DissabilityIssues:
-                        cat = "dissabilities";
-                        break;
-                    case Category.LowIncome:
-                        cat = "low_income";
-                        break;
-                    case Category.Soldier:
-                        cat = "soldier";
-                        break;
-                    case Category.Student:
-                        cat = "student";
-                        break;
-                }
-
                 using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
                 connection.Open();
 
@@ -1160,7 +1110,7 @@ namespace ClassesFolder
 
                 using var cmd = new MySqlCommand(query, connection);
 
-                cmd.Parameters.AddWithValue("@category", cat);
+                cmd.Parameters.AddWithValue("@category", Enums.CategoryFromEnumToDatabaseEquivalant(category));
                 using MySqlDataReader reader = cmd.ExecuteReader();
                 reader.Read();
 
