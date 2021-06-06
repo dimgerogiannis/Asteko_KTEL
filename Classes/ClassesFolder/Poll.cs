@@ -36,10 +36,10 @@ namespace ClassesFolder
             _question = question;
             _expired = expired;
 
-            GetPollChoices();
+            GetChoices();
         }
 
-        private void GetPollChoices()
+        private void GetChoices()
         {
             try
             {
@@ -107,7 +107,7 @@ namespace ClassesFolder
             }
         }
 
-        public void IncrementPollChoice(int pollChoiceID, string clientUsername)
+        public void IncreaseVotes(int pollChoiceID, string clientUsername)
         {
             try
             {

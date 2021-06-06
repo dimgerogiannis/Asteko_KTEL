@@ -69,7 +69,7 @@ namespace ClientForms
                 infoListview.Items.Add(new ListViewItem(new string[]
                 {
                     reservation.TravelDatetime.ToString("HH:mm:ss dd-MM-yyyy"),
-                    reservation.ResBusLine.ToString(),
+                    reservation.TravelBusLine.ToString(),
                     "-"
                 }));
 

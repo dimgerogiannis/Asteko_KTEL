@@ -453,7 +453,7 @@ namespace ClassesFolder
                 using var cmd = new MySqlCommand(statement, connection);
                 cmd.Parameters.AddWithValue("@username", reservation.ReserveringClient);
                 cmd.Parameters.AddWithValue("@travelDatetime", reservation.TravelDatetime.ToString("yyyy-MM-dd HH:mm:ss"));
-                cmd.Parameters.AddWithValue("@travelBusLine", reservation.ResBusLine);
+                cmd.Parameters.AddWithValue("@travelBusLine", reservation.TravelBusLine);
                 cmd.ExecuteNonQuery();
             }
             catch (MySqlException)

@@ -78,7 +78,7 @@ namespace Project.ClientForms
 
             var sum = transactionList.Sum(x => x.Price);
 
-            var montlyCardPrice = _client.GetMontlyCardPrice();
+            var montlyCardPrice = _client.GetMonthlyCardPrice();
             if (IsBiggerThan(sum, montlyCardPrice) && 
                 !_client.MonthlyCard)
             {

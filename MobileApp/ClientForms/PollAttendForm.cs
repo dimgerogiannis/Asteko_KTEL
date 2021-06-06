@@ -77,24 +77,24 @@ namespace Project.ClientForms
 
                 if (firstChoiceRadioButton.Checked)
                 {
-                    poll.IncrementPollChoice(poll.Choices[firstChoiceRadioButton.Text], _client.Username);
+                    poll.IncreaseVotes(poll.Choices[firstChoiceRadioButton.Text], _client.Username);
                 }
                 else if (secondChoiceRadioButton.Checked)
                 {
-                    poll.IncrementPollChoice(poll.Choices[secondChoiceRadioButton.Text], _client.Username);
+                    poll.IncreaseVotes(poll.Choices[secondChoiceRadioButton.Text], _client.Username);
                 }
                 else if (thirdChoiceRadioButton.Checked)
                 {
-                    poll.IncrementPollChoice(poll.Choices[thirdChoiceRadioButton.Text], _client.Username);
+                    poll.IncreaseVotes(poll.Choices[thirdChoiceRadioButton.Text], _client.Username);
                 }
                 else
                 {
-                    poll.IncrementPollChoice(poll.Choices[forthChoiceRadioButton.Text], _client.Username);
+                    poll.IncreaseVotes(poll.Choices[forthChoiceRadioButton.Text], _client.Username);
                 }
 
                 MessageBox.Show("Επιτυχής καταχώρηση ψήφου!", "Επιτυχία", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                _client.SetAsUnavailable(_client.AvailablePolls.Find(x => x.Title == pollTitle.SelectedItem.ToString()));
+                _client.SetPollAsUnavailable(_client.AvailablePolls.Find(x => x.Title == pollTitle.SelectedItem.ToString()));
                 pollTitle.Items.Remove(pollTitle.SelectedItem);
 
                 pollQuestionRichTextbox.Text = "";

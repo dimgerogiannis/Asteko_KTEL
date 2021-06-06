@@ -59,7 +59,7 @@ namespace Project.ClientForms
             }
 
             if (_client.ReservationList.Any(x => 
-                x.ResBusLine == int.Parse(lineNumberCombobox.SelectedItem.ToString()) && 
+                x.TravelBusLine == int.Parse(lineNumberCombobox.SelectedItem.ToString()) && 
                 x.TravelDatetime.ToString("yyyy-MM-dd HH:mm:ss") == dateTimePicker.Value.ToString($"yyyy-MM-dd {timeCombobox.SelectedItem}:00")))
             {
                 MessageBox.Show("Έχετε ήδη κάνει κράτηση θέσης για αυτό το δρομολόγιο.", 

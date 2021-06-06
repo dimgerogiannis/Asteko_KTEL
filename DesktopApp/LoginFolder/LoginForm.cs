@@ -42,9 +42,20 @@ namespace LoginFolder
                     }
                     else if (existsInDatabase.Item2 == "itinerary_distributor")
                     {
-                        DistributorForm form = new DistributorForm(FindItineraryDistributionManagerInfo(usernameTextbox.Text));
-                        form.ShowDialog();
-                        
+                        var distributor = FindItineraryDistributionManagerInfo(usernameTextbox.Text);
+
+                        if (distributor.IsResponsibleForWeek)
+                        {
+                            DistributorForm form = new DistributorForm(FindItineraryDistributionManagerInfo(usernameTextbox.Text));
+                            form.ShowDialog();
+                        }
+                        else
+                        {
+                            MessageBox.Show("Δεν είσαστε υπέυθυνος κατανομής δρομολογίων για αυτή την εβδομάδα οπότε δεν μπορείτε να συνδεθείτε στο σύστημα.",
+                                            "Σφάλμα",
+                                            MessageBoxButtons.OK,
+                                            MessageBoxIcon.Error);
+                        }
                     }
                     else
                     {

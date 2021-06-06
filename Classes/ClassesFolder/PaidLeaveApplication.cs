@@ -14,17 +14,17 @@ namespace ClassesFolder
         private string _applicantDriver;
         private string _applicationDatetime;
         private string _reason;
-        private string _rejectionReason;
+        private string _possibleRejectionReason;
         private string _wantedDatetime;
         private Status _status;
 
         public string ApplicantDriver => _applicantDriver;
         public string ApplicationDatetime => _applicationDatetime; 
         public string Reason => _reason;
-        public string RejectionReason
+        public string PossibleRejectionReason
         {
-            get { return _rejectionReason; }
-            set { _rejectionReason = value; }
+            get { return _possibleRejectionReason; }
+            set { _possibleRejectionReason = value; }
         }
         public string WantedDatetime => _wantedDatetime;
         public Status Status
@@ -43,7 +43,7 @@ namespace ClassesFolder
             _applicantDriver = applicantDriver;
             _applicationDatetime = applicationDatetime;
             _reason = reason;
-            _rejectionReason = rejectionReason;
+            _possibleRejectionReason = rejectionReason;
             _wantedDatetime = wantedDatetime;
             _status = status;
         }
@@ -99,7 +99,7 @@ namespace ClassesFolder
                               where busDriverUsername = @username and requestedDate = @requestedDate;";
                 using var cmd = new MySqlCommand(query, connection);
 
-                cmd.Parameters.AddWithValue("@rejectionReason", _rejectionReason);
+                cmd.Parameters.AddWithValue("@rejectionReason", _possibleRejectionReason);
                 cmd.Parameters.AddWithValue("@username", _applicantDriver);
                 cmd.Parameters.AddWithValue("@requestedDate", DateTime.Parse(_wantedDatetime).ToString("yyyy-MM-dd"));
                 cmd.ExecuteNonQuery();

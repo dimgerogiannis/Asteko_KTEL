@@ -16,7 +16,7 @@ namespace ClassesFolder
         public string ReserveringClient => _reservingClient;
         public DateTime ReservationDatetime => _reservationDatetime;
         public DateTime TravelDatetime => _travelDatetime;
-        public int ResBusLine => _travelBusLine;
+        public int TravelBusLine => _travelBusLine;
 
         public Reservation(string reservingClient, 
                            DateTime reservationDatetime, 

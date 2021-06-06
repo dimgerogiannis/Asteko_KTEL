@@ -95,8 +95,8 @@ namespace ClassesFolder
                     itineraries.Add(new Itinerary(reader.GetInt32(0),
                                                   reader.GetDateTime(1),
                                                   reader.GetString(2),
-                                                  GetBusLineData(reader.GetInt32(3)),
-                                                  GetBusData(reader.GetInt32(4)),
+                                                  GetBusLine(reader.GetInt32(3)),
+                                                  GetBus(reader.GetInt32(4)),
                                                   ItineraryStatus.NoDelayed,
                                                   reader.GetInt32(5)));
                 }
@@ -114,7 +114,7 @@ namespace ClassesFolder
             }
         }
 
-        private Bus GetBusData(int busID)
+        private Bus GetBus(int busID)
         {
             try
             {
@@ -156,7 +156,7 @@ namespace ClassesFolder
             }
         }
 
-        private BusLine GetBusLineData(int number)
+        private BusLine GetBusLine(int number)
         {
             try
             {
@@ -345,8 +345,8 @@ namespace ClassesFolder
                     return new Itinerary(reader.GetInt32(0),
                                          reader.GetDateTime(1),
                                          reader.GetString(2),
-                                         GetBusLineData(reader.GetInt32(3)),
-                                         GetBusData(reader.GetInt32(4)),
+                                         GetBusLine(reader.GetInt32(3)),
+                                         GetBus(reader.GetInt32(4)),
                                          ItineraryStatus.NoDelayed,
                                          reader.GetInt32(5));
                 }
@@ -691,7 +691,7 @@ namespace ClassesFolder
                 return false;
             }
         }
-    
+
         public bool IsLedToOverWorking(int duration, string date)
         {
             using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
@@ -712,7 +712,7 @@ namespace ClassesFolder
 
             return reader.GetInt32(1) + duration > 300;
         }
-   
+
         public int GetAvailableWorkingHours(string date)
         {
             try
@@ -746,7 +746,7 @@ namespace ClassesFolder
             }
         }
 
-        public bool HasItineraryEndTimeAndNoNextItineraryOnSpecificTime(string date, string startingHour, string targetStop)
+        public bool HasItineraryOnEndTimeAndNoNextItineraryOnSpecificTime(string date, string startingHour, string targetStop)
         {
             try
             {
@@ -813,7 +813,7 @@ namespace ClassesFolder
                 return false;
             }
         }
-    
+
         public bool MeetsRequirements(string date, string startingHour, int duration)
         {
             try
@@ -850,7 +850,7 @@ namespace ClassesFolder
 
         public bool IsRecommended(string date, string startingHour, string startStop, string endStop, int duration)
         {
-            if (HasItineraryEndTimeAndNoNextItineraryOnSpecificTime(date, startingHour, startStop) &&
+            if (HasItineraryOnEndTimeAndNoNextItineraryOnSpecificTime(date, startingHour, startStop) &&
                 DoesntHaveItineraryOnWantedTimeInterval(date, startingHour, duration, endStop))
             {
                 return true;

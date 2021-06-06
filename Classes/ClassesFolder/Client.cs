@@ -13,10 +13,10 @@ namespace ClassesFolder
     public class Client : User
     {
         private decimal _balance;
-        private bool _montlyCard;
+        private bool _monthlyCard;
         private int _discount;
         private List<Ticket> _ticketList;
-        private List<Transaction> _transactionList;
+        private List<Transaction> _transactionHistory;
 
         private List<Ticket> _usableTicketList;
 
@@ -29,7 +29,7 @@ namespace ClassesFolder
             get { return _balance; }
             set { _balance = value; }
         }
-        public bool MonthlyCard => _montlyCard;
+        public bool MonthlyCard => _monthlyCard;
         public int Discount => _discount;
 
         public List<Ticket> TicketList
@@ -39,8 +39,8 @@ namespace ClassesFolder
         }
         public List<Transaction> TransactionList
         {
-            get { return _transactionList; }
-            set { _transactionList = value; }
+            get { return _transactionHistory; }
+            set { _transactionHistory = value; }
         }
 
         public List<Ticket> UsableTicketList
@@ -83,7 +83,7 @@ namespace ClassesFolder
 
                 reader.Read();
                 _balance = reader.GetDecimal(0);
-                _montlyCard = reader.GetBoolean(1);
+                _monthlyCard = reader.GetBoolean(1);
                 _discount = reader.GetInt32(2);
             }
             catch (MySqlException)
@@ -317,10 +317,10 @@ namespace ClassesFolder
 
         public void GetTransactions()
         {
-            _transactionList = new List<Transaction>();
+            _transactionHistory = new List<Transaction>();
             foreach (var ticket in _ticketList)
             {
-                _transactionList.Add(GetTransaction(ticket));
+                _transactionHistory.Add(GetTransaction(ticket));
             }
         }
 
@@ -565,7 +565,7 @@ namespace ClassesFolder
 
                 using var cmd = new MySqlCommand(query, connection);
                 cmd.Parameters.AddWithValue("@travelDatetime", reservation.TravelDatetime.ToString("yyyy-MM-dd HH:mm:ss"));
-                cmd.Parameters.AddWithValue("@travelBusLine", reservation.ResBusLine);
+                cmd.Parameters.AddWithValue("@travelBusLine", reservation.TravelBusLine);
                 cmd.Parameters.AddWithValue("@chargedPrice", chargedPrice);
                 cmd.Parameters.AddWithValue("@clientUsername", _username);
                 cmd.ExecuteNonQuery();
@@ -631,7 +631,7 @@ namespace ClassesFolder
             }
         }
 
-        public void InsertLastMinuteTravelRequestToDatabase(LastMinuteTravelRequest lastMinuteTravelRequest)
+        public void InsertLastMinuteTravelRequestToDatabase(LastMinuteTravelRequest request)
         {
             try
             {
@@ -640,11 +640,11 @@ namespace ClassesFolder
                 var query = @"insert into LastMinuteTravelRequest (applicationDate, travelDatetime, travelBusLine, status, clientUsername) values
                           (@applicationDate, @travelDatetime, @travelBusLine, @status, @clientUsername);";
                 using var cmd = new MySqlCommand(query, connection);
-                cmd.Parameters.AddWithValue("@applicationDate", lastMinuteTravelRequest.ApplicationDate);
-                cmd.Parameters.AddWithValue("@travelDatetime", lastMinuteTravelRequest.TravelDatetime);
-                cmd.Parameters.AddWithValue("@travelBusLine", lastMinuteTravelRequest.TravelBusLine);
+                cmd.Parameters.AddWithValue("@applicationDate", request.ApplicationDate);
+                cmd.Parameters.AddWithValue("@travelDatetime", request.TravelDatetime);
+                cmd.Parameters.AddWithValue("@travelBusLine", request.TravelBusLine);
                 cmd.Parameters.AddWithValue("@status", "pending");
-                cmd.Parameters.AddWithValue("@clientUsername", lastMinuteTravelRequest.ClientUsername);
+                cmd.Parameters.AddWithValue("@clientUsername", request.ClientUsername);
                 cmd.ExecuteNonQuery();
             }
             catch (MySqlException)
@@ -1259,7 +1259,7 @@ namespace ClassesFolder
             }
         }
 
-        public int GetMontlyCardPrice()
+        public int GetMonthlyCardPrice()
         {
             try
             {
@@ -1446,7 +1446,7 @@ namespace ClassesFolder
             }
         }
 
-        public void SetAsUnavailable(Poll poll)
+        public void SetPollAsUnavailable(Poll poll)
         {
             _availablePolls.Remove(poll);
         }
@@ -1554,7 +1554,7 @@ namespace ClassesFolder
                 return null;
             }
         }
-    
+
         public void DeleteLastMinuteTravelRequest(LastMinuteTravelRequest request)
         {
             try

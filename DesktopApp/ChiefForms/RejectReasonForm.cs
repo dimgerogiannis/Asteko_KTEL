@@ -26,7 +26,7 @@ namespace ChiefForms
             if (reasonRichTextbox.Text != "")
             {
                 _application.SetAsRejected();
-                _application.RejectionReason = reasonRichTextbox.Text;
+                _application.PossibleRejectionReason = reasonRichTextbox.Text;
                 _application.UpdatePaidLeaveApplcationStatus();
                 _application.InsertPaidLeaveApplicationRejectionReason();
                 this.Close();
