@@ -67,7 +67,7 @@ namespace Project.BusDriverForms
 
                 if (result == DialogResult.Yes)
                 {
-                    PaidLeaveApplication application = new PaidLeaveApplication(_busDriver.Username,
+                    PaidLeaveApplication application = new PaidLeaveApplication(_busDriver,
                                                                                 DateTime.Now.ToString("yyyy-MM-dd"),
                                                                                 reasonRichTextbox.Text,
                                                                                 "",

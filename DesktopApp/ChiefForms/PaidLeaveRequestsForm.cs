@@ -27,7 +27,7 @@ namespace ChiefForms
             {
                 applicationsListview.Items.Add(new ListViewItem(new string[]
                 {
-                    application.ApplicantDriver,
+                    application.ApplicantDriver.GetFullName(),
                     application.ApplicationDatetime,
                     application.WantedDatetime
                 }));
@@ -64,7 +64,7 @@ namespace ChiefForms
                     application.SetAsAccepted();
                     application.UpdatePaidLeaveApplcationStatus();
 
-                    var busDriver = _chief.GetBusDriver(application.ApplicantDriver);
+                    var busDriver = application.ApplicantDriver;
                     busDriver.SetAsUnavailable(application.WantedDatetime);
                     busDriver.DecreaseYearlyPaidDates();
                 }

@@ -119,7 +119,7 @@ namespace Project.ClientForms
                             _client.AutomaticTicketPurchase(itinerary.ID);
                             _client.PayForTicket(price);
 
-                            _client.AddToCollection(new Ticket(_client.GetItinerary($"{dateTimePicker.Value.ToString("yyyy-MM-dd")} {timeCombobox.SelectedItem}:00", lineNumberCombobox.SelectedItem.ToString()), 
+                            _client.AddToCollection(new Ticket(itinerary, 
                                                                false, 
                                                                false, 
                                                                _client.Username));
@@ -132,11 +132,12 @@ namespace Project.ClientForms
 
                     if (!flag)
                     {
-                        LastMinuteTravelRequest lastMinuteTravelRequest = new LastMinuteTravelRequest(_client,
-                                                                                                      DateTime.Today.ToString("yyyy-MM-dd"),
-                                                                                                      DateTime.Parse($"{dateTimePicker.Value.ToString("yyyy-MM-dd")} {timeCombobox.SelectedItem}:00"),
-                                                                                                      Functions.GetBusLine(int.Parse(lineNumberCombobox.SelectedItem.ToString())),
-                                                                                                      Status.Pending);
+                        LastMinuteTravelRequest lastMinuteTravelRequest = 
+                            new LastMinuteTravelRequest(_client,
+                                                        DateTime.Today.ToString("yyyy-MM-dd"),
+                                                        DateTime.Parse($"{dateTimePicker.Value.ToString("yyyy-MM-dd")} {timeCombobox.SelectedItem}:00"),
+                                                        Functions.GetBusLine(int.Parse(lineNumberCombobox.SelectedItem.ToString())),
+                                                        Status.Pending);
 
                         _client.InsertLastMinuteTravelRequestToDatabase(lastMinuteTravelRequest);
 

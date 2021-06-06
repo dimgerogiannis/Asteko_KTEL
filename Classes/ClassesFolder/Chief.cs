@@ -368,7 +368,7 @@ namespace ClassesFolder
 
                 while (reader.Read())
                 {
-                    applications.Add(new PaidLeaveApplication(reader.GetString(0),
+                    applications.Add(new PaidLeaveApplication(Functions.GetBusDriverByUsername(reader.GetString(0)),
                                                               reader.GetDateTime(2).ToString("dd-MM-yyyy"),
                                                               reader.GetString(1),
                                                               "",
@@ -480,12 +480,12 @@ namespace ClassesFolder
                 List<PaidLeaveApplication> applications = new List<PaidLeaveApplication>();
                 while (reader.Read())
                 {
-                    applications.Add(new PaidLeaveApplication(reader.GetString(0),
-                                                                  reader.GetDateTime(2).ToString("dd-MM-yyyy"),
-                                                                  reader.GetString(1),
-                                                                  "",
-                                                                  reader.GetDateTime(3).ToString("dd-MM-yyyy"),
-                                                                  Status.Pending));
+                    applications.Add(new PaidLeaveApplication(Functions.GetBusDriverByUsername(reader.GetString(0)),
+                                                              reader.GetDateTime(2).ToString("dd-MM-yyyy"),
+                                                              reader.GetString(1),
+                                                              "",
+                                                              reader.GetDateTime(3).ToString("dd-MM-yyyy"),
+                                                              Status.Pending));
                 }
 
                 return applications;

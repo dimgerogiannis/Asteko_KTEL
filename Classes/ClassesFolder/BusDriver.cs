@@ -437,7 +437,7 @@ namespace ClassesFolder
 	                      (@busDriverUsername, @reason, @applicationDate, @status, @requestedDate);";
 
                 using var cmd = new MySqlCommand(query, connection);
-                cmd.Parameters.AddWithValue("@busDriverUsername", application.ApplicantDriver);
+                cmd.Parameters.AddWithValue("@busDriverUsername", application.ApplicantDriver.Username);
                 cmd.Parameters.AddWithValue("@reason", application.Reason);
                 cmd.Parameters.AddWithValue("@applicationDate", application.ApplicationDatetime);
                 cmd.Parameters.AddWithValue("@status", "pending");
@@ -510,7 +510,7 @@ namespace ClassesFolder
                             break;
                     }
 
-                    applications.Add(new PaidLeaveApplication(_username,
+                    applications.Add(new PaidLeaveApplication(this,
                                                               reader.GetDateTime(2).ToString("dd-MM-yyyy"),
                                                               reader.GetString(0),
                                                               reader.IsDBNull(1) ? "" : reader.GetString(1),

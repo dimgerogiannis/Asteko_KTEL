@@ -111,6 +111,8 @@ namespace ChiefForms
             }
             else
             {
+                _chief.DeleteClientComplaints(_complaints);
+                _petition.DeleteDismissalPetition();
                 busDriver.ResetComplaintsCounter();
 
                 this.Close();
