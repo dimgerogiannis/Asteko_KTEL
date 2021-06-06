@@ -343,7 +343,7 @@ namespace DistributorForms
 
                     foreach (var servedClient in servedClients)
                     {
-                        var client = servedClient.ReserveringClient;
+                        var client = servedClient.ReservingClient;
                         var ticket = new Ticket(itinerary, false, false, client.Username);
 
                         client.AddToCollection(ticket);

@@ -14,7 +14,7 @@ namespace ClassesFolder
         private BusLine _travelBusLine;
         private decimal _chargedPrice;
 
-        public Client ReserveringClient => _reservingClient;
+        public Client ReservingClient => _reservingClient;
         public DateTime ReservationDatetime => _reservationDatetime;
         public DateTime TravelDatetime => _travelDatetime;
         public BusLine TravelBusLine => _travelBusLine;

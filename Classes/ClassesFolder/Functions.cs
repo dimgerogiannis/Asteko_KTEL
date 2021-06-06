@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows.Forms;
+using static ClassesFolder.Enums;
 
 namespace ClassesFolder
 {
@@ -129,6 +130,36 @@ namespace ClassesFolder
                 }
 
                 return stops;
+            }
+            catch (MySqlException)
+            {
+                MessageBox.Show("Προκλήθηκε σφάλμα κατά την σύνδεση με τον server. Η εφαρμογή θα τερματιστεί!",
+                                 "Σφάλμα",
+                                 MessageBoxButtons.OK,
+                                 MessageBoxIcon.Error);
+                Application.Exit();
+                return null;
+            }
+        }
+
+        public static Bus GetBus(int busID)
+        {
+            try
+            {
+                using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
+                connection.Open();
+
+                var query = @"select size 
+                              from bus 
+                              where busID = @busID;";
+
+                using var cmd = new MySqlCommand(query, connection);
+                cmd.Parameters.AddWithValue("@busID", busID);
+                using MySqlDataReader reader = cmd.ExecuteReader();
+
+                reader.Read();
+
+                return new Bus(busID, Enums.BusSizeFromDatabaseToEnumEquivalant(reader.GetString(0)));
             }
             catch (MySqlException)
             {

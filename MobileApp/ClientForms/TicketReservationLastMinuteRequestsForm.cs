@@ -66,13 +66,14 @@ namespace ClientForms
         {
             infoListview.Items.Clear();
             foreach (var reservation in _client.ReservationList)
+            {
                 infoListview.Items.Add(new ListViewItem(new string[]
                 {
                     reservation.TravelDatetime.ToString("HH:mm:ss dd-MM-yyyy"),
                     reservation.TravelBusLine.Number.ToString(),
                     "-"
                 }));
-
+            }
         }
 
         private void FillLastMinuteTravelRequests()
