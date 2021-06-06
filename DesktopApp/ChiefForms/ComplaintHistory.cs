@@ -86,7 +86,7 @@ namespace ChiefForms
 
             if (result == DialogResult.Yes)
             {
-                if (!busDriver.HasAssignedItineraryForNextWeek(NextMonday()))
+                if (!busDriver.HasAssignedItineraryForNextWeek(DateTime.Today.ToString("yyyy-MM-dd")))
                 {
                     _chief.DeleteClientComplaints(_complaints);
                     _chief.DeletePaidLeaveApplications(_chief.GetPaidLeaveApplications(_petition.TargetDriver.Username));
@@ -115,19 +115,6 @@ namespace ChiefForms
 
                 this.Close();
             }
-        }
-
-        private string NextMonday()
-        {
-            var current = DateTime.Now;
-            while (current.DayOfWeek != DayOfWeek.Sunday)
-            {
-                current = current.AddDays(1);
-            }
-
-            current = current.AddDays(1);
-
-            return current.ToString("yyyy-MM-dd");
         }
     }
 }

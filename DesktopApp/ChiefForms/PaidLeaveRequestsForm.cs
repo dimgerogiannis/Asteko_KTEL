@@ -66,7 +66,7 @@ namespace ChiefForms
 
                     var busDriver = _chief.GetBusDriver(application.ApplicantDriver);
                     busDriver.SetAsUnavailable(application.WantedDatetime);
-                    busDriver.DecreasePaidYearlyDates();
+                    busDriver.DecreaseYearlyPaidDates();
                 }
                 else
                 {

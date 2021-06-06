@@ -168,10 +168,11 @@ namespace Project.ClientForms
                     if (result == DialogResult.Yes)
                     {
                         // Γίνεται reservation για δρομολόγιο της επόμενης εβδομάδας
-                        Reservation reservation = new Reservation(_client.Username, 
+                        Reservation reservation = new Reservation(_client, 
                                                                   DateTime.Now,
                                                                   DateTime.Parse($"{dateTimePicker.Value.ToShortDateString()} {timeCombobox.SelectedItem}"),
-                                                                  int.Parse(lineNumberCombobox.SelectedItem.ToString()));
+                                                                  int.Parse(lineNumberCombobox.SelectedItem.ToString()),
+                                                                  0m);
                         _client.InsertReservationToDatabase(reservation,
                                                             0m);
 
@@ -201,10 +202,11 @@ namespace Project.ClientForms
                             _client.PayForTicket(ticketPrice);
 
                             // Γίνεται reservation για δρομολόγιο της επόμενης εβδομάδας
-                            Reservation reservation = new Reservation(_client.Username,
-                                                                  DateTime.Now,
-                                                                  DateTime.Parse($"{dateTimePicker.Value.ToShortDateString()} {timeCombobox.SelectedItem}"),
-                                                                  int.Parse(lineNumberCombobox.SelectedItem.ToString()));
+                            Reservation reservation = new Reservation(_client,
+                                                                      DateTime.Now,
+                                                                      DateTime.Parse($"{dateTimePicker.Value.ToShortDateString()} {timeCombobox.SelectedItem}"),
+                                                                      int.Parse(lineNumberCombobox.SelectedItem.ToString()),
+                                                                      ticketPrice);
 
                             _client.PayForTicket(ticketPrice);
                             _client.InsertReservationToDatabase(reservation,

@@ -233,7 +233,7 @@ namespace DistributorForms
             this.panel1.Controls.Add(this.busLineNumberLabel);
             this.panel1.Location = new System.Drawing.Point(12, 12);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(953, 978);
+            this.panel1.Size = new System.Drawing.Size(950, 978);
             this.panel1.TabIndex = 13;
             // 
             // createItineraryButton
@@ -251,7 +251,7 @@ namespace DistributorForms
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.ClientSize = new System.Drawing.Size(953, 1002);
+            this.ClientSize = new System.Drawing.Size(974, 998);
             this.ControlBox = false;
             this.Controls.Add(this.panel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;

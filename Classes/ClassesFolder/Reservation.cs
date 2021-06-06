@@ -8,25 +8,29 @@ namespace ClassesFolder
 {
     public class Reservation
     {
-        private string _reservingClient;
+        private Client _reservingClient;
         private DateTime _reservationDatetime;
         private DateTime _travelDatetime;
         private int _travelBusLine;
+        private decimal _chargedPrice;
 
-        public string ReserveringClient => _reservingClient;
+        public Client ReserveringClient => _reservingClient;
         public DateTime ReservationDatetime => _reservationDatetime;
         public DateTime TravelDatetime => _travelDatetime;
         public int TravelBusLine => _travelBusLine;
+        public decimal ChargedPrice => _chargedPrice;
 
-        public Reservation(string reservingClient, 
+        public Reservation(Client reservingClient, 
                            DateTime reservationDatetime, 
                            DateTime travelDatetime, 
-                           int travelBusLine)
+                           int travelBusLine,
+                           decimal chargedPrice)
         {
             _reservingClient = reservingClient;
             _reservationDatetime = reservationDatetime;
             _travelDatetime = travelDatetime;
             _travelBusLine = travelBusLine;
+            _chargedPrice = chargedPrice;
         }
     }
 }

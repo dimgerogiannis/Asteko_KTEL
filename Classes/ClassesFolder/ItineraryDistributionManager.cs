@@ -157,7 +157,7 @@ namespace ClassesFolder
                 using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
                 connection.Open();
 
-                var query = @"select clientUsername, reservationDate, travelDatetime, travelBusLine 
+                var query = @"select clientUsername, reservationDate, travelDatetime, travelBusLine, chargedPrice
                           from reservation;";
 
                 using var cmd = new MySqlCommand(query, connection);
@@ -165,7 +165,11 @@ namespace ClassesFolder
 
                 while (reader.Read())
                 {
-                    reservations.Add(new Reservation(reader.GetString(0), reader.GetDateTime(1), reader.GetDateTime(2), reader.GetInt32(3)));
+                    reservations.Add(new Reservation(Functions.GetClientByUsername(reader.GetString(0)), 
+                                                     reader.GetDateTime(1), 
+                                                     reader.GetDateTime(2), 
+                                                     reader.GetInt32(3),
+                                                     reader.GetDecimal(4)));
                 }
 
                 return reservations;
@@ -372,35 +376,6 @@ namespace ClassesFolder
                 using var cmd = new MySqlCommand(statement, connection);
 
                 cmd.Parameters.AddWithValue("@username", username);
-                using MySqlDataReader reader = cmd.ExecuteReader();
-                reader.Read();
-
-                return reader.GetInt32(0);
-            }
-            catch (MySqlException)
-            {
-                MessageBox.Show("Προκλήθηκε σφάλμα κατά την σύνδεση με τον server. Η εφαρμογή θα τερματιστεί!",
-                                "Σφάλμα",
-                                MessageBoxButtons.OK,
-                                MessageBoxIcon.Error);
-                Application.Exit();
-                return -1;
-            }
-        }
-
-        public decimal GetReservationPrice(string username, string travelDatetime, int busLineNumber)
-        {
-            try
-            {
-                using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
-                connection.Open();
-                var statement = @"select chargedPrice from Reservation
-                              where clientUsername = @username and travelDatetime = @travelDatetime and travelBusLine = @travelBusLine;";
-                using var cmd = new MySqlCommand(statement, connection);
-
-                cmd.Parameters.AddWithValue("@username", username);
-                cmd.Parameters.AddWithValue("@travelDatetime", travelDatetime);
-                cmd.Parameters.AddWithValue("@travelBusLine", busLineNumber);
                 using MySqlDataReader reader = cmd.ExecuteReader();
                 reader.Read();
 

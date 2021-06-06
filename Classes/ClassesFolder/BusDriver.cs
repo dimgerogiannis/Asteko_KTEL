@@ -556,7 +556,7 @@ namespace ClassesFolder
             }
         }
 
-        public void DecreasePaidYearlyDates()
+        public void DecreaseYearlyPaidDates()
         {
             _yearlyPaidLeaves--;
         }
@@ -638,7 +638,7 @@ namespace ClassesFolder
                 using MySqlDataReader reader = cmd.ExecuteReader();
                 reader.Read();
 
-                return reader.GetInt32(0) == 1;
+                return reader.GetInt32(0) > 0;
             }
             catch (MySqlException)
             {

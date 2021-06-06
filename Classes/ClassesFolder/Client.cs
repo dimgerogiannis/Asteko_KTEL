@@ -291,7 +291,7 @@ namespace ClassesFolder
                 using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
                 connection.Open();
 
-                var query = @"select clientUsername, reservationDate, travelDatetime, travelBusLine
+                var query = @"select clientUsername, reservationDate, travelDatetime, travelBusLine, chargedPrice
                           from reservation
                           where clientUsername = @clientUsername;";
 
@@ -302,7 +302,11 @@ namespace ClassesFolder
                 _reservationList = new List<Reservation>();
                 while (reader.Read())
                 {
-                    _reservationList.Add(new Reservation(reader.GetString(0), reader.GetDateTime(1), reader.GetDateTime(2), reader.GetInt32(3)));
+                    _reservationList.Add(new Reservation(this, 
+                                                         reader.GetDateTime(1), 
+                                                         reader.GetDateTime(2), 
+                                                         reader.GetInt32(3),
+                                                         reader.GetDecimal(4)));
                 }
             }
             catch (MySqlException)

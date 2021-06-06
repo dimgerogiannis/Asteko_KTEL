@@ -343,14 +343,13 @@ namespace DistributorForms
 
                     foreach (var servedClient in servedClients)
                     {
-                        var client = _distributor.GetClient(servedClient.ReserveringClient);
+                        var client = servedClient.ReserveringClient;
                         var ticket = new Ticket(itinerary, false, false, client.Username);
 
                         client.AddToCollection(ticket);
                         client.AutomaticTicketPurchase(_distributor.GetMaxItineraryID());
                         client.InsertTransactionToDatabase(_distributor.GetClientsLastTicketID(client.Username),
-                                                           _distributor.GetReservationPrice(client.Username, 
-                                                                                            targetDatetime.ToString("yyyy-MM-dd HH:mm:ss"), busLine.Number));
+                                                           servedClient.ChargedPrice);
 
                         _distributor.DeleteReservation(servedClient);
                          _reservations.Remove(servedClient);
