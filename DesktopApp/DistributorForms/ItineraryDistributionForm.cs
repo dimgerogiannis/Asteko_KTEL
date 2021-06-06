@@ -375,6 +375,11 @@ namespace DistributorForms
             recommendedDriversListview.Items.Clear();
         }
 
+        /// <summary>
+        /// Method that finds the index of the first reservation from the listview, that corresponds to the selected datetime and busline
+        /// </summary>
+        /// <param name="targetDatetime">The datetime of the reservation</param>
+        /// <returns>An integer index</returns>
         public int GetReservationIndex(DateTime targetDatetime)
         {
             for (int i = 0; i < rereservationsListview.Items.Count; i++)
@@ -388,6 +393,10 @@ namespace DistributorForms
             return -1;
         }
 
+        /// <summary>
+        /// Returns the the remaining dates of the current week starting from tomorrow
+        /// </summary>
+        /// <returns>A List of string dates</returns>
         public static List<string> GetLastMinuteAvailableDates()
         {
             List<string> dates = new List<string>();
@@ -407,6 +416,10 @@ namespace DistributorForms
             return dates;
         }
 
+        /// <summary>
+        /// Returns the remaining dates of the current and the next week starting from tomorrow
+        /// </summary>
+        /// <returns>A List of string dates</returns>
         public static List<string> GetReservationAvailableDates()
         {
             List<string> dates = new List<string>();
