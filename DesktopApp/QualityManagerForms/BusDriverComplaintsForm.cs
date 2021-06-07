@@ -1,4 +1,5 @@
 ﻿using ClassesFolder;
+using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -24,7 +25,7 @@ namespace QualityManagerForms
             _complaints = _qualityManager.GetSanitaryComplaints();
 
             foreach (var key in _complaints.Keys)
-                nameCombobox.Items.Add($"{_qualityManager.GetUserFullName(key)} ({key})");
+                nameCombobox.Items.Add($"{GetUserFullName(key)} ({key})");
 
             infoListview.ContextMenuStrip = contextMenuStrip;
         }
@@ -71,15 +72,32 @@ namespace QualityManagerForms
             }
         }
 
-        private void DeleteButton_Click(object sender, EventArgs e)
+        public string GetUserFullName(string username)
         {
-            if (nameCombobox.SelectedItem != null)
+            try
             {
+                using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
+                connection.Open();
 
+                var query = @"select name, surname
+                              from User
+                              where username = @username;";
+
+                using var cmd = new MySqlCommand(query, connection);
+                cmd.Parameters.AddWithValue("@username", username);
+                using MySqlDataReader reader = cmd.ExecuteReader();
+                reader.Read();
+
+                return $"{reader.GetString(0)} {reader.GetString(1)}";
             }
-            else
+            catch (MySqlException)
             {
-
+                MessageBox.Show("Προκλήθηκε σφάλμα κατά την σύνδεση με τον server. Η εφαρμογή θα τερματιστεί!",
+                                "Σφάλμα",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Error);
+                Application.Exit();
+                return "";
             }
         }
     }

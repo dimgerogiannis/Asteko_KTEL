@@ -39,17 +39,28 @@ namespace ChiefForms
                 {
                     if (!_chief.CheckDuplicateUsername(usernameTextbox.Text))
                     {
-                        _chief.InsertUserInDatabase(usernameTextbox.Text,
-                                                    passwordTextbox.Text,
-                                                    nameTextbox.Text,
-                                                    surnameTextbox.Text,
-                                                    "bus_driver");
+                        _chief.InsertUserInDatabase(new User(usernameTextbox.Text,
+                                                             nameTextbox.Text,
+                                                             surnameTextbox.Text,
+                                                             Enums.Specialization.BusDriver),
+                                                             passwordTextbox.Text);
 
-                        _chief.InsertEmployeeInDatabase(usernameTextbox.Text,
-                                                        salary,
-                                                        int.Parse(experienceCobmobox.SelectedItem.ToString()));
+                        _chief.InsertEmployeeInDatabase(new Employee(usernameTextbox.Text,
+                                                                     nameTextbox.Text,
+                                                                     surnameTextbox.Text,
+                                                                     Enums.Specialization.BusDriver,
+                                                                     salary,
+                                                                     int.Parse(experienceCobmobox.SelectedItem.ToString()),
+                                                                     DateTime.Now.ToShortDateString()));
 
-                        _chief.InsertBusDriverInDatabase(usernameTextbox.Text);
+                        _chief.InsertBusDriverInDatabase(new BusDriver(usernameTextbox.Text,
+                                                                       nameTextbox.Text,
+                                                                       surnameTextbox.Text,
+                                                                       Enums.Specialization.BusDriver,
+                                                                       salary,
+                                                                       int.Parse(experienceCobmobox.SelectedItem.ToString()),
+                                                                       DateTime.Today.ToShortDateString(),
+                                                                       0));
 
                         MessageBox.Show("Επιτυχής καταχώρηση.",
                                         "Επιτυχία",
@@ -68,34 +79,51 @@ namespace ChiefForms
                 {
                     if (!_chief.CheckDuplicateUsername(usernameTextbox.Text))
                     {
-                        string prop = "";
-                        switch (categoryCombobox.SelectedItem.ToString()) 
+                        Enums.Specialization specialization = Enums.Specialization.QualityManager;
+
+                        if (categoryCombobox.SelectedItem.ToString() == "Υπ. διασφάλισης υπηρεσιών")
                         {
-                            case "Υπ. διασφάλισης υπηρεσιών":
-                                prop = "quality_manager";
-                                break;
-                            case "Υπ. κατανομής δρομολογίων":
-                                prop = "itinerary_distributor";
-                                break;
-                        }
-
-                        _chief.InsertUserInDatabase(usernameTextbox.Text,
-                                                    passwordTextbox.Text,
-                                                    nameTextbox.Text,
-                                                    surnameTextbox.Text,
-                                                    prop);
-
-                        _chief.InsertEmployeeInDatabase(usernameTextbox.Text,
-                                                          salary,
-                                                          int.Parse(experienceCobmobox.SelectedItem.ToString()));
-
-                        if (prop == "quality_manager")
-                        {
-                            _chief.InsertQualityManagerInDatabase(usernameTextbox.Text);
+                            specialization = Enums.Specialization.QualityManager;
                         }
                         else
                         {
-                            _chief.InsertItineraryDistributionManagerInDatabase(usernameTextbox.Text);
+                            specialization = Enums.Specialization.Distributor;
+                        }
+
+                        _chief.InsertUserInDatabase(new User(usernameTextbox.Text,
+                                                             nameTextbox.Text,
+                                                             surnameTextbox.Text,
+                                                             specialization),
+                                                             passwordTextbox.Text);
+
+                        _chief.InsertEmployeeInDatabase(new Employee(usernameTextbox.Text,
+                                                                     nameTextbox.Text,
+                                                                     surnameTextbox.Text,
+                                                                     specialization,
+                                                                     salary,
+                                                                     int.Parse(experienceCobmobox.SelectedItem.ToString()),
+                                                                     DateTime.Today.ToShortDateString()));
+
+                        if (specialization == Enums.Specialization.QualityManager)
+                        {
+                            _chief.InsertQualityManagerInDatabase(new QualityManager(usernameTextbox.Text,
+                                                                                     nameTextbox.Text,
+                                                                                     surnameTextbox.Text,
+                                                                                     specialization,
+                                                                                     salary,
+                                                                                     int.Parse(experienceCobmobox.SelectedItem.ToString()),
+                                                                                     DateTime.Today.ToShortDateString()));
+                        }
+                        else
+                        {
+                            _chief.InsertItineraryDistributionManagerInDatabase(new ItineraryDistributionManager(usernameTextbox.Text,
+                                                                                                                 nameTextbox.Text,
+                                                                                                                 surnameTextbox.Text,
+                                                                                                                 specialization,
+                                                                                                                 salary,
+                                                                                                                 int.Parse(experienceCobmobox.SelectedItem.ToString()),
+                                                                                                                 DateTime.Today.ToShortDateString(),
+                                                                                                                 false));
                         }
 
                         MessageBox.Show("Επιτυχής καταχώρηση.",

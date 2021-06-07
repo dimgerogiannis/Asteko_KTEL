@@ -165,9 +165,9 @@ namespace ClassesFolder
 
                 while (reader.Read())
                 {
-                    reservations.Add(new Reservation(Functions.GetClientByUsername(reader.GetString(0)), 
-                                                     reader.GetDateTime(1), 
-                                                     reader.GetDateTime(2), 
+                    reservations.Add(new Reservation(Functions.GetClientByUsername(reader.GetString(0)),
+                                                     reader.GetDateTime(1),
+                                                     reader.GetDateTime(2),
                                                      Functions.GetBusLine(reader.GetInt32(3)),
                                                      reader.GetDecimal(4)));
                 }
@@ -333,66 +333,8 @@ namespace ClassesFolder
             }
         }
 
-        public Client GetClient(string username)
-        {
-            try
-            {
-                using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
-                connection.Open();
-                var statement = @"select name, surname
-                                  from user
-                                  where username = @username;";
-                using var cmd = new MySqlCommand(statement, connection);
-
-                cmd.Parameters.AddWithValue("@username", username);
-                using MySqlDataReader reader = cmd.ExecuteReader();
-                reader.Read();
-
-                return new Client(username,
-                                  reader.GetString(0),
-                                  reader.GetString(1),
-                                  Specialization.Client);
-            }
-            catch (MySqlException)
-            {
-                MessageBox.Show("Προκλήθηκε σφάλμα κατά την σύνδεση με τον server. Η εφαρμογή θα τερματιστεί!",
-                                "Σφάλμα",
-                                MessageBoxButtons.OK,
-                                MessageBoxIcon.Error);
-                Application.Exit();
-                return null;
-            }
-        }
-
-        public int GetClientsLastTicketID(string username)
-        {
-            try
-            {
-                using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
-                connection.Open();
-                var statement = @"select max(ticketID)
-                              from ticket
-                              where clientUsername = @username;";
-                using var cmd = new MySqlCommand(statement, connection);
-
-                cmd.Parameters.AddWithValue("@username", username);
-                using MySqlDataReader reader = cmd.ExecuteReader();
-                reader.Read();
-
-                return reader.GetInt32(0);
-            }
-            catch (MySqlException)
-            {
-                MessageBox.Show("Προκλήθηκε σφάλμα κατά την σύνδεση με τον server. Η εφαρμογή θα τερματιστεί!",
-                                "Σφάλμα",
-                                MessageBoxButtons.OK,
-                                MessageBoxIcon.Error);
-                Application.Exit();
-                return -1;
-            }
-        }
-
-        public int FindMaxItineraryID()
+        
+        public int GetMaxItineraryID()
         {
             try
             {

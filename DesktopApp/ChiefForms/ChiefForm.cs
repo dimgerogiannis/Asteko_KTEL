@@ -26,7 +26,7 @@ namespace ChiefForms
             fullNameLabel.Text = _chief.GetFullName() + "    " ;
             fullNameLabel.Location = fullNameLabel.Location = new Point(this.Width / 2 - fullNameLabel.Width / 2, 50);
 
-            var responsibleDistributor = _chief.FindDistributionManagers().Find(x => x.IsResponsibleForWeek);
+            var responsibleDistributor = _chief.GetDistributionManagers().Find(x => x.IsResponsibleForWeek);
             responsibleDitributorLabel.Text = $"{responsibleDistributor.Name} {responsibleDistributor.Surname}";        }
 
         private void BaseTicketPriceLabel_Click(object sender, EventArgs e)

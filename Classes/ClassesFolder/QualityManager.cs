@@ -98,35 +98,6 @@ namespace ClassesFolder
             }
         }
 
-        public string GetUserFullName(string username)
-        {
-            try
-            {
-                using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
-                connection.Open();
-
-                var query = @"select name, surname
-                              from User
-                              where username = @username;";
-
-                using var cmd = new MySqlCommand(query, connection);
-                cmd.Parameters.AddWithValue("@username", username);
-                using MySqlDataReader reader = cmd.ExecuteReader();
-                reader.Read();
-
-                return $"{reader.GetString(0)} {reader.GetString(1)}";
-            }
-            catch (MySqlException)
-            {
-                MessageBox.Show("Προκλήθηκε σφάλμα κατά την σύνδεση με τον server. Η εφαρμογή θα τερματιστεί!",
-                                "Σφάλμα",
-                                MessageBoxButtons.OK,
-                                MessageBoxIcon.Error);
-                Application.Exit();
-                return "";
-            }
-        }
-
         public Dictionary<string, List<SanitaryComplaint>> GetSanitaryComplaints()
         {
             try
@@ -146,7 +117,7 @@ namespace ClassesFolder
                     var username = reader.GetString(0);
                     if (!dictionary.ContainsKey(username))
                         dictionary.Add(username, new List<SanitaryComplaint>());
-                    dictionary[username].Add(new SanitaryComplaint(Functions.GetClientByUsername(username), 
+                    dictionary[username].Add(new SanitaryComplaint(Functions.GetClientByUsername(username),
                                                                    Functions.GetBusDriverByUsername(reader.GetString(3)),
                                                                    reader.GetString(1),
                                                                    Enums.SanitaryComplaintCategoryFromDatabaseToEnumEquivalant(reader.GetString(2))));
@@ -188,10 +159,10 @@ namespace ClassesFolder
                     if (!dictionary.ContainsKey(username))
                         dictionary.Add(username, new List<ClientComplaint>());
 
-                    dictionary[username].Add(new ClientComplaint(Functions.GetBusDriverByUsername(username), 
-                                                                 Functions.GetClientByUsername(reader.GetString(3)), 
-                                                                 false, 
-                                                                 reader.GetString(1), 
+                    dictionary[username].Add(new ClientComplaint(Functions.GetBusDriverByUsername(username),
+                                                                 Functions.GetClientByUsername(reader.GetString(3)),
+                                                                 false,
+                                                                 reader.GetString(1),
                                                                  Enums.ClientComplaintCategoryFromDatabaseToEnumEquivalant(reader.GetString(2))));
                 }
 

@@ -22,7 +22,7 @@ namespace ChiefForms
 
         private void DriverDismissalForm_Load(object sender, EventArgs e)
         {
-            _petitions = _chief.FindDismissalPetitions();
+            _petitions = _chief.GetDismissalPetitions();
             busDriverNameCombobox.Items.AddRange(_petitions.Select(x => x.TargetDriver.Username).ToArray());
         }
 

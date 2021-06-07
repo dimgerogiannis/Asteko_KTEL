@@ -116,7 +116,7 @@ namespace ClassesFolder
             }
         }
 
-        public void InsertUserInDatabase(string username, string password, string name, string surname, string prop)
+        public void InsertUserInDatabase(User user, string password)
         {
             try
             {
@@ -124,11 +124,11 @@ namespace ClassesFolder
                 connection.Open();
                 var query = @"insert into User values (@username, @name, @surname, EncryptPassword(@password), @property);";
                 using var cmd = new MySqlCommand(query, connection);
-                cmd.Parameters.AddWithValue("@username", username);
+                cmd.Parameters.AddWithValue("@username", user.Username);
                 cmd.Parameters.AddWithValue("@password", password);
-                cmd.Parameters.AddWithValue("@name", name);
-                cmd.Parameters.AddWithValue("@surname", surname);
-                cmd.Parameters.AddWithValue("@property", prop);
+                cmd.Parameters.AddWithValue("@name", user.Name);
+                cmd.Parameters.AddWithValue("@surname", user.Surname);
+                cmd.Parameters.AddWithValue("@property", Enums.SpecializationFromEnumToDatabaseEquivalant(user.Specialization));
                 cmd.ExecuteNonQuery();
             }
             catch (MySqlException)
@@ -141,17 +141,17 @@ namespace ClassesFolder
             }
         }
 
-        public void InsertEmployeeInDatabase(string username, decimal salary, int experience)
+        public void InsertEmployeeInDatabase(Employee employee)
         {
             try
             {
                 using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
                 connection.Open();
-                var query = @"insert into Employee values (@username, @salary, @experience, CURRENT_DATE());";
+                var query = @"insert into Employee values (@username, @salary, CURRENT_DATE(), @experience);";
                 using var cmd = new MySqlCommand(query, connection);
-                cmd.Parameters.AddWithValue("@username", username);
-                cmd.Parameters.AddWithValue("@salary", salary);
-                cmd.Parameters.AddWithValue("@experience", experience);
+                cmd.Parameters.AddWithValue("@username", employee.Username);
+                cmd.Parameters.AddWithValue("@salary", employee.Salary);
+                cmd.Parameters.AddWithValue("@experience", employee.Experience);
                 cmd.ExecuteNonQuery();
             }
             catch (MySqlException)
@@ -164,17 +164,18 @@ namespace ClassesFolder
             }
         }
 
-        public void InsertBusDriverInDatabase(string username)
+        public void InsertBusDriverInDatabase(BusDriver busDriver)
         {
             try
             {
                 using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
                 connection.Open();
-                var query = @"insert into BusDriver values (@username, @complaintsCounter, @availableWorkingHours);";
+                var query = @"insert into BusDriver values (@username, @complaintsCounter, @fired);";
                 using var cmd = new MySqlCommand(query, connection);
-                cmd.Parameters.AddWithValue("@username", username);
+                cmd.Parameters.AddWithValue("@username", busDriver.Username);
                 cmd.Parameters.AddWithValue("@complaintsCounter", 0);
                 cmd.Parameters.AddWithValue("@availableWorkingHours", 360);
+                cmd.Parameters.AddWithValue("@fired", false);
                 cmd.ExecuteNonQuery();
             }
             catch (MySqlException)
@@ -187,7 +188,7 @@ namespace ClassesFolder
             }
         }
 
-        public void InsertQualityManagerInDatabase(string username)
+        public void InsertQualityManagerInDatabase(QualityManager manager)
         {
             try
             {
@@ -195,7 +196,7 @@ namespace ClassesFolder
                 connection.Open();
                 var query = @"insert into QualityManager values (@username);";
                 using var cmd = new MySqlCommand(query, connection);
-                cmd.Parameters.AddWithValue("@username", username);
+                cmd.Parameters.AddWithValue("@username", manager.Username);
                 cmd.ExecuteNonQuery();
             }
             catch (MySqlException)
@@ -208,7 +209,7 @@ namespace ClassesFolder
             }
         }
 
-        public void InsertItineraryDistributionManagerInDatabase(string username)
+        public void InsertItineraryDistributionManagerInDatabase(ItineraryDistributionManager distributor)
         {
             try
             {
@@ -216,7 +217,7 @@ namespace ClassesFolder
                 connection.Open();
                 var query = @"insert into ItineraryDistributionManager values (@username, @isResponsibleForWeek);";
                 using var cmd = new MySqlCommand(query, connection);
-                cmd.Parameters.AddWithValue("@username", username);
+                cmd.Parameters.AddWithValue("@username", distributor.Username);
                 cmd.Parameters.AddWithValue("@isResponsibleForWeek", false);
                 cmd.ExecuteNonQuery();
             }
@@ -230,7 +231,7 @@ namespace ClassesFolder
             }
         }
 
-        public List<Employee> FindEmployees()
+        public List<Employee> GetEmployees()
         {
             try
             {
@@ -268,7 +269,7 @@ namespace ClassesFolder
             }
         }
 
-        public List<ItineraryDistributionManager> FindDistributionManagers()
+        public List<ItineraryDistributionManager> GetDistributionManagers()
         {
             try
             {
@@ -332,7 +333,7 @@ namespace ClassesFolder
             }
         }
 
-        public List<PaidLeaveApplication> FindUncheckedPaidLeaveApplications()
+        public List<PaidLeaveApplication> GetUncheckedPaidLeaveApplications()
         {
             try
             {
@@ -370,7 +371,7 @@ namespace ClassesFolder
             }
         }
 
-        public List<Transaction> FindTransactions(string startDate, string endDate)
+        public List<Transaction> GetTransactions(string startDate, string endDate)
         {
             try
             {
@@ -404,7 +405,7 @@ namespace ClassesFolder
             }
         }
 
-        public List<DismissalPetition> FindDismissalPetitions()
+        public List<DismissalPetition> GetDismissalPetitions()
         {
             try
             {
@@ -444,7 +445,7 @@ namespace ClassesFolder
             }
         }
 
-        public List<PaidLeaveApplication> FindPaidLeaveApplications(string username)
+        public List<PaidLeaveApplication> GetPaidLeaveApplications(BusDriver busDriver)
         {
             try
             {
@@ -455,7 +456,7 @@ namespace ClassesFolder
                           where busDriverUsername = @username;";
 
                 using var cmd = new MySqlCommand(query, connection);
-                cmd.Parameters.AddWithValue("@username", username);
+                cmd.Parameters.AddWithValue("@username", busDriver.Username);
                 using MySqlDataReader reader = cmd.ExecuteReader();
 
                 List<PaidLeaveApplication> applications = new List<PaidLeaveApplication>();
@@ -510,94 +511,6 @@ namespace ClassesFolder
                                  MessageBoxButtons.OK,
                                  MessageBoxIcon.Error);
                 Application.Exit();
-            }
-        }
-
-        public void SetBusDriverAsFired(BusDriver busDriver)
-        {
-            try
-            {
-                using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
-                connection.Open();
-
-                var query = @"update BusDriver set fired = @fired where username = @username";
-                using var cmd = new MySqlCommand(query, connection);
-                cmd.Parameters.AddWithValue("@username", busDriver.Username);
-                cmd.Parameters.AddWithValue("@fired", true);
-                cmd.ExecuteNonQuery();
-            }
-            catch (MySqlException)
-            {
-                MessageBox.Show("Προκλήθηκε σφάλμα κατά την σύνδεση με τον server. Η εφαρμογή θα τερματιστεί!",
-                                 "Σφάλμα",
-                                 MessageBoxButtons.OK,
-                                 MessageBoxIcon.Error);
-                Application.Exit();
-            }
-        }
-
-        public BusDriver FindBusDriver(string username)
-        {
-            try
-            {
-                using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
-                connection.Open();
-                var statement = @"select name, surname, salary, experience, hireDate, complaintsCounter
-                                  from user 
-                                  inner join Employee on User.username = Employee.username
-                                  inner join BusDriver on User.username = BusDriver.username
-                                  where User.username = @username;";
-                using var cmd = new MySqlCommand(statement, connection);
-
-                cmd.Parameters.AddWithValue("@username", username);
-                using MySqlDataReader reader = cmd.ExecuteReader();
-                reader.Read();
-
-                return new BusDriver(username,
-                                     reader.GetString(0),
-                                     reader.GetString(1),
-                                     Specialization.BusDriver,
-                                     reader.GetDecimal(2),
-                                     reader.GetInt32(3),
-                                     reader.GetString(4),
-                                     reader.GetInt32(5));
-            }
-            catch (MySqlException)
-            {
-                MessageBox.Show("Προκλήθηκε σφάλμα κατά την σύνδεση με τον server. Η εφαρμογή θα τερματιστεί!",
-                                "Σφάλμα",
-                                MessageBoxButtons.OK,
-                                MessageBoxIcon.Error);
-                Application.Exit();
-                return null;
-            }
-        }
-
-        public string FindUserFullNameFromDatabase(string username)
-        {
-            try
-            {
-                using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
-                connection.Open();
-                var statement = @"select name, surname
-                              from User
-                              where username = @username;";
-                using var cmd = new MySqlCommand(statement, connection);
-
-                cmd.Parameters.AddWithValue("@username", username);
-                using MySqlDataReader reader = cmd.ExecuteReader();
-                reader.Read();
-
-                return $"{reader.GetString(0)} {reader.GetString(1)}";
-            }
-            catch (MySqlException)
-            {
-                MessageBox.Show("Προκλήθηκε σφάλμα κατά την σύνδεση με τον server. Η εφαρμογή θα τερματιστεί!",
-                                "Σφάλμα",
-                                MessageBoxButtons.OK,
-                                MessageBoxIcon.Error);
-                Application.Exit();
-                return "";
             }
         }
     }

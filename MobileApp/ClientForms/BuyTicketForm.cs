@@ -124,7 +124,7 @@ namespace Project.ClientForms
                                                                false));
 
                             itinerary.DecrementItinerarySeats();
-                            _client.InsertTransactionToDatabase(_client.GetLastInsertedTicketID(), price);
+                            _client.InsertTransactionToDatabase(_client.GetLastTicketID(), price);
                             break;
                         }
                     }

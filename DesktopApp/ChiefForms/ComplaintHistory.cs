@@ -1,4 +1,5 @@
 ﻿using ClassesFolder;
+using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -89,10 +90,10 @@ namespace ChiefForms
                 if (!busDriver.HasAssignedItineraryForNextWeek())
                 {
                     _chief.DeleteClientComplaints(_complaints);
-                    _chief.DeletePaidLeaveApplications(_chief.FindPaidLeaveApplications(_petition.TargetDriver.Username));
+                    _chief.DeletePaidLeaveApplications(_chief.GetPaidLeaveApplications(_petition.TargetDriver));
                     _chief.DeletePaidLeaveDates(_petition.TargetDriver.Username);
                     _petition.DeleteDismissalPetition();
-                    _chief.SetBusDriverAsFired(_petition.TargetDriver);
+                    SetBusDriverAsFired(_petition.TargetDriver);
 
                     MessageBox.Show("Επιτυχής απόλυση οδηγού.",
                                     "Επιτυχία",
@@ -116,6 +117,29 @@ namespace ChiefForms
                 busDriver.ResetComplaintsCounter();
 
                 this.Close();
+            }
+        }
+
+        public void SetBusDriverAsFired(BusDriver busDriver)
+        {
+            try
+            {
+                using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
+                connection.Open();
+
+                var query = @"update BusDriver set fired = @fired where username = @username";
+                using var cmd = new MySqlCommand(query, connection);
+                cmd.Parameters.AddWithValue("@username", busDriver.Username);
+                cmd.Parameters.AddWithValue("@fired", true);
+                cmd.ExecuteNonQuery();
+            }
+            catch (MySqlException)
+            {
+                MessageBox.Show("Προκλήθηκε σφάλμα κατά την σύνδεση με τον server. Η εφαρμογή θα τερματιστεί!",
+                                 "Σφάλμα",
+                                 MessageBoxButtons.OK,
+                                 MessageBoxIcon.Error);
+                Application.Exit();
             }
         }
     }

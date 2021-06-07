@@ -82,7 +82,7 @@ namespace DistributorForms
             _buses = _distributor.GetBuses();
 
             var selectedListviewItem = lastMinuteListview.CheckedItems[0];
-            var selectedClient = _distributor.GetClient(_clients[lastMinuteListview.CheckedIndices[0]].Username);
+            var selectedClient = Functions.GetClientByUsername(_clients[lastMinuteListview.CheckedIndices[0]].Username);
 
             _selectedRequestIndex = lastMinuteListview.CheckedIndices[0];
             _selectedBusLine = int.Parse(selectedListviewItem.SubItems[2].Text);
@@ -263,7 +263,7 @@ namespace DistributorForms
             {
                 int availableSeats = int.Parse(recommendedBusesListview.Items[recommendedBusesListview.CheckedIndices[0]].SubItems[1].Text);
 
-                Itinerary itinerary = new Itinerary(_distributor.FindMaxItineraryID() + 1,
+                Itinerary itinerary = new Itinerary(_distributor.GetMaxItineraryID() + 1,
                                                     DateTime.Parse(_selectedTravelDatetime),
                                                     _busDrivers[recommendedDriversListview.CheckedIndices[0]],
                                                     _busLines[_selectedBusLine],
@@ -273,7 +273,7 @@ namespace DistributorForms
 
                 _distributor.InsertItineraryInDatabase(itinerary);
 
-                var client = _distributor.GetClient(_requests[_selectedRequestIndex].ApplicantClient.Username);
+                var client = Functions.GetClientByUsername(_requests[_selectedRequestIndex].ApplicantClient.Username);
 
                 Ticket ticket = new Ticket(itinerary, 
                                            false, 
@@ -281,7 +281,7 @@ namespace DistributorForms
 
                 client.AddToCollection(ticket);
                 client.AutomaticTicketPurchase(itinerary);
-                client.InsertTransactionToDatabase(_distributor.GetClientsLastTicketID(client.Username), 
+                client.InsertTransactionToDatabase(client.GetLastTicketID(), 
                                                    client.FindStandardTicketPrice());
                 itinerary.DecrementItinerarySeats();
                 
@@ -305,7 +305,7 @@ namespace DistributorForms
 
                     client.AddToCollection(ticket);
                     client.AutomaticTicketPurchase(itinerary);
-                    client.InsertTransactionToDatabase(_distributor.GetClientsLastTicketID(client.Username), 
+                    client.InsertTransactionToDatabase(client.GetLastTicketID(), 
                                                        client.FindStandardTicketPrice());
                     itinerary.DecrementItinerarySeats();
                     client.DeleteLastMinuteTravelRequest(request);
