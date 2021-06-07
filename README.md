@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://github.com/gstratigopoulos96/Asteko_KTEL/blob/master/MobileApp/Icons/Icon.png" alt="image" width="500" height="400"/>
+  <img src="https://github.com/gstratigopoulos96/Asteko_KTEL/blob/master/Icon.png" alt="image" width="500" height="400"/>
 </p>
 
 # Αστeκό ΚΤΕΛ
