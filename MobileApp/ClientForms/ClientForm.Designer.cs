@@ -29,7 +29,6 @@ namespace Project.ClientForms
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ClientForm));
             this.historyPreviewButton = new System.Windows.Forms.Button();
             this.complaintButton = new System.Windows.Forms.Button();
             this.pollButton = new System.Windows.Forms.Button();
@@ -182,7 +181,7 @@ namespace Project.ClientForms
             // pictureBox2
             // 
             this.pictureBox2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pictureBox2.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox2.Image")));
+            this.pictureBox2.Image = global::MobileApp.Properties.Resources.plus;
             this.pictureBox2.Location = new System.Drawing.Point(0, 0);
             this.pictureBox2.Name = "pictureBox2";
             this.pictureBox2.Size = new System.Drawing.Size(127, 104);
@@ -203,7 +202,7 @@ namespace Project.ClientForms
             // 
             // pictureBox1
             // 
-            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
+            this.pictureBox1.Image = global::MobileApp.Properties.Resources.Icon;
             this.pictureBox1.Location = new System.Drawing.Point(12, 8);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(90, 63);

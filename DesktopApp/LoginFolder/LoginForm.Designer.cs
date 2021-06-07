@@ -29,7 +29,6 @@ namespace LoginFolder
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LoginForm));
             this.imagePictureBox = new System.Windows.Forms.PictureBox();
             this.usernameLabel = new System.Windows.Forms.Label();
             this.passwordLabel = new System.Windows.Forms.Label();
@@ -41,7 +40,7 @@ namespace LoginFolder
             // 
             // imagePictureBox
             // 
-            this.imagePictureBox.Image = ((System.Drawing.Image)(resources.GetObject("imagePictureBox.Image")));
+            this.imagePictureBox.Image = global::DesktopApp.Properties.Resources.Icon;
             this.imagePictureBox.Location = new System.Drawing.Point(79, 54);
             this.imagePictureBox.Name = "imagePictureBox";
             this.imagePictureBox.Size = new System.Drawing.Size(468, 409);
