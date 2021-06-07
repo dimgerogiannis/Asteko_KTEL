@@ -312,7 +312,7 @@ namespace DistributorForms
                         break;
                 }
 
-                Itinerary itinerary = new Itinerary(_distributor.FindMaxItineraryID(),
+                Itinerary itinerary = new Itinerary(_distributor.FindMaxItineraryID() + 1,
                                                     targetDatetime,
                                                     Functions.GetBusDriverByUsername(busDriverUsername),
                                                     busLine,
@@ -341,7 +341,7 @@ namespace DistributorForms
                         var ticket = new Ticket(itinerary, false, false);
 
                         client.AddToCollection(ticket);
-                        client.AutomaticTicketPurchase(_distributor.FindMaxItineraryID());
+                        client.AutomaticTicketPurchase(itinerary);
                         client.InsertTransactionToDatabase(_distributor.GetClientsLastTicketID(client.Username),
                                                            servedClient.ChargedPrice);
                         itinerary.DecrementItinerarySeats();

@@ -60,6 +60,5 @@ namespace DistributorForms
             DelayedServiceForm form = new DelayedServiceForm(_distributor);
             form.ShowDialog();
         }
-
     }
 }

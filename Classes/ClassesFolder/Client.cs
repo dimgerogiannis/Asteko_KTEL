@@ -367,7 +367,7 @@ namespace ClassesFolder
             }
         }
 
-        public void AutomaticTicketPurchase(int itineraryID)
+        public void AutomaticTicketPurchase(Itinerary itinerary)
         {
             try
             {
@@ -380,7 +380,7 @@ namespace ClassesFolder
                 cmd.Parameters.AddWithValue("@delayedItinerary", false);
                 cmd.Parameters.AddWithValue("@used", false);
                 cmd.Parameters.AddWithValue("@clientUsername", _username);
-                cmd.Parameters.AddWithValue("@itineraryID", itineraryID);
+                cmd.Parameters.AddWithValue("@itineraryID", itinerary.ID);
                 cmd.ExecuteNonQuery();
             }
             catch (MySqlException)

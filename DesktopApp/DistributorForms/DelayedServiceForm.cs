@@ -278,7 +278,7 @@ namespace DistributorForms
                                            false);
 
                 client.AddToCollection(ticket);
-                client.AutomaticTicketPurchase(_distributor.FindMaxItineraryID());
+                client.AutomaticTicketPurchase(itinerary);
                 client.InsertTransactionToDatabase(_distributor.GetClientsLastTicketID(client.Username), 
                                                    client.FindStandardTicketPrice());
                 itinerary.DecrementItinerarySeats();
@@ -302,7 +302,7 @@ namespace DistributorForms
                                         false);
 
                     client.AddToCollection(ticket);
-                    client.AutomaticTicketPurchase(_distributor.FindMaxItineraryID());
+                    client.AutomaticTicketPurchase(itinerary);
                     client.InsertTransactionToDatabase(_distributor.GetClientsLastTicketID(client.Username), 
                                                        client.FindStandardTicketPrice());
                     itinerary.DecrementItinerarySeats();

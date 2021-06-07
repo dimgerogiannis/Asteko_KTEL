@@ -75,10 +75,7 @@ namespace Project.BusDriverForms
                 int index = paidLeaveApplicationsListview.SelectedIndices[0];
                 if (paidLeaveApplicationsListview.Items[index].SubItems[1].Text == "Απορρίφθηκε")
                 {
-                    MessageBox.Show(_applications[index].PossibleRejectionReason,
-                                    "Λόγος απόρριψης",
-                                    MessageBoxButtons.OK,
-                                    MessageBoxIcon.Information);
+                    rejectionReasonRitchTextbox.Text = _applications[index].PossibleRejectionReason;
                 }
             }
         }

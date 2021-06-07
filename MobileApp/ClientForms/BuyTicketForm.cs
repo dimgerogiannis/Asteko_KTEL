@@ -116,7 +116,7 @@ namespace Project.ClientForms
 
                             flag = true;
 
-                            _client.AutomaticTicketPurchase(itinerary.ID);
+                            _client.AutomaticTicketPurchase(itinerary);
                             _client.PayForTicket(price);
 
                             _client.AddToCollection(new Ticket(itinerary, 

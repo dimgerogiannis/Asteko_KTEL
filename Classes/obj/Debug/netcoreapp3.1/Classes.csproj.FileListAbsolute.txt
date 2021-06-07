@@ -28,4 +28,3 @@ F:\Software\Classes\obj\Debug\netcoreapp3.1\Classes.AssemblyInfo.cs
 F:\Software\Classes\obj\Debug\netcoreapp3.1\Classes.csproj.CoreCompileInputs.cache
 F:\Software\Classes\obj\Debug\netcoreapp3.1\Classes.dll
 F:\Software\Classes\obj\Debug\netcoreapp3.1\Classes.pdb
-F:\Software\Classes\obj\Debug\netcoreapp3.1\Classes.csproj.AssemblyReference.cache
