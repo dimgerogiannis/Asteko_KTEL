@@ -13,7 +13,7 @@ namespace ClassesFolder
     {
         private int _id;
         private DateTime _travelDatetime;
-        private string _responsibleDriver;
+        private BusDriver _responsibleDriver;
         private BusLine _itineraryLine;
         private Bus _responsibleBus;
         private ItineraryStatus _status;
@@ -21,7 +21,7 @@ namespace ClassesFolder
 
         public int ID => _id;
         public DateTime TravelDatetime => _travelDatetime;
-        public string ResponsibleDriver => _responsibleDriver;
+        public BusDriver ResponsibleDriver => _responsibleDriver;
         public BusLine ItineraryLine => _itineraryLine;
         public Bus ResponsibleBus => _responsibleBus;
         public ItineraryStatus Status 
@@ -33,7 +33,7 @@ namespace ClassesFolder
 
         public Itinerary(int ID, 
                          DateTime travelDatetime, 
-                         string responsibleDriver, 
+                         BusDriver responsibleDriver, 
                          BusLine itineraryLine, 
                          Bus responsibleBus, 
                          ItineraryStatus status,
@@ -83,6 +83,32 @@ namespace ClassesFolder
                                 MessageBoxIcon.Error);
                 Application.Exit();
                 return null;
+            }
+        }
+
+        public void DecrementItinerarySeats()
+        {
+            try
+            {
+                _availableSeats--;
+                using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
+                connection.Open();
+                var query = @"UPDATE Itinerary
+                              SET availableSeats = @availableSeats
+                              WHERE itineraryID = @itineraryID;";
+                using var cmd = new MySqlCommand(query, connection);
+                cmd.Parameters.AddWithValue("@availableSeats", _availableSeats);
+                cmd.Parameters.AddWithValue("@itineraryID", _id);
+
+                cmd.ExecuteNonQuery();
+            }
+            catch (MySqlException)
+            {
+                MessageBox.Show("Προκλήθηκε σφάλμα κατά την σύνδεση με τον server. Η εφαρμογή θα τερματιστεί!",
+                                 "Σφάλμα",
+                                 MessageBoxButtons.OK,
+                                 MessageBoxIcon.Error);
+                Application.Exit();
             }
         }
     }

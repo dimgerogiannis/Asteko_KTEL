@@ -93,86 +93,14 @@ namespace ClassesFolder
                 {
                     itineraries.Add(new Itinerary(reader.GetInt32(0),
                                                   reader.GetDateTime(1),
-                                                  reader.GetString(2),
-                                                  GetBusLine(reader.GetInt32(3)),
-                                                  GetBus(reader.GetInt32(4)),
+                                                  Functions.GetBusDriverByUsername(reader.GetString(2)),
+                                                  Functions.GetBusLine(reader.GetInt32(3)),
+                                                  Functions.GetBus(reader.GetInt32(4)),
                                                   ItineraryStatus.NoDelayed,
                                                   reader.GetInt32(5)));
                 }
 
                 return itineraries;
-            }
-            catch (MySqlException)
-            {
-                MessageBox.Show("Προκλήθηκε σφάλμα κατά την σύνδεση με τον server. Η εφαρμογή θα τερματιστεί!",
-                                "Σφάλμα",
-                                MessageBoxButtons.OK,
-                                MessageBoxIcon.Error);
-                Application.Exit();
-                return null;
-            }
-        }
-
-        private Bus GetBus(int busID)
-        {
-            try
-            {
-                using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
-                connection.Open();
-
-                var query = @"select size 
-                              from bus 
-                              where busID = @busID;";
-
-                using var cmd = new MySqlCommand(query, connection);
-                cmd.Parameters.AddWithValue("@busID", busID);
-                using MySqlDataReader reader = cmd.ExecuteReader();
-
-                reader.Read();
-                string size = reader.GetString(0);
-                BusSize enumSize = BusSize.SMALL;
-
-                switch (size)
-                {
-                    case "medium":
-                        enumSize = BusSize.MEDIUM;
-                        break;
-                    case "large":
-                        enumSize = BusSize.LARGE;
-                        break;
-                }
-
-                return new Bus(busID, enumSize);
-            }
-            catch (MySqlException)
-            {
-                MessageBox.Show("Προκλήθηκε σφάλμα κατά την σύνδεση με τον server. Η εφαρμογή θα τερματιστεί!",
-                                "Σφάλμα",
-                                MessageBoxButtons.OK,
-                                MessageBoxIcon.Error);
-                Application.Exit();
-                return null;
-            }
-        }
-
-        private BusLine GetBusLine(int number)
-        {
-            try
-            {
-                using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
-                connection.Open();
-
-                var query = @"select duration 
-                          from busline 
-                          where number = @number;";
-
-                using var cmd = new MySqlCommand(query, connection);
-                cmd.Parameters.AddWithValue("@number", number);
-
-                using MySqlDataReader reader = cmd.ExecuteReader();
-
-                reader.Read();
-                return new BusLine(number, reader.GetInt32(0), GetBusLineStops(number));
             }
             catch (MySqlException)
             {
@@ -343,9 +271,9 @@ namespace ClassesFolder
                 {
                     return new Itinerary(reader.GetInt32(0),
                                          reader.GetDateTime(1),
-                                         reader.GetString(2),
-                                         GetBusLine(reader.GetInt32(3)),
-                                         GetBus(reader.GetInt32(4)),
+                                         this,
+                                         Functions.GetBusLine(reader.GetInt32(3)),
+                                         Functions.GetBus(reader.GetInt32(4)),
                                          ItineraryStatus.NoDelayed,
                                          reader.GetInt32(5));
                 }

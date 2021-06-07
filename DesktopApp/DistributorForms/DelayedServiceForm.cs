@@ -263,7 +263,7 @@ namespace DistributorForms
 
                 Itinerary itinerary = new Itinerary(_distributor.FindMaxItineraryID() + 1,
                                                     DateTime.Parse(_selectedTravelDatetime),
-                                                    _busDrivers[recommendedDriversListview.CheckedIndices[0]].Username,
+                                                    _busDrivers[recommendedDriversListview.CheckedIndices[0]],
                                                     _busLines[_selectedBusLine],
                                                     _buses.Find(x => x.ID == int.Parse(recommendedBusesListview.Items[recommendedBusesListview.CheckedIndices[0]].SubItems[0].Text)),
                                                     ItineraryStatus.NoDelayed,
@@ -281,6 +281,8 @@ namespace DistributorForms
                 client.AutomaticTicketPurchase(_distributor.FindMaxItineraryID());
                 client.InsertTransactionToDatabase(_distributor.GetClientsLastTicketID(client.Username), 
                                                    client.FindStandardTicketPrice());
+                itinerary.DecrementItinerarySeats();
+                
                 client.DeleteLastMinuteTravelRequest(_requests[_selectedRequestIndex]);
                 _requests.RemoveAt(_selectedRequestIndex);
                 int counter = 1;
@@ -303,6 +305,7 @@ namespace DistributorForms
                     client.AutomaticTicketPurchase(_distributor.FindMaxItineraryID());
                     client.InsertTransactionToDatabase(_distributor.GetClientsLastTicketID(client.Username), 
                                                        client.FindStandardTicketPrice());
+                    itinerary.DecrementItinerarySeats();
                     client.DeleteLastMinuteTravelRequest(request);
                     _requests.Remove(request);
                     counter++;

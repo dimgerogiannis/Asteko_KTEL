@@ -54,7 +54,7 @@ namespace Project.ClientForms
                 return;
             }
 
-            if (CheckForDuplicateClientComplaint(Functions.GetBusDriverByUsername(_latestItinerary.ResponsibleDriver), _client))
+            if (CheckForDuplicateClientComplaint(_latestItinerary.ResponsibleDriver, _client))
             {
                 MessageBox.Show("Έχετε ήδη καταχωρήσει παράπονο για τον οδηγό του τελευταίου δρομολογίου για το οποίο ταξιδέψατε.",
                                 "Σφάλμα",
@@ -83,13 +83,13 @@ namespace Project.ClientForms
                         break;
                 }
 
-                ClientComplaint complaint = new ClientComplaint(Functions.GetBusDriverByUsername(_latestItinerary.ResponsibleDriver),
+                ClientComplaint complaint = new ClientComplaint(_latestItinerary.ResponsibleDriver,
                                                                 _client,
                                                                 false,
                                                                 describeRichTextbox.Text,
                                                                 category);
 
-                var busDriver = Functions.GetBusDriverByUsername(_latestItinerary.ResponsibleDriver);
+                var busDriver = Functions.GetBusDriverByUsername(_latestItinerary.ResponsibleDriver.Username);
                 _client.InsertClientComplaint(complaint);
                 busDriver.IncreaseComplaintCounter();
                 busDriver.UpdateComplaintCounter();

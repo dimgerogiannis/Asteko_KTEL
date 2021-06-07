@@ -159,7 +159,7 @@ namespace ClassesFolder
 
                 return new Itinerary(itineraryID,
                                      travelDatetime,
-                                     busDriverUsername,
+                                     Functions.GetBusDriverByUsername(busDriverUsername),
                                      Functions.GetBusLine(busLineNumber),
                                      Functions.GetBus(busID),
                                      enumStatus,
@@ -347,7 +347,7 @@ namespace ClassesFolder
 
                     itineraries.Add(new Itinerary(itineraryID,
                                                   _travelDatetime,
-                                                  busDriverUsername,
+                                                  Functions.GetBusDriverByUsername(busDriverUsername),
                                                   Functions.GetBusLine(_busLineNumber),
                                                   Functions.GetBus(busID),
                                                   enumStatus,
@@ -381,32 +381,6 @@ namespace ClassesFolder
                 cmd.Parameters.AddWithValue("@used", false);
                 cmd.Parameters.AddWithValue("@clientUsername", _username);
                 cmd.Parameters.AddWithValue("@itineraryID", itineraryID);
-                cmd.ExecuteNonQuery();
-            }
-            catch (MySqlException)
-            {
-                MessageBox.Show("Προκλήθηκε σφάλμα κατά την σύνδεση με τον server. Η εφαρμογή θα τερματιστεί!",
-                                 "Σφάλμα",
-                                 MessageBoxButtons.OK,
-                                 MessageBoxIcon.Error);
-                Application.Exit();
-            }
-        }
-
-        public void DecrementItinerarySeats(int itineraryID, int oldSeatsNumber)
-        {
-            try
-            {
-                oldSeatsNumber--;
-                using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
-                connection.Open();
-                var query = @"UPDATE Itinerary
-                          SET availableSeats = @availableSeats
-                          WHERE itineraryID = @itineraryID;";
-                using var cmd = new MySqlCommand(query, connection);
-                cmd.Parameters.AddWithValue("@availableSeats", oldSeatsNumber);
-                cmd.Parameters.AddWithValue("@itineraryID", itineraryID);
-
                 cmd.ExecuteNonQuery();
             }
             catch (MySqlException)
@@ -847,7 +821,7 @@ namespace ClassesFolder
 
                 return new Itinerary(itineraryID,
                                      travelDatetime,
-                                     busDriverUsername,
+                                     Functions.GetBusDriverByUsername(busDriverUsername),
                                      Functions.GetBusLine(busLineNumber),
                                      Functions.GetBus(busID),
                                      enumStatus,
@@ -1281,7 +1255,7 @@ namespace ClassesFolder
 
                 return new Itinerary(itineraryID,
                                      travelDatetime,
-                                     busDriverUsername,
+                                     Functions.GetBusDriverByUsername(busDriverUsername),
                                      Functions.GetBusLine(busLineNumber),
                                      Functions.GetBus(busID),
                                      enumStatus,

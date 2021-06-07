@@ -314,7 +314,7 @@ namespace DistributorForms
 
                 Itinerary itinerary = new Itinerary(_distributor.FindMaxItineraryID(),
                                                     targetDatetime,
-                                                    busDriverUsername,
+                                                    Functions.GetBusDriverByUsername(busDriverUsername),
                                                     busLine,
                                                     bus,
                                                     ItineraryStatus.NoDelayed, 
@@ -344,6 +344,8 @@ namespace DistributorForms
                         client.AutomaticTicketPurchase(_distributor.FindMaxItineraryID());
                         client.InsertTransactionToDatabase(_distributor.GetClientsLastTicketID(client.Username),
                                                            servedClient.ChargedPrice);
+                        itinerary.DecrementItinerarySeats();
+
 
                         _distributor.DeleteReservation(servedClient);
                          _reservations.Remove(servedClient);

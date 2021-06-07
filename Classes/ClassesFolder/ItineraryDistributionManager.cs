@@ -318,7 +318,7 @@ namespace ClassesFolder
                 cmd.Parameters.AddWithValue("@travelDatetime", itinerary.TravelDatetime.ToString("yyyy-MM-dd HH:mm:ss"));
                 cmd.Parameters.AddWithValue("@availableSeats", itinerary.AvailableSeats);
                 cmd.Parameters.AddWithValue("@distributorUsername", _username);
-                cmd.Parameters.AddWithValue("@busDriverUsername", itinerary.ResponsibleDriver);
+                cmd.Parameters.AddWithValue("@busDriverUsername", itinerary.ResponsibleDriver.Username);
                 cmd.Parameters.AddWithValue("@busLineNumber", itinerary.ItineraryLine.Number);
                 cmd.Parameters.AddWithValue("@busID", itinerary.ResponsibleBus.ID);
                 cmd.ExecuteNonQuery();
