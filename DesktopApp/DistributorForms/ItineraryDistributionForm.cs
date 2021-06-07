@@ -36,7 +36,11 @@ namespace DistributorForms
         {
             _busLines = _distributor.GetBusLines();
             _dictionary = new Dictionary<string, List<Reservation>>();
-            _reservations = _distributor.GetReservations();
+            _reservations = _distributor
+                .GetReservations()
+                .OrderBy(x => x.TravelBusLine.Number)
+                .ThenBy(x => x.ReservationDatetime)
+                .ToList();
 
             foreach (var reservation in _reservations)
             {
@@ -56,6 +60,11 @@ namespace DistributorForms
 
             busLineNumberCombobox.Items.AddRange(_distributor.GetBusLines().Select(x => x.Number.ToString()).ToArray());
             sizeCombobox.Items.AddRange(new string[] { "Μεγάλο", "Μεσαίο", "Μικρό" });
+
+            if (rereservationsListview.Items.Count == 0)
+                exitButton.Enabled = true;
+            else
+                exitButton.Enabled = false;
         }
 
         private void FillReservationListview()
@@ -76,6 +85,9 @@ namespace DistributorForms
                     _dictionary[key].Count.ToString()
                 }));
             }
+
+            if (rereservationsListview.Items.Count == 0)
+                exitButton.Enabled = true;
         }
 
         private void ProgrammingButton_Click(object sender, EventArgs e)
@@ -114,7 +126,7 @@ namespace DistributorForms
                 var targetDatetime = $"{targetDate} {availableStartingHoursCombobox.SelectedIndex}:00";
 
                 var busDrivers = _distributor.GetBusDrivers();
-                var duration = _busLines.Find(x => x.Number == busLineNumberCombobox.SelectedIndex).Duration;
+                var duration = _busLines.Find(x => x.Number == int.Parse(busLineNumberCombobox.SelectedItem.ToString())).Duration;
                 
                 _hour = availableStartingHoursCombobox.SelectedItem.ToString();
                 _date = dateTimePicker.Value.ToString("yyyy-MM-dd");
@@ -450,5 +462,9 @@ namespace DistributorForms
             return dates;
         }
 
+        private void ExitButton_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
     }
 }

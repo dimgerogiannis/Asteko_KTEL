@@ -15,7 +15,7 @@ namespace ClassesFolder
         public ItineraryDistributionManager(string username,
                                             string name,
                                             string surname,
-                                            string property,
+                                            Specialization property,
                                             decimal salary,
                                             int experience,
                                             string hireDate,
@@ -239,7 +239,7 @@ namespace ClassesFolder
                     busDrivers.Add(new BusDriver(reader.GetString(0),
                                                  reader.GetString(1),
                                                  reader.GetString(2),
-                                                 "BusDriver",
+                                                 Specialization.BusDriver,
                                                  reader.GetDecimal(3),
                                                  reader.GetInt32(4),
                                                  reader.GetString(5),
@@ -351,7 +351,7 @@ namespace ClassesFolder
                 return new Client(username,
                                   reader.GetString(0),
                                   reader.GetString(1),
-                                  "Client");
+                                  Specialization.Client);
             }
             catch (MySqlException)
             {

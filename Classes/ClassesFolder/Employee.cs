@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static ClassesFolder.Enums;
 
 namespace ClassesFolder
 {
@@ -19,7 +20,7 @@ namespace ClassesFolder
         public Employee(string username,
                         string name,
                         string surname,
-                        string property,
+                        Specialization property,
                         decimal salary,
                         int experience,
                         string hireDate) : base(username, name, surname, property)

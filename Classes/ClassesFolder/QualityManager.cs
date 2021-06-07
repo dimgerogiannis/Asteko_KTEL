@@ -13,7 +13,7 @@ namespace ClassesFolder
         public QualityManager(string username,
                               string name,
                               string surname,
-                              string property,
+                              Specialization property,
                               decimal salary,
                               int experience,
                               string hireDate) : base(username, name, surname, property, salary, experience, hireDate)

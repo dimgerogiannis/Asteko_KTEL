@@ -1,21 +1,23 @@
-﻿namespace ClassesFolder
+﻿using static ClassesFolder.Enums;
+
+namespace ClassesFolder
 {
     public class User
     {
         protected string _username;
         protected string _name;
         protected string _surname;
-        protected string _specialization;
+        protected Specialization _specialization;
 
         public string Username => _username;
         public string Name => _name;
         public string Surname => _surname;
-        public string Specialization => _specialization;
+        public Specialization Specialization => _specialization;
 
         public User(string username,
                     string name,
                     string surname,
-                    string property)
+                    Specialization property)
         {
             _username = username;
             _name = name;

@@ -26,14 +26,17 @@ namespace ChiefForms
             {
                 switch (employee.Specialization)
                 {
-                    case "bus_driver":
+                    case Enums.Specialization.BusDriver:
                         prop = "Οδηγώς λεωφορείων";
                         break;
-                    case "quality_manager":
+                    case Enums.Specialization.QualityManager:
                         prop = "Υπ. διασφάλισης υπηρεσιών";
                         break;
-                    case "itinerary_distributor":
+                    case Enums.Specialization.Distributor:
                         prop = "Υπ. κατανομής δρομολογίων";
+                        break;
+                    default:
+                        prop = "Προϋστάμενος";
                         break;
                 }
 

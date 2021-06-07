@@ -50,6 +50,7 @@ namespace DistributorForms
             this.sizeCombobox = new System.Windows.Forms.ComboBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.createItineraryButton = new System.Windows.Forms.Button();
+            this.exitButton = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -218,6 +219,7 @@ namespace DistributorForms
             // panel1
             // 
             this.panel1.AutoScroll = true;
+            this.panel1.Controls.Add(this.exitButton);
             this.panel1.Controls.Add(this.createItineraryButton);
             this.panel1.Controls.Add(this.recommendedBusesListview);
             this.panel1.Controls.Add(this.programmingButton);
@@ -246,12 +248,22 @@ namespace DistributorForms
             this.createItineraryButton.UseVisualStyleBackColor = true;
             this.createItineraryButton.Click += new System.EventHandler(this.CreateItineraryButton_Click);
             // 
+            // exitButton
+            // 
+            this.exitButton.Location = new System.Drawing.Point(811, 933);
+            this.exitButton.Name = "exitButton";
+            this.exitButton.Size = new System.Drawing.Size(125, 34);
+            this.exitButton.TabIndex = 14;
+            this.exitButton.Text = "Έξοδος";
+            this.exitButton.UseVisualStyleBackColor = true;
+            this.exitButton.Click += new System.EventHandler(this.ExitButton_Click);
+            // 
             // ItineraryDistributionForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.ClientSize = new System.Drawing.Size(974, 998);
+            this.ClientSize = new System.Drawing.Size(970, 994);
             this.ControlBox = false;
             this.Controls.Add(this.panel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
@@ -290,5 +302,6 @@ namespace DistributorForms
         private System.Windows.Forms.ComboBox sizeCombobox;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Button createItineraryButton;
+        private System.Windows.Forms.Button exitButton;
     }
 }

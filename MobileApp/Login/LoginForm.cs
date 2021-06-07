@@ -135,7 +135,7 @@ namespace Login
                 return new Client(username,
                                   reader.GetString(0),
                                   reader.GetString(1),
-                                  "Client");
+                                  Enums.Specialization.Client);
             }
             catch (MySqlException)
             {
@@ -173,7 +173,7 @@ namespace Login
                 return new BusDriver(username,
                                      reader.GetString(0),
                                      reader.GetString(1),
-                                     "Bus Driver",
+                                     Enums.Specialization.BusDriver,
                                      reader.GetDecimal(2),
                                      reader.GetInt32(3),
                                      reader.GetString(4),

@@ -12,6 +12,7 @@ using ChiefForms;
 using ClassesFolder;
 using QualityManagerForms;
 using DistributorForms;
+using static ClassesFolder.Enums;
 
 namespace LoginFolder
 {
@@ -131,7 +132,7 @@ namespace LoginFolder
                 return new Chief(username,
                                  reader.GetString(0),
                                  reader.GetString(1),
-                                 "Chief",
+                                 Enums.Specialization.Chief,
                                  reader.GetDecimal(2),
                                  reader.GetInt32(3),
                                  reader.GetString(4));
@@ -166,7 +167,7 @@ namespace LoginFolder
                 return new QualityManager(username,
                                  reader.GetString(0),
                                  reader.GetString(1),
-                                 "QualityManager",
+                                 Specialization.QualityManager,
                                  reader.GetDecimal(2),
                                  reader.GetInt32(3),
                                  reader.GetString(4));
@@ -202,7 +203,7 @@ namespace LoginFolder
                 return new ItineraryDistributionManager(username,
                                  reader.GetString(0),
                                  reader.GetString(1),
-                                 "ItineraryDistributorManager",
+                                 Enums.Specialization.Distributor,
                                  reader.GetDecimal(2),
                                  reader.GetInt32(3),
                                  reader.GetString(4),

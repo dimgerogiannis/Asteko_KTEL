@@ -36,15 +36,15 @@ namespace DistributorForms
             _requests = _distributor
                 .GetLastMinuteTravelRequests()
                 .OrderBy(x=> x.TravelDatetime)
-                .OrderBy(y => y.TravelBusLine.Number)
-                .OrderBy(y => y.ApplicationDate)
+                .ThenBy(x => x.TravelBusLine.Number)
+                .ThenBy(x => x.ApplicationDate)
                 .ToList();
 
             _busLines = _distributor.GetBusLines();
 
             _clients = new List<Client>();
             foreach (var request in _requests)
-                _clients.Add(_distributor.GetClient(request.ApplicantClient.Username));
+                _clients.Add(request.ApplicantClient);
 
             DisplayLastMinuteTravelRequests();
         }
@@ -104,7 +104,9 @@ namespace DistributorForms
                 }
                 else
                 {
-
+                    _requests[lastMinuteListview.CheckedIndices[0]].ApplicantClient.DeleteLastMinuteTravelRequest(_requests[lastMinuteListview.CheckedIndices[0]]);
+                    _requests.RemoveAt(_selectedRequestIndex);
+                    DisplayLastMinuteTravelRequests();
                 }
             }
             else
@@ -289,7 +291,7 @@ namespace DistributorForms
 
                 var requests = _requests
                     .Select(x => x)
-                    .Where(x => x.TravelBusLine.Number == _selectedBusLine && x.TravelDatetime == DateTime.Parse(_selectedTravelDatetime))
+                    .Where(x => x.ApplicantClient.CanAffordCost(x.ApplicantClient.FindStandardTicketPrice()) && x.TravelBusLine.Number == _selectedBusLine && x.TravelDatetime == DateTime.Parse(_selectedTravelDatetime))
                     .Take(--availableSeats)
                     .ToList();
 

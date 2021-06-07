@@ -55,7 +55,7 @@ namespace ClassesFolder
         public Client(string username,
                       string name,
                       string surname,
-                      string property) : base(username, name, surname, property)
+                      Specialization property) : base(username, name, surname, property)
         {
             FindClientInformation();
             InitializeAvailablePolls();
@@ -1150,7 +1150,7 @@ namespace ClassesFolder
                 return new BusDriver(username,
                                      reader.GetString(0),
                                      reader.GetString(1),
-                                     "Bus Driver",
+                                     Specialization.BusDriver,
                                      reader.GetDecimal(2),
                                      reader.GetInt32(3),
                                      reader.GetString(4),

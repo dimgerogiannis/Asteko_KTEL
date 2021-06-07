@@ -24,7 +24,7 @@ namespace ClassesFolder
         public BusDriver(string username,
                          string name,
                          string surname,
-                         string property,
+                         Specialization property,
                          decimal salary,
                          int experience,
                          string hireDate,
