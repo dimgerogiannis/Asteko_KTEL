@@ -174,7 +174,6 @@ namespace ClassesFolder
                 using var cmd = new MySqlCommand(query, connection);
                 cmd.Parameters.AddWithValue("@username", busDriver.Username);
                 cmd.Parameters.AddWithValue("@complaintsCounter", 0);
-                cmd.Parameters.AddWithValue("@availableWorkingHours", 360);
                 cmd.Parameters.AddWithValue("@fired", false);
                 cmd.ExecuteNonQuery();
             }
