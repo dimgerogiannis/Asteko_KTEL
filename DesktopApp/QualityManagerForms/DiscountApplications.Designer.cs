@@ -60,7 +60,7 @@ namespace QualityManagerForms
             // dateLabel
             // 
             this.dateLabel.AutoSize = true;
-            this.dateLabel.Location = new System.Drawing.Point(12, 107);
+            this.dateLabel.Location = new System.Drawing.Point(12, 99);
             this.dateLabel.Name = "dateLabel";
             this.dateLabel.Size = new System.Drawing.Size(182, 25);
             this.dateLabel.TabIndex = 2;
@@ -69,7 +69,7 @@ namespace QualityManagerForms
             // taxIDLabel
             // 
             this.taxIDLabel.AutoSize = true;
-            this.taxIDLabel.Location = new System.Drawing.Point(12, 152);
+            this.taxIDLabel.Location = new System.Drawing.Point(12, 144);
             this.taxIDLabel.Name = "taxIDLabel";
             this.taxIDLabel.Size = new System.Drawing.Size(70, 25);
             this.taxIDLabel.TabIndex = 3;
@@ -78,7 +78,7 @@ namespace QualityManagerForms
             // phoneLabel
             // 
             this.phoneLabel.AutoSize = true;
-            this.phoneLabel.Location = new System.Drawing.Point(12, 197);
+            this.phoneLabel.Location = new System.Drawing.Point(12, 189);
             this.phoneLabel.Name = "phoneLabel";
             this.phoneLabel.Size = new System.Drawing.Size(100, 25);
             this.phoneLabel.TabIndex = 4;
@@ -87,7 +87,7 @@ namespace QualityManagerForms
             // categoryLabel
             // 
             this.categoryLabel.AutoSize = true;
-            this.categoryLabel.Location = new System.Drawing.Point(12, 242);
+            this.categoryLabel.Location = new System.Drawing.Point(12, 234);
             this.categoryLabel.Name = "categoryLabel";
             this.categoryLabel.Size = new System.Drawing.Size(103, 25);
             this.categoryLabel.TabIndex = 5;
@@ -95,9 +95,9 @@ namespace QualityManagerForms
             // 
             // approveRejectButton
             // 
-            this.approveRejectButton.Location = new System.Drawing.Point(12, 283);
+            this.approveRejectButton.Location = new System.Drawing.Point(12, 271);
             this.approveRejectButton.Name = "approveRejectButton";
-            this.approveRejectButton.Size = new System.Drawing.Size(145, 34);
+            this.approveRejectButton.Size = new System.Drawing.Size(122, 34);
             this.approveRejectButton.TabIndex = 6;
             this.approveRejectButton.Text = "Επεξεργασία";
             this.approveRejectButton.UseVisualStyleBackColor = true;
@@ -108,7 +108,7 @@ namespace QualityManagerForms
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.ClientSize = new System.Drawing.Size(450, 327);
+            this.ClientSize = new System.Drawing.Size(450, 317);
             this.Controls.Add(this.approveRejectButton);
             this.Controls.Add(this.categoryLabel);
             this.Controls.Add(this.phoneLabel);

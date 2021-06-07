@@ -64,7 +64,7 @@ namespace QualityManagerForms
         private void CreatePollButton_Click(object sender, EventArgs e)
         {
             if (titleTextbox.Text != "" &&
-                startDateTimePicker.Value > DateTime.Now &&
+                DateTime.Parse(startDateTimePicker.Value.ToShortDateString()) >= DateTime.Parse(DateTime.Now.ToShortDateString()) &&
                 startDateTimePicker.Value < endDateTimePicker.Value &&
                 choicesListview.Items.Count > 0 &&
                 questionRichTextbox.Text != "")

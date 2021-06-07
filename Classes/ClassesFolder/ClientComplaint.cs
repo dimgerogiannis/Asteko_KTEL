@@ -24,8 +24,7 @@ namespace ClassesFolder
                                Client complaintClient,
                                bool gotChecked, 
                                string summary, 
-                               ClientComplaintCategory category
-                               ) : base(summary)
+                               ClientComplaintCategory category) : base(summary)
         {
             _targetDriver = targetDriver;
             _complaintClient = complaintClient;
@@ -69,7 +68,7 @@ namespace ClassesFolder
 
                 using var cmd = new MySqlCommand(query, connection);
                 cmd.Parameters.AddWithValue("@targetUsername", _targetDriver.Username);
-                cmd.Parameters.AddWithValue("@checked", true);
+                cmd.Parameters.AddWithValue("@checked", _checked);
                 cmd.Parameters.AddWithValue("@clientUsername", _complaintClient.Username);
                 cmd.ExecuteNonQuery();
             }

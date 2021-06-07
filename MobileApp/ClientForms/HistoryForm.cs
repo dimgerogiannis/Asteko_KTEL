@@ -48,9 +48,9 @@ namespace Project.ClientForms
 
             var transactionList = new List<Transaction>();
             var ticketList = _client.GetTickets(fromDatetimePicker.Value.ToString("yyyy-MM-dd 00:00:00"), ToDatetimePicker.Value.ToString("yyyy-MM-dd 23:59:59"));
-            
+
             foreach (var ticket in ticketList)
-                transactionList.Add(_client.GetTransaction(ticket));
+                transactionList.Add(ticket.GetTransaction(_client));
 
             foreach (var ticket in ticketList)
             {

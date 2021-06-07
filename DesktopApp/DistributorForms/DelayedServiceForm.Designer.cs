@@ -89,7 +89,7 @@ namespace DistributorForms
             this.columnHeader7});
             this.recommendedBusesListview.FullRowSelect = true;
             this.recommendedBusesListview.HideSelection = false;
-            this.recommendedBusesListview.Location = new System.Drawing.Point(476, 443);
+            this.recommendedBusesListview.Location = new System.Drawing.Point(476, 442);
             this.recommendedBusesListview.Name = "recommendedBusesListview";
             this.recommendedBusesListview.Size = new System.Drawing.Size(469, 179);
             this.recommendedBusesListview.TabIndex = 21;
@@ -108,7 +108,7 @@ namespace DistributorForms
             // 
             // programmingButton
             // 
-            this.programmingButton.Location = new System.Drawing.Point(12, 396);
+            this.programmingButton.Location = new System.Drawing.Point(12, 391);
             this.programmingButton.Name = "programmingButton";
             this.programmingButton.Size = new System.Drawing.Size(186, 34);
             this.programmingButton.TabIndex = 13;
@@ -143,7 +143,7 @@ namespace DistributorForms
             // 
             // createButton
             // 
-            this.createButton.Location = new System.Drawing.Point(12, 637);
+            this.createButton.Location = new System.Drawing.Point(12, 627);
             this.createButton.Name = "createButton";
             this.createButton.Size = new System.Drawing.Size(189, 34);
             this.createButton.TabIndex = 24;
@@ -156,7 +156,7 @@ namespace DistributorForms
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.ClientSize = new System.Drawing.Size(957, 684);
+            this.ClientSize = new System.Drawing.Size(957, 670);
             this.Controls.Add(this.createButton);
             this.Controls.Add(this.recommendedBusesListview);
             this.Controls.Add(this.programmingButton);

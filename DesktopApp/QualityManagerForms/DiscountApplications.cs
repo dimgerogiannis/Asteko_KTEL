@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
@@ -64,6 +65,8 @@ namespace QualityManagerForms
                 {
                     System.IO.File.WriteAllBytes($@"{path}\{file.FileName}", file.FileContent);
                 }
+
+                Process.Start("explorer.exe", path);
 
                 namesCombobox.Enabled = false;
             }

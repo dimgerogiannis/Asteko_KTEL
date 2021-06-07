@@ -101,9 +101,36 @@ namespace ClassesFolder
             return _used;
         }  
         
-        public Transaction GetTransaction()
+        public Transaction GetTransaction(Client client)
         {
-            return null;
+            try
+            {
+                using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
+                connection.Open();
+
+                var query = @"select price, purchaseDatetime
+                        from transaction
+                        inner join Ticket on Ticket.ticketID = Transaction.ticketID
+                        where clientUsername = @clientUsername and itineraryID = @itineraryID;";
+
+                using var cmd = new MySqlCommand(query, connection);
+                cmd.Parameters.AddWithValue("@clientUsername", client.Username);
+                cmd.Parameters.AddWithValue("@itineraryID", CorrespondingItinerary.ID);
+                using MySqlDataReader reader = cmd.ExecuteReader();
+
+                reader.Read();
+
+                return new Transaction(reader.GetDecimal(0), this, reader.GetDateTime(1));
+            }
+            catch (MySqlException)
+            {
+                MessageBox.Show("Προκλήθηκε σφάλμα κατά την σύνδεση με τον server. Η εφαρμογή θα τερματιστεί!",
+                                "Σφάλμα",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Error);
+                Application.Exit();
+                return null;
+            }
         }
     }
 }
