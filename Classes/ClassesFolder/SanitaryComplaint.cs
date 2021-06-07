@@ -14,8 +14,8 @@ namespace ClassesFolder
         private SanitaryComplaintCategory _category;
 
 
-        public Client TargetClient;
-        public BusDriver ComplaintDriver;
+        public Client TargetClient => _targetClient;
+        public BusDriver ComplaintDriver => _complaintDriver;
         public string Summary => _summary;
         public SanitaryComplaintCategory Category => _category;
 

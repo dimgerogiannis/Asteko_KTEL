@@ -146,7 +146,6 @@ namespace ClassesFolder
                     var username = reader.GetString(0);
                     if (!dictionary.ContainsKey(username))
                         dictionary.Add(username, new List<SanitaryComplaint>());
-
                     dictionary[username].Add(new SanitaryComplaint(Functions.GetClientByUsername(username), 
                                                                    Functions.GetBusDriverByUsername(reader.GetString(3)),
                                                                    reader.GetString(1),
