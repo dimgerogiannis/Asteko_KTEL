@@ -64,7 +64,7 @@ public static class ConnectionInfo
 3. Επιλογή **DesktopApp** ή **MobileApp**.
 4. Run.
 
-Παρακάτων φαίνονται μερικές φωτογραφίες που δείχνουν την σειρά των βημάτων.
+Παρακάτω φαίνονται μερικές φωτογραφίες που δείχνουν τη σειρά των βημάτων.
 
 <p align="center">
   <img src="https://github.com/gstratigopoulos96/Asteko_KTEL/blob/master/Photos/openproject.png" alt="image"/>
