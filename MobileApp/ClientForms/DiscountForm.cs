@@ -36,7 +36,7 @@ namespace Project.ClientForms
         {
             OpenFileDialog openFileDialog = new OpenFileDialog
             {
-                Title = "Browse Text Files",
+                Title = "Browse pdf Files",
                 Multiselect = true,
                 CheckFileExists = true,
                 CheckPathExists = true,
@@ -85,7 +85,10 @@ namespace Project.ClientForms
             {
                 if (_client.CheckForDuplicateDiscountApplication())
                 {
-                    MessageBox.Show("Έχετε κάνει ήδη αίτηση για έκπτωση στις μεταφορές.", "Σφάλμα", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Έχετε κάνει ήδη αίτηση για έκπτωση στις μεταφορές.", 
+                                    "Σφάλμα", 
+                                    MessageBoxButtons.OK,
+                                    MessageBoxIcon.Error);
                     return;
                 }
 
@@ -116,20 +119,30 @@ namespace Project.ClientForms
                                                                           Status.Pending,
                                                                           files);
 
-                var result = MessageBox.Show("Θέλετε να καταχωρήσετε την αίτηση σας;", "Ερώτηση", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                var result = MessageBox.Show("Θέλετε να καταχωρήσετε την αίτηση σας;", 
+                                             "Ερώτηση", 
+                                             MessageBoxButtons.YesNo, 
+                                             MessageBoxIcon.Question);
 
                 if (result == DialogResult.Yes)
                 {
                     _client.InsertDiscountApplicationInDatabase(application);
                     var applicationID = _client.GetDiscountApplicationID();
                     _client.InsertDiscountApplicationFilesInDatabase(applicationID, application.Files);
-                    MessageBox.Show("Επιτυχής καταχώρηση αίτησης έκπτωσης στις μεταφορές.", "Επιτυχία", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    
+                    MessageBox.Show("Επιτυχής καταχώρηση αίτησης έκπτωσης στις μεταφορές.", 
+                                    "Επιτυχία", 
+                                    MessageBoxButtons.OK, 
+                                    MessageBoxIcon.Information);
                 }
 
             }
             else
             {
-                MessageBox.Show("Παρακαλώ συμπληρώστε όλα τα πεδία.", "Σφάλμα", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Παρακαλώ συμπληρώστε όλα τα πεδία.", 
+                                "Σφάλμα", 
+                                MessageBoxButtons.OK, 
+                                MessageBoxIcon.Error);
             }
         }
     }

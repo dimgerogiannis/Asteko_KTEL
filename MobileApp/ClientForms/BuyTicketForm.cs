@@ -78,7 +78,7 @@ namespace Project.ClientForms
                 return;
             }
 
-            var price = _client.FindStandardTicketPrice();
+            var price = _client.GetStandardTicketPrice();
 
             var lastMinuteDates = GetLastMinuteAvailableDates();
 
@@ -173,7 +173,7 @@ namespace Project.ClientForms
                                                                   Functions.GetBusLine(int.Parse(lineNumberCombobox.SelectedItem.ToString())),
                                                                   0m);
                         
-                        _client.InsertReservationToDatabase(reservation, 0m);
+                        _client.InsertReservationToDatabase(reservation);
 
                         _client.ReservationList.Add(reservation);
 
@@ -208,8 +208,7 @@ namespace Project.ClientForms
                                                                       ticketPrice);
 
                             _client.PayForTicket(ticketPrice);
-                            _client.InsertReservationToDatabase(reservation,
-                                                                ticketPrice);
+                            _client.InsertReservationToDatabase(reservation);
 
                             _client.ReservationList.Add(reservation);
 

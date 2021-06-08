@@ -42,51 +42,59 @@ namespace Project.ClientForms
             GetHistory();
         }
 
-        private void GetHistory()
+        private async void GetHistory()
         {
             historyListview.Items.Clear();
 
-            var transactionList = new List<Transaction>();
-            var ticketList = _client.GetTickets(fromDatetimePicker.Value.ToString("yyyy-MM-dd 00:00:00"), ToDatetimePicker.Value.ToString("yyyy-MM-dd 23:59:59"));
-
-            foreach (var ticket in ticketList)
-                transactionList.Add(ticket.GetTransaction(_client));
-
-            foreach (var ticket in ticketList)
+            await Task.Run(() =>
             {
-                var transaction = transactionList.Find(x => x.Ticket == ticket);
-                historyListview.Items.Add(new ListViewItem(new string[]
-                {
-                        transaction.PurchaseDatetime.ToString("HH:mm:ss dd-MM-yyyy"),
-                        transaction.Price.ToString(),
-                        ticket.CorrespondingItinerary.ItineraryLine.Number.ToString(),
-                        ticket.CorrespondingItinerary.TravelDatetime.ToString("HH:mm:ss dd-MM-yyyy")
-                }));
-            }
+                var transactionList = new List<Transaction>();
+                var ticketList = _client.GetTickets(fromDatetimePicker.Value.ToString("yyyy-MM-dd 00:00:00"), ToDatetimePicker.Value.ToString("yyyy-MM-dd 23:59:59"));
 
-            ticketNumber.Text = $"Πλήθος εισιτηρίων: {ticketList.Count}";
-            totalTicketCostLabel.Text = $"Συνολικό κόστος εισιτηρίων: {transactionList.Sum(x => x.Price)} Ευρώ";
+                foreach (var ticket in ticketList)
+                    transactionList.Add(ticket.GetTransaction(_client));
+
+                this.Invoke(new Action(() =>
+                {
+                    foreach (var ticket in ticketList)
+                    {
+                        var transaction = transactionList.Find(x => x.Ticket == ticket);
+                        historyListview.Items.Add(new ListViewItem(new string[]
+                        {
+                            transaction.PurchaseDatetime.ToString("HH:mm:ss dd-MM-yyyy"),
+                            transaction.Price.ToString(),
+                            ticket.CorrespondingItinerary.ItineraryLine.Number.ToString(),
+                            ticket.CorrespondingItinerary.TravelDatetime.ToString("HH:mm:ss dd-MM-yyyy")
+                        }));
+                    }
+                    ticketNumber.Text = $"Πλήθος εισιτηρίων: {ticketList.Count}";
+                    totalTicketCostLabel.Text = $"Συνολικό κόστος εισιτηρίων: {transactionList.Sum(x => x.Price)} Ευρώ";
+                }));
+            });
         }
 
-        private void CheckLastMonthsTransactions()
+        private async void CheckLastMonthsTransactions()
         {
-            var transactionList = new List<Transaction>();
-            var ticketList = _client.GetTickets(DateTime.Now.AddMonths(-1).ToString("yyyy-MM-dd"));
-            
-            foreach (var ticket in ticketList)
-                transactionList.Add(_client.GetTransaction(ticket));
-
-            var sum = transactionList.Sum(x => x.Price);
-
-            var montlyCardPrice = _client.GetMonthlyCardPrice();
-            if (IsBiggerThan(sum, montlyCardPrice) && 
-                !_client.MonthlyCard)
+            await Task.Run(() =>
             {
-                var result = MessageBox.Show($"Τον τελευταίο μήνα αγοράσατε {ticketList.Count} εισιτήρια κόστους {sum} Ευρώ. Θα θέλατε να αγοράσετε μηνιαία κάρτα η οποία κοστίζει μόλις {montlyCardPrice} Ευρώ το μήνα;",
-                                             "Πρόταση",
-                                             MessageBoxButtons.YesNo,
-                                             MessageBoxIcon.Question);
-            }
+                var transactionList = new List<Transaction>();
+                var ticketList = _client.GetTickets(DateTime.Now.AddMonths(-1).ToString("yyyy-MM-dd"));
+
+                foreach (var ticket in ticketList)
+                    transactionList.Add(ticket.GetTransaction(_client));
+
+                var sum = transactionList.Sum(x => x.Price);
+
+                var montlyCardPrice = _client.GetMonthlyCardPrice();
+                if (IsBiggerThan(sum, montlyCardPrice) &&
+                    !_client.MonthlyCard)
+                {
+                    var result = MessageBox.Show($"Τον τελευταίο μήνα αγοράσατε {ticketList.Count} εισιτήρια κόστους {sum} Ευρώ. Θα θέλατε να αγοράσετε μηνιαία κάρτα η οποία κοστίζει μόλις {montlyCardPrice} Ευρώ το μήνα;",
+                                                 "Πρόταση",
+                                                 MessageBoxButtons.YesNo,
+                                                 MessageBoxIcon.Question);
+                }
+            });
         }
 
         private bool IsBiggerThan(decimal lastMonthCost, decimal montlyCardCost)

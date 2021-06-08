@@ -32,7 +32,7 @@ namespace Project.BusDriverForms
                 username = username.Replace(" ", "");
                 username = username.Replace(")", "");
 
-                if (!_busDriver.CheckDuplicateSanitaryComplaint(username))
+                if (!_busDriver.CheckDuplicateSanitaryComplaint(Functions.GetClientByUsername(username)))
                 {
                     SanitaryComplaintCategory category = SanitaryComplaintCategory.CloseDistance;
 

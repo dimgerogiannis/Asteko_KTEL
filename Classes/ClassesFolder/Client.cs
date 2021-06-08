@@ -16,10 +16,7 @@ namespace ClassesFolder
         private bool _monthlyCard;
         private int _discount;
         private List<Ticket> _ticketList;
-        private List<Transaction> _transactionHistory;
-
         private List<Ticket> _usableTicketList;
-
         private List<Reservation> _reservationList;
         private List<Poll> _availablePolls;
 
@@ -37,11 +34,6 @@ namespace ClassesFolder
             get { return _ticketList; }
             set { _ticketList = value; }
         }
-        public List<Transaction> TransactionList
-        {
-            get { return _transactionHistory; }
-            set { _transactionHistory = value; }
-        }
 
         public List<Ticket> UsableTicketList
         {
@@ -57,14 +49,14 @@ namespace ClassesFolder
                       string surname,
                       Specialization property) : base(username, name, surname, property)
         {
-            FindClientInformation();
+            FindInformation();
             InitializeAvailablePolls();
             InitializeReservationList();
             _ticketList = new List<Ticket>();
         }
 
 
-        public void FindClientInformation()
+        public void FindInformation()
         {
             try
             {
@@ -106,11 +98,11 @@ namespace ClassesFolder
 
                 var query = @"select itineraryID, used, delayedItinerary
                               from ticket
-                              where clientUsername = @username;";
+                              where clientUsername = @username and used = @used;";
 
                 using var cmd = new MySqlCommand(query, connection);
                 cmd.Parameters.AddWithValue("@username", _username);
-
+                cmd.Parameters.AddWithValue("@used", false);
                 using MySqlDataReader reader = cmd.ExecuteReader();
 
                 _ticketList = new List<Ticket>();
@@ -195,9 +187,9 @@ namespace ClassesFolder
                 _reservationList = new List<Reservation>();
                 while (reader.Read())
                 {
-                    _reservationList.Add(new Reservation(this, 
-                                                         reader.GetDateTime(1), 
-                                                         reader.GetDateTime(2), 
+                    _reservationList.Add(new Reservation(this,
+                                                         reader.GetDateTime(1),
+                                                         reader.GetDateTime(2),
                                                          Functions.GetBusLine(reader.GetInt32(3)),
                                                          reader.GetDecimal(4)));
                 }
@@ -212,46 +204,7 @@ namespace ClassesFolder
             }
         }
 
-        public void InitializeTransactionHistory()
-        {
-            _transactionHistory = new List<Transaction>();
-            foreach (var ticket in _ticketList)
-            {
-                _transactionHistory.Add(GetTransaction(ticket));
-            }
-        }
-
-        public Transaction GetTransaction(Ticket ticket)
-        {
-            try
-            {
-                using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
-                connection.Open();
-
-                var query = @"select price, purchaseDatetime
-                              from Ticket inner join Transaction on Ticket.ticketID = Transaction.TicketID
-                              where itineraryID = @itineraryID and clientUsername = @clientUsername;";
-
-                using var cmd = new MySqlCommand(query, connection);
-                cmd.Parameters.AddWithValue("@itineraryID", ticket.CorrespondingItinerary.ID);
-                cmd.Parameters.AddWithValue("@clientUsername", _username);
-                using MySqlDataReader reader = cmd.ExecuteReader();
-                reader.Read();
-
-                return new Transaction(reader.GetDecimal(0), ticket, reader.GetDateTime(1));
-            }
-            catch (MySqlException)
-            {
-                MessageBox.Show("Προκλήθηκε σφάλμα κατά την σύνδεση με τον server. Η εφαρμογή θα τερματιστεί!",
-                                 "Σφάλμα",
-                                 MessageBoxButtons.OK,
-                                 MessageBoxIcon.Error);
-                Application.Exit();
-                return null;
-            }
-        }
-
-        public decimal FindStandardTicketPrice()
+        public decimal GetStandardTicketPrice()
         {
             try
             {
@@ -394,7 +347,7 @@ namespace ClassesFolder
             }
         }
 
-        public void InsertReservationToDatabase(Reservation reservation, decimal chargedPrice)
+        public void InsertReservationToDatabase(Reservation reservation)
         {
             try
             {
@@ -406,7 +359,7 @@ namespace ClassesFolder
                 using var cmd = new MySqlCommand(query, connection);
                 cmd.Parameters.AddWithValue("@travelDatetime", reservation.TravelDatetime.ToString("yyyy-MM-dd HH:mm:ss"));
                 cmd.Parameters.AddWithValue("@travelBusLine", reservation.TravelBusLine.Number);
-                cmd.Parameters.AddWithValue("@chargedPrice", chargedPrice);
+                cmd.Parameters.AddWithValue("@chargedPrice", reservation.ChargedPrice);
                 cmd.Parameters.AddWithValue("@clientUsername", _username);
                 cmd.ExecuteNonQuery();
             }
@@ -629,11 +582,11 @@ namespace ClassesFolder
 
                 var query = @"select count(*)
                           from DiscountApplication
-                          where clientUsername = @clientUsername";
+                          where clientUsername = @clientUsername and status = @status";
 
                 using var cmd = new MySqlCommand(query, connection);
                 cmd.Parameters.AddWithValue("@clientUsername", _username);
-
+                cmd.Parameters.AddWithValue("@status", "pending");
                 using MySqlDataReader reader = cmd.ExecuteReader();
                 reader.Read();
 
@@ -685,7 +638,7 @@ namespace ClassesFolder
             }
         }
 
-        public List<DiscountApplication> GetDiscountApplicationsFromDatabase()
+        public List<DiscountApplication> GetDiscountApplications()
         {
             try
             {
@@ -1103,43 +1056,6 @@ namespace ClassesFolder
             }
         }
 
-        public BusDriver GetBusDriver(string username)
-        {
-            try
-            {
-                using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
-                connection.Open();
-                var statement = @"select name, surname, salary, experience, hireDate, complaintsCounter
-                                  from user 
-                                  inner join Employee on User.username = Employee.username
-                                  inner join BusDriver on User.username = BusDriver.username
-                                  where User.username = @username;";
-                using var cmd = new MySqlCommand(statement, connection);
-
-                cmd.Parameters.AddWithValue("@username", username);
-                using MySqlDataReader reader = cmd.ExecuteReader();
-                reader.Read();
-
-                return new BusDriver(username,
-                                     reader.GetString(0),
-                                     reader.GetString(1),
-                                     Specialization.BusDriver,
-                                     reader.GetDecimal(2),
-                                     reader.GetInt32(3),
-                                     reader.GetString(4),
-                                     reader.GetInt32(5));
-            }
-            catch (MySqlException)
-            {
-                MessageBox.Show("Προκλήθηκε σφάλμα κατά την σύνδεση με τον server. Η εφαρμογή θα τερματιστεί!",
-                                "Σφάλμα",
-                                MessageBoxButtons.OK,
-                                MessageBoxIcon.Error);
-                Application.Exit();
-                return null;
-            }
-        }
-
         public bool CheckDuplicateDismissalPetition(DismissalPetition petition)
         {
             try
@@ -1196,53 +1112,6 @@ namespace ClassesFolder
         public void AddToCollection(Ticket ticket)
         {
             _ticketList.Add(ticket);
-        }
-
-        public Itinerary GetItinerary(string datetime, string _busLineNumber)
-        {
-            try
-            {
-                using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
-                connection.Open();
-
-                var query = @"select itineraryID, status, travelDatetime, busDriverUsername, busLineNumber, busID, availableSeats
-                              from itinerary
-                              where busLineNumber = @busLineNumber and travelDatetime = @travelDatetime";
-
-                using var cmd = new MySqlCommand(query, connection);
-                cmd.Parameters.AddWithValue("@busLineNumber", _busLineNumber);
-                cmd.Parameters.AddWithValue("@travelDatetime", datetime);
-
-                using MySqlDataReader reader = cmd.ExecuteReader();
-
-                reader.Read();
-
-                int itineraryID = reader.GetInt32(0);
-                string status = reader.GetString(1);
-                ItineraryStatus enumStatus = status == "no_delayed" ? ItineraryStatus.NoDelayed : ItineraryStatus.Delayed;
-                DateTime travelDatetime = reader.GetDateTime(2);
-                string busDriverUsername = reader.GetString(3);
-                int busLineNumber = reader.GetInt32(4);
-                int busID = reader.GetInt32(5);
-                int availableSeats = reader.GetInt32(6);
-
-                return new Itinerary(itineraryID,
-                                     travelDatetime,
-                                     Functions.GetBusDriverByUsername(busDriverUsername),
-                                     Functions.GetBusLine(busLineNumber),
-                                     Functions.GetBus(busID),
-                                     enumStatus,
-                                     availableSeats);
-            }
-            catch (MySqlException)
-            {
-                MessageBox.Show("Προκλήθηκε σφάλμα κατά την σύνδεση με τον server. Η εφαρμογή θα τερματιστεί!",
-                                 "Σφάλμα",
-                                 MessageBoxButtons.OK,
-                                 MessageBoxIcon.Error);
-                Application.Exit();
-                return null;
-            }
         }
 
         public List<LastMinuteTravelRequest> GetLastMinuteTravelRequests()

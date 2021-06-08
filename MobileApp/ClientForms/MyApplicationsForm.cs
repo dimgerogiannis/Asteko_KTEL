@@ -26,7 +26,7 @@ namespace Project.ClientForms
         private void MyApplications_Load(object sender, EventArgs e)
         {
             deleteButton.Enabled = false;
-            _applications = _client.GetDiscountApplicationsFromDatabase();
+            _applications = _client.GetDiscountApplications();
             foreach (var application in _applications)
                 dateCombobox.Items.Add(application.ApplicationDatetime?.ToString("yyyy-MM-dd HH:mm:ss"));
         }
@@ -68,7 +68,10 @@ namespace Project.ClientForms
             rejectionReasonRichTextbox.Text = "";
             statusLabel.Text = $"Κατάσταση αίτησης: -";
             dateCombobox.Items.Remove(dateCombobox.SelectedItem.ToString());
-            MessageBox.Show("Επιτυχής διαγραφή!", "Επιτυχία", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show("Επιτυχής διαγραφή.", 
+                            "Επιτυχία", 
+                            MessageBoxButtons.OK, 
+                            MessageBoxIcon.Information);
         }
     }
 }

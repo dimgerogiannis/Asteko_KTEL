@@ -92,7 +92,6 @@ namespace Project.ClientForms
                 var busDriver = Functions.GetBusDriverByUsername(_latestItinerary.ResponsibleDriver.Username);
                 _client.InsertClientComplaint(complaint);
                 busDriver.IncreaseComplaintCounter();
-                busDriver.UpdateComplaintCounter();
 
                 if (busDriver.HasExceededToleratedComplaints())
                 {

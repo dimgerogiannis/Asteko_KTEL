@@ -87,7 +87,7 @@ namespace DistributorForms
             _selectedRequestIndex = lastMinuteListview.CheckedIndices[0];
             _selectedBusLine = int.Parse(selectedListviewItem.SubItems[2].Text);
 
-            if (selectedClient.CanAffordCost(selectedClient.FindStandardTicketPrice()))
+            if (selectedClient.CanAffordCost(selectedClient.GetStandardTicketPrice()))
             {
                 var result = MessageBox.Show($"Αποδέχεστε το αίτημα καθυστερημένης εξυπηρέτησης για τον πελάτη {selectedClient.GetFullName()};",
                                              "Ερώτηση",
@@ -282,7 +282,7 @@ namespace DistributorForms
                 client.AddToCollection(ticket);
                 client.AutomaticTicketPurchase(itinerary);
                 client.InsertTransactionToDatabase(client.GetLastTicketID(), 
-                                                   client.FindStandardTicketPrice());
+                                                   client.GetStandardTicketPrice());
                 itinerary.DecrementItinerarySeats();
                 
                 client.DeleteLastMinuteTravelRequest(_requests[_selectedRequestIndex]);
@@ -291,7 +291,7 @@ namespace DistributorForms
 
                 var requests = _requests
                     .Select(x => x)
-                    .Where(x => x.ApplicantClient.CanAffordCost(x.ApplicantClient.FindStandardTicketPrice()) && x.TravelBusLine.Number == _selectedBusLine && x.TravelDatetime == DateTime.Parse(_selectedTravelDatetime))
+                    .Where(x => x.ApplicantClient.CanAffordCost(x.ApplicantClient.GetStandardTicketPrice()) && x.TravelBusLine.Number == _selectedBusLine && x.TravelDatetime == DateTime.Parse(_selectedTravelDatetime))
                     .Take(--availableSeats)
                     .ToList();
 
@@ -306,7 +306,7 @@ namespace DistributorForms
                     client.AddToCollection(ticket);
                     client.AutomaticTicketPurchase(itinerary);
                     client.InsertTransactionToDatabase(client.GetLastTicketID(), 
-                                                       client.FindStandardTicketPrice());
+                                                       client.GetStandardTicketPrice());
                     itinerary.DecrementItinerarySeats();
                     client.DeleteLastMinuteTravelRequest(request);
                     _requests.Remove(request);

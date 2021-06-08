@@ -35,7 +35,7 @@ namespace Project.ClientForms
 
         private void BuyTicketButton_Click(object sender, EventArgs e)
         {
-            _client.FindClientInformation();
+            _client.FindInformation();
             currentMoneyLabel.Text = $"{_client.Balance} Ευρώ";
             BuyTicketForm form = new BuyTicketForm(_client);
             form.ShowDialog();

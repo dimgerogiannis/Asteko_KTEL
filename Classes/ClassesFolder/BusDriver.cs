@@ -20,6 +20,7 @@ namespace ClassesFolder
             get { return _paidLeaveDates; }
             set { _paidLeaveDates = value; }
         }
+        public int YearlyPaidLeaves => _yearlyPaidLeaves;
 
         public BusDriver(string username,
                          string name,
@@ -113,41 +114,6 @@ namespace ClassesFolder
             }
         }
 
-        private List<string> GetBusLineStops(int number)
-        {
-            try
-            {
-                using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
-                connection.Open();
-
-                var query = @"select stopName 
-                              from stop 
-                              where number = @number;";
-
-                using var cmd = new MySqlCommand(query, connection);
-                cmd.Parameters.AddWithValue("@number", number);
-                using MySqlDataReader reader = cmd.ExecuteReader();
-
-                List<string> stops = new List<string>();
-
-                while (reader.Read())
-                {
-                    stops.Add(reader.GetString(0));
-                }
-
-                return stops;
-            }
-            catch (MySqlException)
-            {
-                MessageBox.Show("Προκλήθηκε σφάλμα κατά την σύνδεση με τον server. Η εφαρμογή θα τερματιστεί!",
-                                "Σφάλμα",
-                                MessageBoxButtons.OK,
-                                MessageBoxIcon.Error);
-                Application.Exit();
-                return null;
-            }
-        }
-
         public Dictionary<string, string> GetLastItineraryClients()
         {
             try
@@ -184,7 +150,7 @@ namespace ClassesFolder
             }
         }
 
-        public bool CheckDuplicateSanitaryComplaint(string clientUsername)
+        public bool CheckDuplicateSanitaryComplaint(Client client)
         {
             try
             {
@@ -195,7 +161,7 @@ namespace ClassesFolder
                           where busDriverUsername = @busDriverUsername and targetUsername = @clientUsername;";
                 using var cmd = new MySqlCommand(query, connection);
                 cmd.Parameters.AddWithValue("@busDriverUsername", _username);
-                cmd.Parameters.AddWithValue("@clientUsername", clientUsername);
+                cmd.Parameters.AddWithValue("@clientUsername", client.Username);
                 using MySqlDataReader reader = cmd.ExecuteReader();
                 reader.Read();
 
@@ -337,8 +303,8 @@ namespace ClassesFolder
 
                 while (reader.Read())
                 {
-                    complaints.Add(new DisciplinaryComment(this, 
-                                                           reader.GetString(1), 
+                    complaints.Add(new DisciplinaryComment(this,
+                                                           reader.GetString(1),
                                                            reader.GetDateTime(0)));
                 }
 
@@ -493,10 +459,6 @@ namespace ClassesFolder
         public void IncreaseComplaintCounter()
         {
             _complaintCounter++;
-        }
-
-        public void UpdateComplaintCounter()
-        {
             try
             {
                 using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
@@ -788,6 +750,6 @@ namespace ClassesFolder
                 return false;
             }
         }
-   
+
     }
 }
