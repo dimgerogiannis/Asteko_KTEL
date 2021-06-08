@@ -77,8 +77,8 @@ public static class ConnectionInfo
 
 `...\DesktopApp\bin\Debug\netcoreapp3.1\`  
 `...\DesktopApp\bin\Release\netcoreapp3.1\`  
-`...\MobileApp\bin\Debug\netcoreapp3.1`  
-`...\MobileApp\bin\Release\netcoreapp3.1`  
+`...\MobileApp\bin\Debug\netcoreapp3.1\`  
+`...\MobileApp\bin\Release\netcoreapp3.1\`  
 
 #### Προσοχή
 Δεν θα μπορέσετε να τρέξετε την εφαρμογή μέσω των **DesktopApp.exe** ή **MobileApp.exe** αν τα μετακινήσετε σε κάποιο άλλο φάκελο όπου δεν υπάρχουν τα υπόλοιπα αρχεία του αντίστοιχου φακέλου `...\netcoreapp3.1` από τον οποίο πήρατε το executable.
