@@ -49,6 +49,16 @@
 Θα πρέπει να φτιάξετε την βάση με τη χρήση του κώδικα της βάσης που θα βρείτε στο [αρχείο](https://github.com/gstratigopoulos96/Asteko_KTEL/blob/master/databasesrc.sql) της βάσης.
 
 ### 3ο στάδιο
+Θα πρέπει να εγκαταστήσετε το [Visual Studio 2019 community](https://visualstudio.microsoft.com/thank-you-downloading-visual-studio/?sku=Community&rel=16) και συγκεκριμένα το framework .net Core 3.1 κατα την εγκατάσταση πακέτων για να μπορέσετε να τρέξετε την εφαρμογή.
+
+<p align="center">
+  <img src="https://github.com/gstratigopoulos96/Asteko_KTEL/blob/master/Photos/installer.png" alt="image"/>
+  <img src="https://github.com/gstratigopoulos96/Asteko_KTEL/blob/master/Photos/installdotnetdesktopdevelopment.png" alt="image"/>
+  <img src="https://github.com/gstratigopoulos96/Asteko_KTEL/blob/master/Photos/installnetcore3.1.png" alt="image"/>
+</p>
+
+
+### 3ο στάδιο
 Θα πρέπει να φτιάξε ένα αρχείο connectionstring.txt στην επιφάνεια εργασίας σας όπου θα περιέχει το ακόλουθο string ανάλογα με το όνομα του server, το userid, το password που έχετε καταχωρήσει στην MySQL και υποχρεωτικά όνομα βάσης **project_db**. Σε κάθε άλλη περίπτωση δεν θα μπορείτε να τρέξετε την εφαρμογή.
 
 ```
