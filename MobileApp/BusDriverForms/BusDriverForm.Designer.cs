@@ -150,7 +150,7 @@ namespace Project.BusDriverForms
             this.onLeaveApplicationPreviewButton.Name = "onLeaveApplicationPreviewButton";
             this.onLeaveApplicationPreviewButton.Size = new System.Drawing.Size(273, 59);
             this.onLeaveApplicationPreviewButton.TabIndex = 11;
-            this.onLeaveApplicationPreviewButton.Text = "Προβολή αιτήσεων άδειας";
+            this.onLeaveApplicationPreviewButton.Text = "Αιτήσεις αδειών";
             this.onLeaveApplicationPreviewButton.UseVisualStyleBackColor = true;
             this.onLeaveApplicationPreviewButton.Click += new System.EventHandler(this.OnLeaveApplicationPreviewButton_Click);
             // 

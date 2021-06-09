@@ -10,11 +10,11 @@ using static ClassesFolder.Enums;
 
 namespace ClientForms
 {
-    public partial class TicketReservationLastMinuteRequestsForm : Form
+    public partial class ReservationLastMinuteRequestsForm : Form
     {
         private Client _client;
 
-        public TicketReservationLastMinuteRequestsForm(Client client)
+        public ReservationLastMinuteRequestsForm(Client client)
         {
             _client = client;
             InitializeComponent();
@@ -24,7 +24,6 @@ namespace ClientForms
         {
             categoryCombobox.Items.AddRange(new string[] 
             {
-                "Εισιτήρια",
                 "Κρατήσεις",
                 "Αιτήματα καθυστερημένης εξυπηρέτησης"
             });
@@ -36,9 +35,6 @@ namespace ClientForms
             {
                 switch (categoryCombobox.SelectedItem.ToString())
                 {
-                    case "Εισιτήρια":
-                        FillTickets();
-                        break;
                     case "Κρατήσεις":
                         FillReservations();
                         break;
@@ -47,19 +43,6 @@ namespace ClientForms
                         break;
                 }
             }
-        }
-
-        private void FillTickets()
-        {
-            infoListview.Items.Clear();
-            var tickets = _client.GetTickets(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), DateTime.Now.AddDays(7).ToString("yyyy-MM-dd HH:mm:ss"));
-            foreach (var ticket in tickets)
-                infoListview.Items.Add(new ListViewItem(new string[]
-                {
-                    ticket.CorrespondingItinerary.TravelDatetime.ToString("HH:mm:ss dd-MM-yyyy"),
-                    ticket.CorrespondingItinerary.ItineraryLine.Number.ToString(),
-                    "Μη χρησιμοποιημένο"
-                }));
         }
 
         private void FillReservations()

@@ -79,7 +79,7 @@ namespace ClassesFolder
 
                 var query = @"update Ticket 
                               set delayedItinerary = @delayedItinerary
-                              where itineraryID = @itineraryID and clientUsername = @username;";
+                              where itineraryID = @itineraryID;";
 
                 using var cmd = new MySqlCommand(query, connection);
                 cmd.Parameters.AddWithValue("@itineraryID", _correspondingItinerary.ID);

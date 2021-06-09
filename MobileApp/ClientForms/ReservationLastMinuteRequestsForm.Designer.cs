@@ -1,7 +1,7 @@
 ﻿
 namespace ClientForms
 {
-    partial class TicketReservationLastMinuteRequestsForm
+    partial class ReservationLastMinuteRequestsForm
     {
         /// <summary>
         /// Required designer variable.

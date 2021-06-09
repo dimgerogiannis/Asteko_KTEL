@@ -29,6 +29,7 @@ namespace DistributorForms
             {
                 programmingLabel.Click += ProgrammingLabel_Click;
             }
+            programmingLabel.Click += ProgrammingLabel_Click;
         }
 
         private void ImprovementCommentsLabel_Click(object sender, EventArgs e)

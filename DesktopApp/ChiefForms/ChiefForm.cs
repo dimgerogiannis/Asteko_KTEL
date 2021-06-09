@@ -31,7 +31,7 @@ namespace ChiefForms
 
         private void BaseTicketPriceLabel_Click(object sender, EventArgs e)
         {
-            InputForm form = new InputForm(_chief, "Νέα τιμή εισητηρίου", "ticket_price");
+            InputForm form = new InputForm(_chief, "Νέα τιμή εισιτηρίου", "ticket_price");
             form.ShowDialog();
         }
 

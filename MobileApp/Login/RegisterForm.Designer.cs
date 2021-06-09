@@ -57,36 +57,36 @@ namespace Project.Login
             this.usernameLabel.AutoSize = true;
             this.usernameLabel.Location = new System.Drawing.Point(89, 365);
             this.usernameLabel.Name = "usernameLabel";
-            this.usernameLabel.Size = new System.Drawing.Size(91, 25);
+            this.usernameLabel.Size = new System.Drawing.Size(132, 25);
             this.usernameLabel.TabIndex = 0;
-            this.usernameLabel.Text = "Username";
+            this.usernameLabel.Text = "Όνομα χρήστη";
             // 
             // passwordLabel
             // 
             this.passwordLabel.AutoSize = true;
             this.passwordLabel.Location = new System.Drawing.Point(89, 435);
             this.passwordLabel.Name = "passwordLabel";
-            this.passwordLabel.Size = new System.Drawing.Size(87, 25);
+            this.passwordLabel.Size = new System.Drawing.Size(81, 25);
             this.passwordLabel.TabIndex = 2;
-            this.passwordLabel.Text = "Password";
+            this.passwordLabel.Text = "Κωδικός";
             // 
             // nameLabel
             // 
             this.nameLabel.AutoSize = true;
             this.nameLabel.Location = new System.Drawing.Point(89, 505);
             this.nameLabel.Name = "nameLabel";
-            this.nameLabel.Size = new System.Drawing.Size(59, 25);
+            this.nameLabel.Size = new System.Drawing.Size(67, 25);
             this.nameLabel.TabIndex = 4;
-            this.nameLabel.Text = "Name";
+            this.nameLabel.Text = "Όνομα";
             // 
             // surnameLabel
             // 
             this.surnameLabel.AutoSize = true;
             this.surnameLabel.Location = new System.Drawing.Point(89, 575);
             this.surnameLabel.Name = "surnameLabel";
-            this.surnameLabel.Size = new System.Drawing.Size(82, 25);
+            this.surnameLabel.Size = new System.Drawing.Size(87, 25);
             this.surnameLabel.TabIndex = 6;
-            this.surnameLabel.Text = "Surname";
+            this.surnameLabel.Text = "Επώνυμο";
             // 
             // usernameTextbox
             // 
@@ -127,7 +127,7 @@ namespace Project.Login
             this.registerButton.Name = "registerButton";
             this.registerButton.Size = new System.Drawing.Size(112, 34);
             this.registerButton.TabIndex = 8;
-            this.registerButton.Text = "Register";
+            this.registerButton.Text = "Εγγραφή";
             this.registerButton.UseVisualStyleBackColor = true;
             this.registerButton.Click += new System.EventHandler(this.RegisterButton_Click);
             // 

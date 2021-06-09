@@ -131,7 +131,9 @@ namespace DistributorForms
 
             _busDrivers = _busDrivers
                     .Select(x => x)
-                    .Where(x => !x.IsOnPaidLeave(databaseDateFormat) && x.IsAvailableOnHour(databaseDateFormat, startingHour, duration) && !x.IsLedToOverWorking(duration, databaseDateFormat))
+                    .Where(x => !x.IsOnPaidLeave(databaseDateFormat) && 
+                                 x.IsAvailableOnHour(databaseDateFormat, startingHour, duration) && 
+                                !x.IsLedToOverWorking(duration, databaseDateFormat))
                     .ToList();
 
             _buses = _buses

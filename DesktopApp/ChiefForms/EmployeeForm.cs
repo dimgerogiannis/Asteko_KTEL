@@ -27,7 +27,7 @@ namespace ChiefForms
                 switch (employee.Specialization)
                 {
                     case Enums.Specialization.BusDriver:
-                        prop = "Οδηγώς λεωφορείων";
+                        prop = "Οδηγός λεωφορείων";
                         break;
                     case Enums.Specialization.QualityManager:
                         prop = "Υπ. διασφάλισης υπηρεσιών";
@@ -36,7 +36,7 @@ namespace ChiefForms
                         prop = "Υπ. κατανομής δρομολογίων";
                         break;
                     default:
-                        prop = "Προϋστάμενος";
+                        prop = "Προϊστάμενος";
                         break;
                 }
 

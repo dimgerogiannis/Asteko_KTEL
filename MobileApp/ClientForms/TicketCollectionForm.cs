@@ -35,12 +35,12 @@ namespace Project.ClientForms
 
             foreach (var ticket in _client.TicketList)
             {
-                DateTime current = ticket.CorrespondingItinerary.TravelDatetime.Add(new TimeSpan(0, 
-                                                                                                 0, 
-                                                                                                 ticket.CorrespondingItinerary.ItineraryLine.Duration, 
-                                                                                                 0, 
-                                                                                                 0));
-                if (CanBeUsed(current))
+                DateTime end = ticket.CorrespondingItinerary.TravelDatetime.Add(new TimeSpan(0, 
+                                                                                             0, 
+                                                                                             ticket.CorrespondingItinerary.ItineraryLine.Duration, 
+                                                                                             0, 
+                                                                                             0));
+                if (CanBeUsed(ticket.CorrespondingItinerary.TravelDatetime, end))
                 {
                     _client.UsableTicketList.Add(ticket);
                     ticketCollectionListview.Items.Add(new ListViewItem(new string[] 
@@ -49,6 +49,15 @@ namespace Project.ClientForms
                         ticket.CorrespondingItinerary.ResponsibleBus.ID.ToString() 
                     }));
                 }
+            }
+       
+            foreach (var ticket in _client.TicketList)
+            {
+                allTicketsListview.Items.Add(new ListViewItem(new string[]
+                {
+                        ticket.CorrespondingItinerary.TravelDatetime.ToString("yyyy-MM-dd HH:mm:ss"),
+                        ticket.CorrespondingItinerary.ResponsibleBus.ID.ToString()
+                }));
             }
         }
 
@@ -60,9 +69,9 @@ namespace Project.ClientForms
                 .ToList();
         }
 
-        private bool CanBeUsed(DateTime current)
+        private bool CanBeUsed(DateTime start, DateTime end)
         {
-            return DateTime.Now.Subtract(current) <= new TimeSpan(0, 0, 0, 0, 0);
+            return start <= DateTime.Now && DateTime.Now <= end;
         }
     }
 }

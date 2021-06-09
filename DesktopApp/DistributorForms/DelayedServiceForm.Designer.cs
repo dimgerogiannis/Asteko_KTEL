@@ -78,7 +78,7 @@ namespace DistributorForms
             // 
             // columnHeader4
             // 
-            this.columnHeader4.Text = "Ονοματαεπώνυμο επιβάτη";
+            this.columnHeader4.Text = "Ονοματεπώνυμο επιβάτη";
             this.columnHeader4.Width = 300;
             // 
             // recommendedBusesListview
@@ -98,7 +98,7 @@ namespace DistributorForms
             // 
             // columnHeader6
             // 
-            this.columnHeader6.Text = "Αναγνωριστικό λεωφωρείου";
+            this.columnHeader6.Text = "Αναγνωριστικό λεωφορείου";
             this.columnHeader6.Width = 250;
             // 
             // columnHeader7

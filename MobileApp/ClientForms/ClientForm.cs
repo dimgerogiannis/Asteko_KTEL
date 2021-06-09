@@ -85,7 +85,7 @@ namespace Project.ClientForms
 
         private void TicketReservationLastMinuteButton_Click(object sender, EventArgs e)
         {
-            TicketReservationLastMinuteRequestsForm form = new TicketReservationLastMinuteRequestsForm(_client);
+            ReservationLastMinuteRequestsForm form = new ReservationLastMinuteRequestsForm(_client);
             form.ShowDialog();
         }
     }

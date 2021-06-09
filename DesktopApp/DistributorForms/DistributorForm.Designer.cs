@@ -266,7 +266,7 @@ namespace DistributorForms
             this.panel6.Controls.Add(this.processBusLineStops);
             this.panel6.Location = new System.Drawing.Point(0, 35);
             this.panel6.Name = "panel6";
-            this.panel6.Size = new System.Drawing.Size(256, 165);
+            this.panel6.Size = new System.Drawing.Size(256, 132);
             this.panel6.TabIndex = 7;
             // 
             // panel7
@@ -293,7 +293,7 @@ namespace DistributorForms
             this.addNewBusLineLabel.Name = "addNewBusLineLabel";
             this.addNewBusLineLabel.Size = new System.Drawing.Size(180, 54);
             this.addNewBusLineLabel.TabIndex = 7;
-            this.addNewBusLineLabel.Text = "Προσθήκη νέας γραμμής και επεξεργασία υπάρχουσας γραμμής";
+            this.addNewBusLineLabel.Text = "Προσθήκη νέας γραμμής";
             this.addNewBusLineLabel.Click += new System.EventHandler(this.AddNewBusLineLabel_Click);
             // 
             // processBusLineStops

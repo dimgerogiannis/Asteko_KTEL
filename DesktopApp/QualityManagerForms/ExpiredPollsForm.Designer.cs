@@ -111,9 +111,9 @@ namespace QualityManagerForms
             // 
             this.submitButton.Location = new System.Drawing.Point(12, 408);
             this.submitButton.Name = "submitButton";
-            this.submitButton.Size = new System.Drawing.Size(112, 34);
+            this.submitButton.Size = new System.Drawing.Size(189, 34);
             this.submitButton.TabIndex = 4;
-            this.submitButton.Text = "Προσθήκη";
+            this.submitButton.Text = "Αποστολή οδηγιών";
             this.submitButton.UseVisualStyleBackColor = true;
             this.submitButton.Click += new System.EventHandler(this.SubmitButton_Click);
             // 

@@ -556,8 +556,8 @@ namespace ClassesFolder
                             from Itinerary
                             inner join BusDriver on BusDriver.username = Itinerary.busDriverUsername
                             inner join BusLine on BusLine.number = busLineNumber
-                            where BusDriver.username = @username and (travelDatetime >= @targetDatetime and travelDatetime <= ADDDATE(@targetDatetime, INTERVAL @duration MINUTE) or
-                            ADDDATE(travelDatetime, INTERVAL duration MINUTE) >= @targetDatetime and ADDDATE(travelDatetime, INTERVAL duration MINUTE) <= ADDDATE(@targetDatetime, INTERVAL @duration MINUTE) or
+                            where BusDriver.username = @username and (travelDatetime >= @targetDatetime and travelDatetime < ADDDATE(@targetDatetime, INTERVAL @duration MINUTE) or
+                            ADDDATE(travelDatetime, INTERVAL duration MINUTE) > @targetDatetime and ADDDATE(travelDatetime, INTERVAL duration MINUTE) <= ADDDATE(@targetDatetime, INTERVAL @duration MINUTE) or
                             travelDatetime <= @targetDatetime and ADDDATE(travelDatetime, INTERVAL duration MINUTE) >= ADDDATE(@targetDatetime, INTERVAL @duration MINUTE));";
 
                 var target = $"{date} {startingHour}:00";
@@ -636,7 +636,7 @@ namespace ClassesFolder
             }
         }
 
-        public bool HasItineraryOnEndTimeAndNoNextItineraryOnSpecificTime(string date, string startingHour, string targetStop)
+        public bool DoesntHaveItineraryOnWantedTimeInterval(string date, string startingHour, int duration)
         {
             try
             {
@@ -645,13 +645,48 @@ namespace ClassesFolder
                 var query = @"select count(*)
                           from Itinerary
                           inner join BusLine on BusLine.number = busLineNumber
-                          where busDriverUsername = @targetUsername and ADDDATE(travelDatetime, INTERVAL duration MINUTE) = @targetDatetime and (select stopName from Stop where Stop.number = BusLine.number order by id desc limit 1) = @targetStop;";
+                          where busDriverUsername = @targetUsername and (TIMEDIFF(travelDatetime, ADDDATE(@targetDatetime, INTERVAL @duration MINUTE)) > '00:00:00' AND TIMEDIFF(travelDatetime, ADDDATE(@targetDatetime, INTERVAL @duration MINUTE)) < '00:30:00' OR
+                            TIMEDIFF(travelDatetime, @targetDatetime) < '-30:00:00' AND TIMEDIFF(travelDatetime, @targetDatetime) < '00:00:00');";
 
                 var targetDatetime = $"{date} {startingHour}:00";
                 using var cmd = new MySqlCommand(query, connection);
                 cmd.Parameters.AddWithValue("@targetUsername", _username);
                 cmd.Parameters.AddWithValue("@targetDatetime", targetDatetime);
-                cmd.Parameters.AddWithValue("@targetStop", targetStop);
+                cmd.Parameters.AddWithValue("@duration", duration);
+                using MySqlDataReader reader = cmd.ExecuteReader();
+                reader.Read();
+
+                return reader.GetInt32(0) == 0;
+            }
+            catch (MySqlException)
+            {
+                MessageBox.Show("Προκλήθηκε σφάλμα κατά την σύνδεση με τον server. Η εφαρμογή θα τερματιστεί!",
+                                 "Σφάλμα",
+                                 MessageBoxButtons.OK,
+                                 MessageBoxIcon.Error);
+                Application.Exit();
+                return false;
+            }
+        }
+        public bool HasItineraryOnEndTimeAndNoNextItineraryOnSpecificTime(string date, string startingHour, int duration, string startStop)
+        {
+            try
+            {
+                using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
+                connection.Open();
+                var query = @"select count(*)
+                        from Itinerary
+                        inner join BusDriver on BusDriver.username = Itinerary.busDriverUsername
+                        inner join BusLine on BusLine.number = busLineNumber
+                        where BusDriver.username = @targetUsername AND 
+                        ADDDATE(travelDatetime, INTERVAL duration MINUTE) = @targetDatetime and (select stopName from stop where Stop.number = BusLine.number order by Stop.id desc limit 1) = @targetStop;";
+
+                var targetDatetime = $"{date} {startingHour}:00";
+                using var cmd = new MySqlCommand(query, connection);
+                cmd.Parameters.AddWithValue("@duration", duration);
+                cmd.Parameters.AddWithValue("@targetUsername", _username);
+                cmd.Parameters.AddWithValue("@targetDatetime", targetDatetime);
+                cmd.Parameters.AddWithValue("@targetStop", startStop);
                 using MySqlDataReader reader = cmd.ExecuteReader();
                 reader.Read();
 
@@ -668,19 +703,19 @@ namespace ClassesFolder
             }
         }
 
-        public bool DoesntHaveItineraryOnWantedTimeInterval(string date, string startingHour, int duration, string targetStop)
+        public bool DoesntHaveItineraryAfterTargetItinerary(string date, string startingHour, int duration, string targetStop)
         {
             try
             {
                 using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
                 connection.Open();
                 var query = @"select count(*)
-                        from Itinerary
-                        inner join BusDriver on BusDriver.username = Itinerary.busDriverUsername
-                        inner join BusLine on BusLine.number = busLineNumber
-                        where BusDriver.username = @targetUsername AND 
-                        (TIMEDIFF(travelDatetime, ADDDATE(@targetDatetime, INTERVAL @duration MINUTE)) > '00:00:00' AND TIMEDIFF(travelDatetime, ADDDATE(@targetDatetime, INTERVAL @duration MINUTE)) < '00:30:00'
-                        AND (select stopName from Stop where Stop.number = BusLine.number order by Stop.id asc limit 1) != @targetStop);";
+                            from Itinerary
+                            inner join BusDriver on BusDriver.username = Itinerary.busDriverUsername
+                            inner join BusLine on BusLine.number = busLineNumber
+                            where BusDriver.username = @targetUsername (select stopName from stop where Stop.number = BusLine.number order by Stop.id asc limit 1) != @endStop and 
+                            TIMEDIFF(travelDatetime, ADDDATE(@targetDatetime, INTERVAL @duration MINUTE)) > '00:00:00' and 
+                            TIMEDIFF(travelDatetime, ADDDATE(@targetDatetime, INTERVAL @duration MINUTE)) < '00:30:00';";
 
                 var targetDatetime = $"{date} {startingHour}:00";
                 using var cmd = new MySqlCommand(query, connection);
@@ -740,8 +775,9 @@ namespace ClassesFolder
 
         public bool IsRecommended(string date, string startingHour, string startStop, string endStop, int duration)
         {
-            if (HasItineraryOnEndTimeAndNoNextItineraryOnSpecificTime(date, startingHour, startStop) &&
-                DoesntHaveItineraryOnWantedTimeInterval(date, startingHour, duration, endStop))
+            if (DoesntHaveItineraryOnWantedTimeInterval(date, startingHour, duration) &&
+                HasItineraryOnEndTimeAndNoNextItineraryOnSpecificTime(date, startingHour, duration, startStop) &&
+                DoesntHaveItineraryAfterTargetItinerary(date, startingHour, duration, endStop))
             {
                 return true;
             }

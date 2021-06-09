@@ -234,7 +234,7 @@ namespace Project.ClientForms
             this.ticketReservationLastMinuteButton.Name = "ticketReservationLastMinuteButton";
             this.ticketReservationLastMinuteButton.Size = new System.Drawing.Size(273, 44);
             this.ticketReservationLastMinuteButton.TabIndex = 13;
-            this.ticketReservationLastMinuteButton.Text = "Εισιτήρια-Κρατήσεις-Αιτήματα";
+            this.ticketReservationLastMinuteButton.Text = "Κρατήσεις-Αιτήματα";
             this.ticketReservationLastMinuteButton.UseVisualStyleBackColor = true;
             this.ticketReservationLastMinuteButton.Click += new System.EventHandler(this.TicketReservationLastMinuteButton_Click);
             // 

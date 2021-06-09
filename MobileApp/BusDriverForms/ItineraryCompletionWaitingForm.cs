@@ -25,7 +25,7 @@ namespace Project.BusDriverForms
         {
             var result = MessageBox.Show("Θέλετε να δηλώσετε ότι το δρομολόγιο ολοκληρώθηκε;",
                                          "Ερώτηση",
-                                         MessageBoxButtons.OK,
+                                         MessageBoxButtons.YesNo,
                                          MessageBoxIcon.Question);
 
             if (result == DialogResult.Yes)
