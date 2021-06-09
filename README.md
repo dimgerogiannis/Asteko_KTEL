@@ -25,8 +25,8 @@
 
 Οι ρόλοι της εφαρμογής είναι οι ακόλουθοι:
 1. Πελάτης-Επιβάτης
-2. Οδηγώς λεωφορείων
-3. Προϋστάμενος
+2. Οδηγός λεωφορείων
+3. Προϊστάμενος
 4. Υπεύθυνος κατανομής δρομολογίων
 5. Υπεύθυνος διασφάλισης υπηρεσιών
 
@@ -36,7 +36,7 @@
 2. DesktopApp  
 3. MobileApp
 
-Το solution **Classes** περιέχει τις κλάσεις που χρησιμοποιούνται στην εφαρμογή. Το solution **DesktopApp** περιέχει το GUI των ρόλων *προϋστάμενος*, *υπεύθυνος κατανομής δρομολογίων*, *υπεύθυνος διασφάλισης υπηρεσιών*. Τέλος το solution **MobileApp** περιέχει το GUI των ρόλως *οδηγών λεωφορείων* και *πελάτης-επιβάτης*.
+Το solution **Classes** περιέχει τις κλάσεις που χρησιμοποιούνται στην εφαρμογή. Το solution **DesktopApp** περιέχει το GUI των ρόλων *προϊστάμενος*, *υπεύθυνος κατανομής δρομολογίων*, *υπεύθυνος διασφάλισης υπηρεσιών*. Τέλος το solution **MobileApp** περιέχει το GUI των ρόλων *οδηγός λεωφορείων* και *πελάτης-επιβάτης*.
 
 ## Οδηγίες για να μπορέσετε να τρέξετε την εφαρμογή
 
@@ -58,7 +58,7 @@ public static class ConnectionInfo
 ### 3ο στάδιο
 Θα πρέπει να κάνετε:
 
-1. Ανοίγεται το αρχείο **SoftwareTechnologyProject.sln** με τη χρήση του Visual Studio 2019.
+1. Ανοίγετε το αρχείο **SoftwareTechnologyProject.sln** με τη χρήση του Visual Studio 2019.
 1. Build (F6).
 2. Επιλογή Debug ή Release mode.
 3. Επιλογή **DesktopApp** ή **MobileApp**.
@@ -73,7 +73,7 @@ public static class ConnectionInfo
   <img src="https://github.com/gstratigopoulos96/Asteko_KTEL/blob/master/Photos/select%20project.png" alt="image"/>
 </p>
 
-Εναλλακτικά μετά την ολοκλήρωση των παραπάνω βημάτων για για τα 2 projects (DekstopApp, MobileApp) θα μπορείτε να ανοίξετε την εφαρμογή χωρίς τη χρήση του Visual Studio 2019 απλά κάνοντας execute τα αρχεία **DesktopApp.exe** ή **MobileApp.exe** που θα δημιουργηθούν στους παρακάτω φακέλους ανάλογα με το αν έχετε κάνει Run σε Debug ή Release mode.
+Εναλλακτικά μετά την ολοκλήρωση των παραπάνω βημάτων για τα 2 projects (DekstopApp, MobileApp) θα μπορείτε να ανοίξετε την εφαρμογή χωρίς τη χρήση του Visual Studio 2019 απλά κάνοντας execute τα αρχεία **DesktopApp.exe** ή **MobileApp.exe** που θα δημιουργηθούν στους παρακάτω φακέλους ανάλογα με το αν έχετε κάνει Run σε Debug ή Release mode.
 
 `...\DesktopApp\bin\Debug\netcoreapp3.1\`  
 `...\DesktopApp\bin\Release\netcoreapp3.1\`  
