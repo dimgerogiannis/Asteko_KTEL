@@ -70,6 +70,10 @@ namespace QualityManagerForms
                     if (form.FeedbackSubmitted)
                     {
                         _polls[titleCombobox.SelectedIndex].DeletePoll();
+                        titleCombobox.Items.RemoveAt(titleCombobox.SelectedIndex);
+                        startLabel.Text = $"Ημερομηνία έναρξης:";
+                        endLabel.Text = $"Ημερομηνία λήξης:";
+                        resultsListview.Items.Clear();
                     }
                 }
             }

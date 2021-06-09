@@ -27,7 +27,8 @@ namespace ChiefForms
             fullNameLabel.Location = fullNameLabel.Location = new Point(this.Width / 2 - fullNameLabel.Width / 2, 50);
 
             var responsibleDistributor = _chief.GetDistributionManagers().Find(x => x.IsResponsibleForWeek);
-            responsibleDitributorLabel.Text = $"{responsibleDistributor.Name} {responsibleDistributor.Surname}";        }
+            responsibleDitributorLabel.Text = $"{responsibleDistributor.Name} {responsibleDistributor.Surname}";        
+        }
 
         private void BaseTicketPriceLabel_Click(object sender, EventArgs e)
         {
@@ -65,6 +66,8 @@ namespace ChiefForms
             {
                 ChangeResponsibleDistributor form = new ChangeResponsibleDistributor(_chief);
                 form.ShowDialog();
+                var responsibleDistributor = _chief.GetDistributionManagers().Find(x => x.IsResponsibleForWeek);
+                responsibleDitributorLabel.Text = $"{responsibleDistributor.Name} {responsibleDistributor.Surname}";
             }
             else
             {

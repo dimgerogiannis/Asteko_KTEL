@@ -29,6 +29,7 @@ namespace Project.ClientForms
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.historyPreviewButton = new System.Windows.Forms.Button();
             this.complaintButton = new System.Windows.Forms.Button();
             this.pollButton = new System.Windows.Forms.Button();
@@ -45,11 +46,17 @@ namespace Project.ClientForms
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.busLineInformationButton = new System.Windows.Forms.Button();
             this.panel3 = new System.Windows.Forms.Panel();
+            this.panel4 = new System.Windows.Forms.Panel();
+            this.delayedPictureBox = new System.Windows.Forms.PictureBox();
             this.ticketReservationLastMinuteButton = new System.Windows.Forms.Button();
+            this.timer = new System.Windows.Forms.Timer(this.components);
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.panel3.SuspendLayout();
+            this.panel4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.delayedPictureBox)).BeginInit();
             this.SuspendLayout();
             // 
             // historyPreviewButton
@@ -181,7 +188,7 @@ namespace Project.ClientForms
             // pictureBox2
             // 
             this.pictureBox2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pictureBox2.Image = global::MobileApp.Properties.Resources.plus2;
+            this.pictureBox2.Image = global::MobileApp.Properties.Resources.plus;
             this.pictureBox2.Location = new System.Drawing.Point(0, 0);
             this.pictureBox2.Name = "pictureBox2";
             this.pictureBox2.Size = new System.Drawing.Size(127, 104);
@@ -223,10 +230,30 @@ namespace Project.ClientForms
             // panel3
             // 
             this.panel3.BackColor = System.Drawing.SystemColors.Highlight;
+            this.panel3.Controls.Add(this.panel4);
             this.panel3.Location = new System.Drawing.Point(118, 1);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(391, 70);
             this.panel3.TabIndex = 12;
+            // 
+            // panel4
+            // 
+            this.panel4.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.panel4.Controls.Add(this.delayedPictureBox);
+            this.panel4.Location = new System.Drawing.Point(305, -5);
+            this.panel4.Name = "panel4";
+            this.panel4.Size = new System.Drawing.Size(86, 75);
+            this.panel4.TabIndex = 0;
+            // 
+            // delayedPictureBox
+            // 
+            this.delayedPictureBox.Location = new System.Drawing.Point(21, 13);
+            this.delayedPictureBox.Name = "delayedPictureBox";
+            this.delayedPictureBox.Size = new System.Drawing.Size(43, 46);
+            this.delayedPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.delayedPictureBox.TabIndex = 14;
+            this.delayedPictureBox.TabStop = false;
+            this.delayedPictureBox.Click += new System.EventHandler(this.DelayedPictureBox_Click);
             // 
             // ticketReservationLastMinuteButton
             // 
@@ -237,6 +264,11 @@ namespace Project.ClientForms
             this.ticketReservationLastMinuteButton.Text = "Κρατήσεις-Αιτήματα";
             this.ticketReservationLastMinuteButton.UseVisualStyleBackColor = true;
             this.ticketReservationLastMinuteButton.Click += new System.EventHandler(this.TicketReservationLastMinuteButton_Click);
+            // 
+            // timer
+            // 
+            this.timer.Interval = 30000;
+            this.timer.Tick += new System.EventHandler(this.Timer_Tick);
             // 
             // ClientForm
             // 
@@ -271,6 +303,9 @@ namespace Project.ClientForms
             this.panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            this.panel3.ResumeLayout(false);
+            this.panel4.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.delayedPictureBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -295,5 +330,8 @@ namespace Project.ClientForms
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.PictureBox pictureBox2;
         private System.Windows.Forms.Button ticketReservationLastMinuteButton;
+        private System.Windows.Forms.Timer timer;
+        private System.Windows.Forms.Panel panel4;
+        private System.Windows.Forms.PictureBox delayedPictureBox;
     }
 }

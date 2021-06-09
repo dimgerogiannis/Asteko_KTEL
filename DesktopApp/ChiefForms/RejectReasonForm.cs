@@ -39,5 +39,15 @@ namespace ChiefForms
                                 MessageBoxIcon.Error);
             }
         }
+
+        private void RejectReasonForm_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void ReasonRichTextbox_TextChanged(object sender, EventArgs e)
+        {
+            reasonLabel.Text = $"Αιτιολογία απόρριψης ({200 - reasonRichTextbox.Text.Length})";
+        }
     }
 }

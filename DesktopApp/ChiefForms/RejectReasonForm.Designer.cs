@@ -32,20 +32,23 @@ namespace ChiefForms
             this.reasonRichTextbox = new System.Windows.Forms.RichTextBox();
             this.submitButton = new System.Windows.Forms.Button();
             this.reasonLabel = new System.Windows.Forms.Label();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // reasonRichTextbox
             // 
-            this.reasonRichTextbox.Location = new System.Drawing.Point(12, 47);
+            this.reasonRichTextbox.Location = new System.Drawing.Point(15, 35);
             this.reasonRichTextbox.MaxLength = 200;
             this.reasonRichTextbox.Name = "reasonRichTextbox";
             this.reasonRichTextbox.Size = new System.Drawing.Size(545, 282);
             this.reasonRichTextbox.TabIndex = 0;
             this.reasonRichTextbox.Text = "";
+            this.reasonRichTextbox.TextChanged += new System.EventHandler(this.ReasonRichTextbox_TextChanged);
             // 
             // submitButton
             // 
-            this.submitButton.Location = new System.Drawing.Point(12, 335);
+            this.submitButton.Location = new System.Drawing.Point(15, 323);
             this.submitButton.Name = "submitButton";
             this.submitButton.Size = new System.Drawing.Size(133, 34);
             this.submitButton.TabIndex = 1;
@@ -56,30 +59,40 @@ namespace ChiefForms
             // reasonLabel
             // 
             this.reasonLabel.AutoSize = true;
-            this.reasonLabel.Location = new System.Drawing.Point(12, 19);
+            this.reasonLabel.Location = new System.Drawing.Point(15, 7);
             this.reasonLabel.Name = "reasonLabel";
-            this.reasonLabel.Size = new System.Drawing.Size(196, 25);
+            this.reasonLabel.Size = new System.Drawing.Size(241, 25);
             this.reasonLabel.TabIndex = 2;
-            this.reasonLabel.Text = "Αιτιολογία απόρριψης";
+            this.reasonLabel.Text = "Αιτιολογία απόρριψης (300)";
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.submitButton);
+            this.panel1.Controls.Add(this.reasonLabel);
+            this.panel1.Controls.Add(this.reasonRichTextbox);
+            this.panel1.Location = new System.Drawing.Point(12, 12);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(573, 365);
+            this.panel1.TabIndex = 3;
             // 
             // RejectReasonForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.ClientSize = new System.Drawing.Size(565, 376);
+            this.ClientSize = new System.Drawing.Size(597, 389);
             this.ControlBox = false;
-            this.Controls.Add(this.reasonLabel);
-            this.Controls.Add(this.submitButton);
-            this.Controls.Add(this.reasonRichTextbox);
+            this.Controls.Add(this.panel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "RejectReasonForm";
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Load += new System.EventHandler(this.RejectReasonForm_Load);
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -88,5 +101,6 @@ namespace ChiefForms
         private System.Windows.Forms.RichTextBox reasonRichTextbox;
         private System.Windows.Forms.Button submitButton;
         private System.Windows.Forms.Label reasonLabel;
+        private System.Windows.Forms.Panel panel1;
     }
 }

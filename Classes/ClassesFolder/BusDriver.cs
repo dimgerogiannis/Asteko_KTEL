@@ -125,7 +125,7 @@ namespace ClassesFolder
                               inner join Ticket on Ticket.itineraryID = Itinerary.itineraryID
                               inner join client on Ticket.clientUsername = Client.username
                               inner join User on Client.username = User.username
-                              where busDriverUsername = @busDriverUsername and itinerary.itineraryID = (select max(itinerary.itineraryID) from itinerary where busDriverUsername = @busDriverUsername and travelDatetime<current_timestamp());";
+                              where busDriverUsername = @busDriverUsername and itinerary.itineraryID = (select max(itinerary.itineraryID) from itinerary where busDriverUsername = @busDriverUsername and travelDatetime <current_timestamp());";
 
                 using var cmd = new MySqlCommand(query, connection);
                 cmd.Parameters.AddWithValue("@busDriverUsername", _username);
