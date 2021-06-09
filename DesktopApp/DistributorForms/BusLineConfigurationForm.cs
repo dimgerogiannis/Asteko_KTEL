@@ -32,9 +32,8 @@ namespace DistributorForms
             stopNamesListview.ContextMenuStrip = base.ContextMenuStrip;
             durationCombobox.Items.AddRange(new string[]
             {
-                20.ToString(),
+                15.ToString(),
                 30.ToString(),
-                40.ToString(),
                 60.ToString()
             });
         }

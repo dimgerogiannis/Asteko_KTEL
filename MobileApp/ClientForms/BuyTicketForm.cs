@@ -242,7 +242,7 @@ namespace Project.ClientForms
             if (lineNumberCombobox.SelectedItem != null)
             {
                 timeCombobox.Items.Clear();
-                foreach (var hour in _lines[int.Parse(lineNumberCombobox.SelectedItem.ToString()) - 1].GetAvailableStartingHours())
+                foreach (var hour in _lines[lineNumberCombobox.SelectedIndex].GetAvailableStartingHours())
                 {
                     timeCombobox.Items.Add(hour);
                 }                

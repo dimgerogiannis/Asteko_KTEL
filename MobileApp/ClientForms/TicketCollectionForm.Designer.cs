@@ -33,10 +33,10 @@ namespace Project.ClientForms
             this.columnHeader2 = new System.Windows.Forms.ColumnHeader();
             this.columnHeader3 = new System.Windows.Forms.ColumnHeader();
             this.allTicketsListview = new System.Windows.Forms.ListView();
-            this.allMyTicketsLabel = new System.Windows.Forms.Label();
-            this.usableTickets = new System.Windows.Forms.Label();
             this.columnHeader1 = new System.Windows.Forms.ColumnHeader();
             this.columnHeader4 = new System.Windows.Forms.ColumnHeader();
+            this.allMyTicketsLabel = new System.Windows.Forms.Label();
+            this.usableTickets = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // ticketCollectionListview
@@ -69,6 +69,7 @@ namespace Project.ClientForms
             this.allTicketsListview.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1,
             this.columnHeader4});
+            this.allTicketsListview.FullRowSelect = true;
             this.allTicketsListview.HideSelection = false;
             this.allTicketsListview.Location = new System.Drawing.Point(11, 262);
             this.allTicketsListview.Name = "allTicketsListview";
@@ -76,6 +77,16 @@ namespace Project.ClientForms
             this.allTicketsListview.TabIndex = 1;
             this.allTicketsListview.UseCompatibleStateImageBehavior = false;
             this.allTicketsListview.View = System.Windows.Forms.View.Details;
+            // 
+            // columnHeader1
+            // 
+            this.columnHeader1.Text = "Ημερομηνία δρομολογίου";
+            this.columnHeader1.Width = 270;
+            // 
+            // columnHeader4
+            // 
+            this.columnHeader4.Text = "Γραμμή";
+            this.columnHeader4.Width = 120;
             // 
             // allMyTicketsLabel
             // 
@@ -94,16 +105,6 @@ namespace Project.ClientForms
             this.usableTickets.Size = new System.Drawing.Size(237, 25);
             this.usableTickets.TabIndex = 3;
             this.usableTickets.Text = "Χρησιμοποιήσημα εισιτήρια";
-            // 
-            // columnHeader1
-            // 
-            this.columnHeader1.Text = "Ημερομηνία δρομολογίου";
-            this.columnHeader1.Width = 270;
-            // 
-            // columnHeader4
-            // 
-            this.columnHeader4.Text = "Γραμμή";
-            this.columnHeader4.Width = 120;
             // 
             // TicketCollectionForm
             // 
