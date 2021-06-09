@@ -43,20 +43,24 @@
 **Προσοχή: Η εφαρμογή τρέχει μόνο στα windows 10.**
 
 ### 1ο στάδιο
-Θα πρέπει αρχικά να διαθέτε εγκατεστημένη την **MySQL**. Επίσης θα πρέπει να ρυθμίσετε το **ConnectionString** που υπάρχει στην κλάση **ConnectionInfo** μέσα στο solution **Classes** αλλάζοντας τα πεδία *server*, *userid*, *password* και *database* ανάλογα με το όνομα του server που θα φτιάξετε, το userid, password καθώς και το όνομα της βάσης(database πεδίο).
-
-```csharp
-public static class ConnectionInfo
-{
-    public static string ConnectionString => @"server=localhost;userid=root;password=1234;database=project_db";
-}
-```
+Θα πρέπει αρχικά να διαθέτε εγκατεστημένη την **MySQL**.
 
 ### 2ο στάδιο
 Θα πρέπει να φτιάξετε την βάση με τη χρήση του κώδικα της βάσης που θα βρείτε στο [αρχείο](https://github.com/gstratigopoulos96/Asteko_KTEL/blob/master/databasesrc.sql) της βάσης.
 
 ### 3ο στάδιο
-Θα πρέπει να κάνετε:
+Θα πρέπει να φτιάξε ένα αρχείο connectionstring.txt στην επιφάνεια εργασίας σας όπου θα περιέχει το ακόλουθο string ανάλογα με το όνομα του server, το userid, το password που έχετε καταχωρήσει στην MySQL και υποχρεωτικά όνομα βάσης **project_db**. Σε κάθε άλλη περίπτωση δεν θα μπορείτε να τρέξετε την εφαρμογή.
+
+```
+server=localhost;userid=root;password=1234;database=project_db
+```
+
+<p align="center">
+  <img src="https://github.com/gstratigopoulos96/Asteko_KTEL/blob/master/Photos/Capture.PNG" alt="image"/>
+</p>
+
+### 3ο στάδιο
+Θα πρέπει να κάνετε τα εξής βήματα:
 
 1. Ανοίγετε το αρχείο **SoftwareTechnologyProject.sln** με τη χρήση του Visual Studio 2019.
 1. Build (F6).
