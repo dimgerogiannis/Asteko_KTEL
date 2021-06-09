@@ -58,7 +58,7 @@ public static class ConnectionInfo
 ### 3ο στάδιο
 Θα πρέπει να κάνετε:
 
-1. Ανοίγεται το αρχείο **SoftwareTechnologyProject.sln** με τη χρήση του Visual Studio 2019.
+1. Ανοίγετε το αρχείο **SoftwareTechnologyProject.sln** με τη χρήση του Visual Studio 2019.
 1. Build (F6).
 2. Επιλογή Debug ή Release mode.
 3. Επιλογή **DesktopApp** ή **MobileApp**.
