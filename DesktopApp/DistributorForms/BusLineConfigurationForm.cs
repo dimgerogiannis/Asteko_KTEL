@@ -36,6 +36,8 @@ namespace DistributorForms
                 30.ToString(),
                 60.ToString()
             });
+
+            stopNamesListview.ContextMenuStrip = contextMenuStrip;
         }
 
         private void RemoveToolStripMenuItem_Click_1(object sender, EventArgs e)

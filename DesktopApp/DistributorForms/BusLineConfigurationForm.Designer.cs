@@ -100,6 +100,7 @@ namespace DistributorForms
             // 
             this.stopNamesListview.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1});
+            this.stopNamesListview.FullRowSelect = true;
             this.stopNamesListview.HideSelection = false;
             this.stopNamesListview.Location = new System.Drawing.Point(12, 323);
             this.stopNamesListview.Name = "stopNamesListview";
