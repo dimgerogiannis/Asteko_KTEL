@@ -110,7 +110,7 @@ namespace Project.ClientForms
             }
             else
             {
-                MessageBox.Show("Δεν βρέθηκε το τελευταίο δρομολόγιο για το οποίο ταξιδέψατα.", 
+                MessageBox.Show("Δεν βρέθηκε το τελευταίο δρομολόγιο για το οποίο ταξιδέψατε.", 
                                 "Σφάλμα", 
                                 MessageBoxButtons.OK, 
                                 MessageBoxIcon.Error);
@@ -124,22 +124,34 @@ namespace Project.ClientForms
     
         public bool CheckForDuplicateClientComplaint(BusDriver targetDriver, Client complaintClient)
         {
-            using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
-            connection.Open();
+            try
+            {
+                using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
+                connection.Open();
 
-            var query = @"select count(*) 
+                var query = @"select count(*) 
                           from clientcomplaint 
                           where targetUsername = @driverUsername and clientUsername = @clientUsername;";
 
-            using var cmd = new MySqlCommand(query, connection);
+                using var cmd = new MySqlCommand(query, connection);
 
-            cmd.Parameters.AddWithValue("@driverUsername", targetDriver.Username);
-            cmd.Parameters.AddWithValue("@clientUsername", complaintClient.Username);
+                cmd.Parameters.AddWithValue("@driverUsername", targetDriver.Username);
+                cmd.Parameters.AddWithValue("@clientUsername", complaintClient.Username);
 
-            using MySqlDataReader reader = cmd.ExecuteReader();
-            reader.Read();
+                using MySqlDataReader reader = cmd.ExecuteReader();
+                reader.Read();
 
-            return reader.GetInt32(0) != 0;
+                return reader.GetInt32(0) != 0;
+            }
+            catch (MySqlException)
+            {
+                MessageBox.Show("Προκλήθηκε σφάλμα κατά την σύνδεση με τον server. Η εφαρμογή θα τερματιστεί!",
+                                 "Σφάλμα",
+                                 MessageBoxButtons.OK,
+                                 MessageBoxIcon.Error);
+                Application.Exit();
+                return false;
+            }
         }
     }
 }

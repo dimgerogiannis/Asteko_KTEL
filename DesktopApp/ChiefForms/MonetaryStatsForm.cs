@@ -44,7 +44,7 @@ namespace ChiefForms
                     transactionsIncome += transaction.Price;
                 }
 
-                ticketIncomeLabel.Text = $"Έσοδα εισητηρίων: {transactionsIncome} Ευρώ";
+                ticketIncomeLabel.Text = $"Έσοδα εισιτηρίων: {transactionsIncome} Ευρώ";
                 salaryExpensesLabel.Text = $"Μισθολογικά έξοδα: {salarySum} Ευρώ";
                 profitLabel.Text = $"Κέρδη: {CalculateProfits(transactionsIncome, salarySum)} Ευρώ";
             }
@@ -79,6 +79,11 @@ namespace ChiefForms
         private decimal CalculateProfits(decimal earnings, decimal costs)
         {
             return earnings - costs;
+        }
+
+        private void MonetaryStatsForm_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

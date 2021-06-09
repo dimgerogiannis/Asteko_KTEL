@@ -42,7 +42,7 @@ namespace ChiefForms
             // startDate
             // 
             this.startDate.AutoSize = true;
-            this.startDate.Location = new System.Drawing.Point(22, 18);
+            this.startDate.Location = new System.Drawing.Point(12, 17);
             this.startDate.Name = "startDate";
             this.startDate.Size = new System.Drawing.Size(180, 25);
             this.startDate.TabIndex = 0;
@@ -50,15 +50,15 @@ namespace ChiefForms
             // 
             // startDateTimePicker
             // 
-            this.startDateTimePicker.Location = new System.Drawing.Point(22, 57);
+            this.startDateTimePicker.Location = new System.Drawing.Point(12, 45);
             this.startDateTimePicker.Name = "startDateTimePicker";
-            this.startDateTimePicker.Size = new System.Drawing.Size(336, 31);
+            this.startDateTimePicker.Size = new System.Drawing.Size(450, 31);
             this.startDateTimePicker.TabIndex = 1;
             // 
             // endLabel
             // 
             this.endLabel.AutoSize = true;
-            this.endLabel.Location = new System.Drawing.Point(22, 117);
+            this.endLabel.Location = new System.Drawing.Point(12, 96);
             this.endLabel.Name = "endLabel";
             this.endLabel.Size = new System.Drawing.Size(160, 25);
             this.endLabel.TabIndex = 2;
@@ -66,14 +66,14 @@ namespace ChiefForms
             // 
             // endDateTimePicker
             // 
-            this.endDateTimePicker.Location = new System.Drawing.Point(22, 145);
+            this.endDateTimePicker.Location = new System.Drawing.Point(12, 124);
             this.endDateTimePicker.Name = "endDateTimePicker";
-            this.endDateTimePicker.Size = new System.Drawing.Size(336, 31);
+            this.endDateTimePicker.Size = new System.Drawing.Size(450, 31);
             this.endDateTimePicker.TabIndex = 3;
             // 
             // calculateButton
             // 
-            this.calculateButton.Location = new System.Drawing.Point(22, 196);
+            this.calculateButton.Location = new System.Drawing.Point(12, 184);
             this.calculateButton.Name = "calculateButton";
             this.calculateButton.Size = new System.Drawing.Size(139, 34);
             this.calculateButton.TabIndex = 4;
@@ -84,16 +84,16 @@ namespace ChiefForms
             // ticketIncomeLabel
             // 
             this.ticketIncomeLabel.AutoSize = true;
-            this.ticketIncomeLabel.Location = new System.Drawing.Point(22, 266);
+            this.ticketIncomeLabel.Location = new System.Drawing.Point(12, 234);
             this.ticketIncomeLabel.Name = "ticketIncomeLabel";
-            this.ticketIncomeLabel.Size = new System.Drawing.Size(166, 25);
+            this.ticketIncomeLabel.Size = new System.Drawing.Size(161, 25);
             this.ticketIncomeLabel.TabIndex = 5;
-            this.ticketIncomeLabel.Text = "Έσοδα εισητηρίων:";
+            this.ticketIncomeLabel.Text = "Έσοδα εισίτηρίων:";
             // 
             // salaryExpensesLabel
             // 
             this.salaryExpensesLabel.AutoSize = true;
-            this.salaryExpensesLabel.Location = new System.Drawing.Point(22, 303);
+            this.salaryExpensesLabel.Location = new System.Drawing.Point(12, 271);
             this.salaryExpensesLabel.Name = "salaryExpensesLabel";
             this.salaryExpensesLabel.Size = new System.Drawing.Size(177, 25);
             this.salaryExpensesLabel.TabIndex = 6;
@@ -102,7 +102,7 @@ namespace ChiefForms
             // profitLabel
             // 
             this.profitLabel.AutoSize = true;
-            this.profitLabel.Location = new System.Drawing.Point(22, 340);
+            this.profitLabel.Location = new System.Drawing.Point(12, 308);
             this.profitLabel.Name = "profitLabel";
             this.profitLabel.Size = new System.Drawing.Size(66, 25);
             this.profitLabel.TabIndex = 7;
@@ -113,7 +113,7 @@ namespace ChiefForms
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.ClientSize = new System.Drawing.Size(381, 375);
+            this.ClientSize = new System.Drawing.Size(474, 347);
             this.Controls.Add(this.profitLabel);
             this.Controls.Add(this.salaryExpensesLabel);
             this.Controls.Add(this.ticketIncomeLabel);
@@ -128,6 +128,7 @@ namespace ChiefForms
             this.Name = "MonetaryStatsForm";
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Load += new System.EventHandler(this.MonetaryStatsForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

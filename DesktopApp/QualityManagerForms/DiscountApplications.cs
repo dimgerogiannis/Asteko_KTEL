@@ -14,7 +14,6 @@ namespace QualityManagerForms
     {
         private QualityManager _qualityManager;
         private List<DiscountApplication> _applications;
-        private int _index;
 
         public DiscountApplications(QualityManager qualityManager)
         {
@@ -27,21 +26,8 @@ namespace QualityManagerForms
             _applications = _qualityManager.GetUncheckedDiscountApplications();
             foreach (var application in _applications)
             {
-                namesCombobox.Items.Add(application.ApplicantClient.GetFullName());
-            }
-        }
-
-        private void NamesCombobox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (namesCombobox.SelectedItem != null)
-            {
-                _index = namesCombobox.SelectedIndex;
-                dateLabel.Text = $"Ημερομηνία αίτησης: {_applications[_index].ApplicationDatetime?.ToString("HH:mm:ss dd-MM-yyyy")}";
-                taxIDLabel.Text = $"Α.Φ.Μ.: {_applications[_index].TaxIdentificationNumber}";
-                phoneLabel.Text = $"Τηλέφωνο: {_applications[_index].PhoneNumber}";
-
                 var cat = "";
-                switch (_applications[_index].Category)
+                switch (application.Category)
                 {
                     case Enums.Category.DissabilityIssues:
                         cat = "Άτομο με ειδικές ανάγκες";
@@ -56,53 +42,69 @@ namespace QualityManagerForms
                         cat = "Μαθητής";
                         break;
                 }
+                discountListview.Items.Add(new ListViewItem(new string[]
+                {
+                    application.ApplicantClient.GetFullName(),
+                    application.ApplicationDatetime?.ToString("HH:mm:ss dd-MM-yyyy"),
+                    application.TaxIdentificationNumber,
+                    application.PhoneNumber,
+                    cat
+                }));
+            }
 
-                categoryLabel.Text = $"Κατηγορία: {cat}";
+            discountListview.ContextMenuStrip = contextMenuStrip;
+        }
 
-                var path = $@"{Environment.GetFolderPath(Environment.SpecialFolder.Desktop)}\{namesCombobox.SelectedItem}{Guid.NewGuid()}";
+        private void SaveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (discountListview.SelectedItems.Count == 1)
+            {
+                var path = $@"{Environment.GetFolderPath(Environment.SpecialFolder.Desktop)}\{discountListview.Items[discountListview.SelectedIndices[0]].SubItems[0].Text}{Guid.NewGuid()}";
                 System.IO.Directory.CreateDirectory(path);
-                foreach (var file in _applications[_index].Files)
+                foreach (var file in _applications[discountListview.SelectedIndices[0]].Files)
                 {
                     System.IO.File.WriteAllBytes($@"{path}\{file.FileName}", file.FileContent);
                 }
 
                 Process.Start("explorer.exe", path);
-
-                namesCombobox.Enabled = false;
+            }
+            else
+            {
+                MessageBox.Show("Παρακαλώ επιλέξτε ένα μόνο αίτημα για έκπτωση στις μεταφορές.",
+                                "Σφάλμα",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Error);
             }
         }
 
-        private void ApproveRejectButton_Click(object sender, EventArgs e)
+        private void ProcessToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (namesCombobox.SelectedItem != null)
+            if (discountListview.SelectedItems.Count == 1)
             {
                 var result = MessageBox.Show("Θέλετε να αποδεχτήτε την αίτηση;",
                                              "Ερώτηση",
                                              MessageBoxButtons.YesNo,
                                              MessageBoxIcon.Question);
 
+                int index = discountListview.SelectedIndices[0];
                 if (result == DialogResult.Yes)
                 {
-                    var client = _applications[namesCombobox.SelectedIndex].ApplicantClient;
-                    client.UpdateDiscount(_applications[namesCombobox.SelectedIndex].Category);
-                    _applications[namesCombobox.SelectedIndex].SetAsAccepted();
+                    
+                    var client = _applications[index].ApplicantClient;
+                    client.UpdateDiscount(_applications[index].Category);
+                    _applications[index].SetAsAccepted();
                 }
                 else
                 {
-                    RejectReasonForm form = new RejectReasonForm(_applications[namesCombobox.SelectedIndex]);
+                    RejectReasonForm form = new RejectReasonForm(_applications[index]);
                     form.ShowDialog();
                 }
 
-                dateLabel.Text = "Ημερομηνία αίτησης:";
-                taxIDLabel.Text = "Α.Φ.Μ.:";
-                phoneLabel.Text = "Τηλέφωνο:";
-                categoryLabel.Text = "Κατηγορία:";
-                namesCombobox.Enabled = true;
-                namesCombobox.Items.RemoveAt(_index);
-            }  
+                discountListview.Items.RemoveAt(index);
+            }
             else
             {
-                MessageBox.Show("Παρακαλώ επιλέξτε μια αίτηση;",
+                MessageBox.Show("Παρακαλώ επιλέξτε ένα μόνο αίτημα για έκπτωση στις μεταφορές.",
                                 "Σφάλμα",
                                 MessageBoxButtons.OK,
                                 MessageBoxIcon.Error);

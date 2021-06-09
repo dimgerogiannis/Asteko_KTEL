@@ -78,7 +78,7 @@ namespace ChiefForms
                 return;
             }
 
-            var result = MessageBox.Show("Θέλετε να προχωρήσετε σε απόλυση του οδηγού;",
+            var result = MessageBox.Show("Θέλετε να προχωρήσετε στην απόλυση του οδηγού;",
                                          "Ερώτηση",
                                          MessageBoxButtons.YesNo,
                                          MessageBoxIcon.Question);
@@ -102,7 +102,7 @@ namespace ChiefForms
                 }
                 else
                 {
-                    MessageBox.Show("Ο οδηγός δεν μπορεί να απολυθεί γιατί του έχουν ανατεθεί δρομολόγια για την επόμενη εβδομάδα.",
+                    MessageBox.Show("Ο οδηγός δεν μπορεί να απολυθεί γιατί του έχουν ανατεθεί δρομολόγια.",
                                     "Σφάλμα",
                                     MessageBoxButtons.OK, 
                                     MessageBoxIcon.Error);

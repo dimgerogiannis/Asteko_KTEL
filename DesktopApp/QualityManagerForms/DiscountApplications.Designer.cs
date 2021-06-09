@@ -29,93 +29,92 @@ namespace QualityManagerForms
         /// </summary>
         private void InitializeComponent()
         {
-            this.namesLabel = new System.Windows.Forms.Label();
-            this.namesCombobox = new System.Windows.Forms.ComboBox();
-            this.dateLabel = new System.Windows.Forms.Label();
-            this.taxIDLabel = new System.Windows.Forms.Label();
-            this.phoneLabel = new System.Windows.Forms.Label();
-            this.categoryLabel = new System.Windows.Forms.Label();
-            this.approveRejectButton = new System.Windows.Forms.Button();
+            this.components = new System.ComponentModel.Container();
+            this.discountListview = new System.Windows.Forms.ListView();
+            this.columnHeader1 = new System.Windows.Forms.ColumnHeader();
+            this.columnHeader2 = new System.Windows.Forms.ColumnHeader();
+            this.columnHeader3 = new System.Windows.Forms.ColumnHeader();
+            this.columnHeader4 = new System.Windows.Forms.ColumnHeader();
+            this.columnHeader5 = new System.Windows.Forms.ColumnHeader();
+            this.contextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.processToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.contextMenuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
-            // namesLabel
+            // discountListview
             // 
-            this.namesLabel.AutoSize = true;
-            this.namesLabel.Location = new System.Drawing.Point(12, 19);
-            this.namesLabel.Name = "namesLabel";
-            this.namesLabel.Size = new System.Drawing.Size(170, 25);
-            this.namesLabel.TabIndex = 0;
-            this.namesLabel.Text = "Ονόματα επιβατών";
+            this.discountListview.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader1,
+            this.columnHeader2,
+            this.columnHeader3,
+            this.columnHeader4,
+            this.columnHeader5});
+            this.discountListview.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.discountListview.FullRowSelect = true;
+            this.discountListview.HideSelection = false;
+            this.discountListview.Location = new System.Drawing.Point(0, 0);
+            this.discountListview.Name = "discountListview";
+            this.discountListview.Size = new System.Drawing.Size(1055, 545);
+            this.discountListview.TabIndex = 7;
+            this.discountListview.UseCompatibleStateImageBehavior = false;
+            this.discountListview.View = System.Windows.Forms.View.Details;
             // 
-            // namesCombobox
+            // columnHeader1
             // 
-            this.namesCombobox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.namesCombobox.FormattingEnabled = true;
-            this.namesCombobox.Location = new System.Drawing.Point(12, 47);
-            this.namesCombobox.Name = "namesCombobox";
-            this.namesCombobox.Size = new System.Drawing.Size(426, 33);
-            this.namesCombobox.TabIndex = 1;
-            this.namesCombobox.SelectedIndexChanged += new System.EventHandler(this.NamesCombobox_SelectedIndexChanged);
+            this.columnHeader1.Text = "Όνομα επιβάτη";
+            this.columnHeader1.Width = 250;
             // 
-            // dateLabel
+            // columnHeader2
             // 
-            this.dateLabel.AutoSize = true;
-            this.dateLabel.Location = new System.Drawing.Point(12, 99);
-            this.dateLabel.Name = "dateLabel";
-            this.dateLabel.Size = new System.Drawing.Size(182, 25);
-            this.dateLabel.TabIndex = 2;
-            this.dateLabel.Text = "Ημερομηνία αίτησης:";
+            this.columnHeader2.Text = "Ημερομηνία αίτησης";
+            this.columnHeader2.Width = 250;
             // 
-            // taxIDLabel
+            // columnHeader3
             // 
-            this.taxIDLabel.AutoSize = true;
-            this.taxIDLabel.Location = new System.Drawing.Point(12, 144);
-            this.taxIDLabel.Name = "taxIDLabel";
-            this.taxIDLabel.Size = new System.Drawing.Size(70, 25);
-            this.taxIDLabel.TabIndex = 3;
-            this.taxIDLabel.Text = "Α.Φ.Μ.:";
+            this.columnHeader3.Text = "Α.Φ.Μ.";
+            this.columnHeader3.Width = 100;
             // 
-            // phoneLabel
+            // columnHeader4
             // 
-            this.phoneLabel.AutoSize = true;
-            this.phoneLabel.Location = new System.Drawing.Point(12, 189);
-            this.phoneLabel.Name = "phoneLabel";
-            this.phoneLabel.Size = new System.Drawing.Size(100, 25);
-            this.phoneLabel.TabIndex = 4;
-            this.phoneLabel.Text = "Τηλέφωνο:";
+            this.columnHeader4.Text = "Τηλέφωνο";
+            this.columnHeader4.Width = 150;
             // 
-            // categoryLabel
+            // columnHeader5
             // 
-            this.categoryLabel.AutoSize = true;
-            this.categoryLabel.Location = new System.Drawing.Point(12, 234);
-            this.categoryLabel.Name = "categoryLabel";
-            this.categoryLabel.Size = new System.Drawing.Size(103, 25);
-            this.categoryLabel.TabIndex = 5;
-            this.categoryLabel.Text = "Κατηγορία:";
+            this.columnHeader5.Text = "Κατηγορία";
+            this.columnHeader5.Width = 250;
             // 
-            // approveRejectButton
+            // contextMenuStrip
             // 
-            this.approveRejectButton.Location = new System.Drawing.Point(12, 271);
-            this.approveRejectButton.Name = "approveRejectButton";
-            this.approveRejectButton.Size = new System.Drawing.Size(122, 34);
-            this.approveRejectButton.TabIndex = 6;
-            this.approveRejectButton.Text = "Επεξεργασία";
-            this.approveRejectButton.UseVisualStyleBackColor = true;
-            this.approveRejectButton.Click += new System.EventHandler(this.ApproveRejectButton_Click);
+            this.contextMenuStrip.ImageScalingSize = new System.Drawing.Size(24, 24);
+            this.contextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.saveToolStripMenuItem,
+            this.processToolStripMenuItem});
+            this.contextMenuStrip.Name = "contextMenuStrip";
+            this.contextMenuStrip.Size = new System.Drawing.Size(330, 68);
+            // 
+            // saveToolStripMenuItem
+            // 
+            this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(329, 32);
+            this.saveToolStripMenuItem.Text = "Αποθήκευση δικαιολογητικών";
+            this.saveToolStripMenuItem.Click += new System.EventHandler(this.SaveToolStripMenuItem_Click);
+            // 
+            // processToolStripMenuItem
+            // 
+            this.processToolStripMenuItem.Name = "processToolStripMenuItem";
+            this.processToolStripMenuItem.Size = new System.Drawing.Size(329, 32);
+            this.processToolStripMenuItem.Text = "Eπεξεργασία αίτησης";
+            this.processToolStripMenuItem.Click += new System.EventHandler(this.ProcessToolStripMenuItem_Click);
             // 
             // DiscountApplications
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.ClientSize = new System.Drawing.Size(450, 317);
-            this.Controls.Add(this.approveRejectButton);
-            this.Controls.Add(this.categoryLabel);
-            this.Controls.Add(this.phoneLabel);
-            this.Controls.Add(this.taxIDLabel);
-            this.Controls.Add(this.dateLabel);
-            this.Controls.Add(this.namesCombobox);
-            this.Controls.Add(this.namesLabel);
+            this.ClientSize = new System.Drawing.Size(1055, 545);
+            this.Controls.Add(this.discountListview);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
@@ -123,19 +122,20 @@ namespace QualityManagerForms
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Load += new System.EventHandler(this.DiscountApplications_Load);
+            this.contextMenuStrip.ResumeLayout(false);
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
-
-        private System.Windows.Forms.Label namesLabel;
-        private System.Windows.Forms.ComboBox namesCombobox;
-        private System.Windows.Forms.Label dateLabel;
-        private System.Windows.Forms.Label taxIDLabel;
-        private System.Windows.Forms.Label phoneLabel;
-        private System.Windows.Forms.Label categoryLabel;
-        private System.Windows.Forms.Button approveRejectButton;
+        private System.Windows.Forms.ListView discountListview;
+        private System.Windows.Forms.ColumnHeader columnHeader1;
+        private System.Windows.Forms.ColumnHeader columnHeader2;
+        private System.Windows.Forms.ColumnHeader columnHeader3;
+        private System.Windows.Forms.ColumnHeader columnHeader4;
+        private System.Windows.Forms.ColumnHeader columnHeader5;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip;
+        private System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem processToolStripMenuItem;
     }
 }

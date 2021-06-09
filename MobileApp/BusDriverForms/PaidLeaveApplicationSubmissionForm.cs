@@ -54,7 +54,7 @@ namespace Project.BusDriverForms
             }  
             else if (HasItineraryOnSpecificDate(dateTimePicker.Value.ToString("yyyy-MM-dd")))
             {
-                MessageBox.Show("Σας έχει ανατεθεί δρομολόγιο για αυτή τη μέρα.",
+                MessageBox.Show("Σας έχει ανατεθεί δρομολόγιο για τη συγκεκριμένη μέρα.",
                                 "Σφάλμα",
                                 MessageBoxButtons.OK,
                                 MessageBoxIcon.Error);
@@ -106,6 +106,11 @@ namespace Project.BusDriverForms
             reader.Read();
 
             return reader.GetInt32(0) > 0;
+        }
+
+        private void ReasonRichTextbox_TextChanged(object sender, EventArgs e)
+        {
+            reasonLabel.Text = $"Περιγράψτε το λόγο αίτησης για άδεια {300 - reasonRichTextbox.Text.Length}";
         }
     }
 }

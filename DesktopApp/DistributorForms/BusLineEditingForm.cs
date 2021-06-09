@@ -84,7 +84,7 @@ namespace DistributorForms
             }
             else
             {
-                MessageBox.Show("Μια γραμή πρέπει να περιέχει τουλάχιστον 3 στάσεις.",
+                MessageBox.Show("Μια γραμμή πρέπει να περιέχει τουλάχιστον 3 στάσεις.",
                                 "Σφάλμα",
                                 MessageBoxButtons.OK,
                                 MessageBoxIcon.Error);

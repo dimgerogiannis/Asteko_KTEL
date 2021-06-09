@@ -31,7 +31,7 @@ namespace QualityManagerForms
         {
             if (feedbackRichTextbox.Text != "")
             {
-                var result = MessageBox.Show("Θέλετε να καταχωρήσετε τα σχόλια βελτίωσης;", 
+                var result = MessageBox.Show("Θέλετε να καταχωρήσετε το σχόλιο βελτίωσης;", 
                                              "Ερώτηση", 
                                              MessageBoxButtons.YesNo,
                                              MessageBoxIcon.Question);

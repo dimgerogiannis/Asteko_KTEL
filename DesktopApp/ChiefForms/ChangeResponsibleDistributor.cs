@@ -40,7 +40,7 @@ namespace ChiefForms
             }
             else
             {
-                MessageBox.Show("Παρακαλώ συμπληρώστε όλα τα απαιτούμενα πεδία.",
+                MessageBox.Show("Παρακαλώ κάποιον υπεύθυνο διασφάλισης υπηρεσιών.",
                                 "Σφάλμα",
                                 MessageBoxButtons.OK,
                                 MessageBoxIcon.Error);

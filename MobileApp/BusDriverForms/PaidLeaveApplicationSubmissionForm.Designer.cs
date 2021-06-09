@@ -57,17 +57,19 @@ namespace Project.BusDriverForms
             this.reasonLabel.AutoSize = true;
             this.reasonLabel.Location = new System.Drawing.Point(12, 116);
             this.reasonLabel.Name = "reasonLabel";
-            this.reasonLabel.Size = new System.Drawing.Size(285, 25);
+            this.reasonLabel.Size = new System.Drawing.Size(375, 25);
             this.reasonLabel.TabIndex = 2;
-            this.reasonLabel.Text = "Περιγράψτε το λόγο άδειας (300)";
+            this.reasonLabel.Text = "Περιγράψτε το λόγο αίτησης για άδεια (300)";
             // 
             // reasonRichTextbox
             // 
             this.reasonRichTextbox.Location = new System.Drawing.Point(12, 144);
+            this.reasonRichTextbox.MaxLength = 300;
             this.reasonRichTextbox.Name = "reasonRichTextbox";
             this.reasonRichTextbox.Size = new System.Drawing.Size(489, 473);
             this.reasonRichTextbox.TabIndex = 3;
             this.reasonRichTextbox.Text = "";
+            this.reasonRichTextbox.TextChanged += new System.EventHandler(this.ReasonRichTextbox_TextChanged);
             // 
             // submitButton
             // 

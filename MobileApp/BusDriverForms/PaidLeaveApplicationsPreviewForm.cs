@@ -54,7 +54,7 @@ namespace Project.BusDriverForms
             {
                 int index = paidLeaveApplicationsListview.SelectedIndices[0];
                 if (paidLeaveApplicationsListview.Items[index].SubItems[1].Text == "Απορρίφθηκε" || 
-                    paidLeaveApplicationsListview.Items[index].SubItems[1].Text == "Αποδέχτηκε")
+                    paidLeaveApplicationsListview.Items[index].SubItems[1].Text == "Εγκρίθηκε")
                 {
                     _applications[index].DeletePaidLeaveApplication();
                     _applications.RemoveAt(index);

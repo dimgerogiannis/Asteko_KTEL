@@ -37,7 +37,7 @@ namespace ChiefForms
             }
             else
             {
-                MessageBox.Show("Παρακαλώ επιλέξτε το όνομα κάποιου οδηγού.", 
+                MessageBox.Show("Παρακαλώ επιλέξτε κάποιον οδηγό.", 
                                 "Σφάλμα", 
                                 MessageBoxButtons.OK, 
                                 MessageBoxIcon.Error);

@@ -52,7 +52,10 @@ namespace Project.ClientForms
             {
                 if (openFileDialog.FileNames.Length > 3)
                 {
-                    MessageBox.Show("Παρακαλώ επισυνάψτε το πολύ 3 αρχεία!", "Σφάλμα", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Παρακαλώ επισυνάψτε το πολύ 3 αρχεία!", 
+                                    "Σφάλμα",
+                                    MessageBoxButtons.OK, 
+                                    MessageBoxIcon.Error);
                 }
                 else
                 {
@@ -63,7 +66,10 @@ namespace Project.ClientForms
                         var bytes = System.IO.File.ReadAllBytes(fileName);
                         if (bytes.Length > 3145728)
                         {
-                            MessageBox.Show("Μη επιτρεπτό μέγεθος αρχείου. Παρακαλώ το κάθε αρχείο να είναι το πολύ 3 MB!", "Σφάλμα", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            MessageBox.Show("Μη επιτρεπτό μέγεθος αρχείου. Παρακαλώ το κάθε αρχείο να είναι το πολύ 3 MB.", 
+                                            "Σφάλμα",
+                                            MessageBoxButtons.OK, 
+                                            MessageBoxIcon.Error);
                             _files.Clear();
                             _files = null;
                             break;
@@ -119,7 +125,7 @@ namespace Project.ClientForms
                                                                           Status.Pending,
                                                                           files);
 
-                var result = MessageBox.Show("Θέλετε να καταχωρήσετε την αίτηση σας;", 
+                var result = MessageBox.Show("Θέλετε να καταχωρήσετε την αίτησή σας;", 
                                              "Ερώτηση", 
                                              MessageBoxButtons.YesNo, 
                                              MessageBoxIcon.Question);
@@ -130,12 +136,11 @@ namespace Project.ClientForms
                     var applicationID = _client.GetDiscountApplicationID();
                     _client.InsertDiscountApplicationFilesInDatabase(applicationID, application.Files);
                     
-                    MessageBox.Show("Επιτυχής καταχώρηση αίτησης έκπτωσης στις μεταφορές.", 
+                    MessageBox.Show("Επιτυχής καταχώρηση αίτησης για έκπτωσης στις μεταφορές.", 
                                     "Επιτυχία", 
                                     MessageBoxButtons.OK, 
                                     MessageBoxIcon.Information);
                 }
-
             }
             else
             {

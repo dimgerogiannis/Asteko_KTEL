@@ -57,7 +57,7 @@ namespace ChiefForms
             // 
             // columnHeader1
             // 
-            this.columnHeader1.Text = "Όνομα χρήστη οδηγού";
+            this.columnHeader1.Text = "Όνομα οδηγού";
             this.columnHeader1.Width = 250;
             // 
             // columnHeader2
@@ -67,7 +67,7 @@ namespace ChiefForms
             // 
             // columnHeader3
             // 
-            this.columnHeader3.Text = "Όνομα χρήστη επιβάτη";
+            this.columnHeader3.Text = "Όνομα επιβάτη";
             this.columnHeader3.Width = 250;
             // 
             // fireButton

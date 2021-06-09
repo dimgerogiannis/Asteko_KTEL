@@ -59,9 +59,9 @@ namespace Project.ClientForms
             this.submitFiles.Location = new System.Drawing.Point(11, 537);
             this.submitFiles.Margin = new System.Windows.Forms.Padding(6);
             this.submitFiles.Name = "submitFiles";
-            this.submitFiles.Size = new System.Drawing.Size(251, 44);
+            this.submitFiles.Size = new System.Drawing.Size(252, 44);
             this.submitFiles.TabIndex = 34;
-            this.submitFiles.Text = "Επισύναψη δικαιολογιτικών";
+            this.submitFiles.Text = "Επισύναψη δικαιολογητικών";
             this.submitFiles.UseVisualStyleBackColor = true;
             this.submitFiles.Click += new System.EventHandler(this.SubmitFiles_Click);
             // 

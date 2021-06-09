@@ -42,9 +42,9 @@ namespace Project.ClientForms
             this.complaintListLabel.Location = new System.Drawing.Point(8, 25);
             this.complaintListLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.complaintListLabel.Name = "complaintListLabel";
-            this.complaintListLabel.Size = new System.Drawing.Size(208, 25);
+            this.complaintListLabel.Size = new System.Drawing.Size(200, 25);
             this.complaintListLabel.TabIndex = 0;
-            this.complaintListLabel.Text = "Κατηγορίες παραπόνων";
+            this.complaintListLabel.Text = "Κατηγορία παραπόνου";
             // 
             // complaintListCombobox
             // 

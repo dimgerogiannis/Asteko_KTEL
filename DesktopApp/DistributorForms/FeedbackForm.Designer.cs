@@ -40,9 +40,9 @@ namespace DistributorForms
             this.number.AutoSize = true;
             this.number.Location = new System.Drawing.Point(12, 24);
             this.number.Name = "number";
-            this.number.Size = new System.Drawing.Size(241, 25);
+            this.number.Size = new System.Drawing.Size(239, 25);
             this.number.TabIndex = 0;
-            this.number.Text = "Αριθμοί οδηγιών βελτίωσης";
+            this.number.Text = "Αριθμός οδηγίας βελτίωσης";
             // 
             // numberCombobox
             // 

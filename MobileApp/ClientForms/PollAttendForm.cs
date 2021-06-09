@@ -92,7 +92,10 @@ namespace Project.ClientForms
                     poll.IncreaseVotes(forthChoiceRadioButton.Text, _client);
                 }
 
-                MessageBox.Show("Επιτυχής καταχώρηση ψήφου!", "Επιτυχία", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Επιτυχής καταχώρηση ψήφου.", 
+                                "Επιτυχία", 
+                                MessageBoxButtons.OK, 
+                                MessageBoxIcon.Information);
 
                 _client.SetPollAsUnavailable(_client.AvailablePolls.Find(x => x.Title == pollTitle.SelectedItem.ToString()));
                 pollTitle.Items.Remove(pollTitle.SelectedItem);

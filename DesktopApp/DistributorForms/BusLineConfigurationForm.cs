@@ -66,7 +66,7 @@ namespace DistributorForms
 
                 if (_distributor.CheckDuplicateBusLineNumber(number))
                 {
-                    MessageBox.Show($"Υπάρχει ήδη γραμμή με τον αριθμό {number}. Παρακαλώ βάλτε κάποιο άλλο αριθμό.",
+                    MessageBox.Show($"Υπάρχει ήδη γραμμή με τον αριθμό {number}. Παρακαλώ εισάγετε κάποιο άλλο αριθμό.",
                                     "Σφάλμα",
                                     MessageBoxButtons.OK,
                                     MessageBoxIcon.Error);
@@ -112,7 +112,7 @@ namespace DistributorForms
                 {
                     if (stopNamesListview.Items[i].Text == stopNameTextbox.Text)
                     {
-                        MessageBox.Show("Το όνομα στάσης υπάρχει ήδη στις στα ονόματα στάσεων που έχετε προσθέσει.",
+                        MessageBox.Show("Το όνομα στάσης υπάρχει ήδη στα ονόματα στάσεων που έχετε προσθέσει.",
                                         "Σφάλμα",
                                         MessageBoxButtons.OK,
                                         MessageBoxIcon.Error);

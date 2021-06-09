@@ -39,9 +39,9 @@ namespace ChiefForms
             this.busDriverUsernameLabel.AutoSize = true;
             this.busDriverUsernameLabel.Location = new System.Drawing.Point(12, 20);
             this.busDriverUsernameLabel.Name = "busDriverUsernameLabel";
-            this.busDriverUsernameLabel.Size = new System.Drawing.Size(199, 25);
+            this.busDriverUsernameLabel.Size = new System.Drawing.Size(134, 25);
             this.busDriverUsernameLabel.TabIndex = 0;
-            this.busDriverUsernameLabel.Text = "Όνομα χρήστη οδηγού";
+            this.busDriverUsernameLabel.Text = "Όνομα οδηγού";
             // 
             // busDriverNameCombobox
             // 

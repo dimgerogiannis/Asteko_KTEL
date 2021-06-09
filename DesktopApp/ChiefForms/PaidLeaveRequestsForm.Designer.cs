@@ -51,15 +51,15 @@ namespace ChiefForms
             this.applicationsListview.HideSelection = false;
             this.applicationsListview.Location = new System.Drawing.Point(0, 0);
             this.applicationsListview.Name = "applicationsListview";
-            this.applicationsListview.Size = new System.Drawing.Size(593, 496);
+            this.applicationsListview.Size = new System.Drawing.Size(681, 496);
             this.applicationsListview.TabIndex = 0;
             this.applicationsListview.UseCompatibleStateImageBehavior = false;
             this.applicationsListview.View = System.Windows.Forms.View.Details;
             // 
             // columnHeader1
             // 
-            this.columnHeader1.Text = "Όνομα χρήστη";
-            this.columnHeader1.Width = 150;
+            this.columnHeader1.Text = "Όνομα οδηγού";
+            this.columnHeader1.Width = 250;
             // 
             // columnHeader3
             // 
@@ -78,7 +78,7 @@ namespace ChiefForms
             this.reasonToolStripMenuItem,
             this.acceptOrRejectToolStripMenuItem});
             this.contextMenuStrip.Name = "contextMenuStrip";
-            this.contextMenuStrip.Size = new System.Drawing.Size(259, 101);
+            this.contextMenuStrip.Size = new System.Drawing.Size(259, 68);
             // 
             // reasonToolStripMenuItem
             // 
@@ -99,7 +99,7 @@ namespace ChiefForms
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.ClientSize = new System.Drawing.Size(593, 496);
+            this.ClientSize = new System.Drawing.Size(681, 496);
             this.Controls.Add(this.applicationsListview);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.MaximizeBox = false;

@@ -94,9 +94,9 @@ namespace QualityManagerForms
             this.startLabel.AutoSize = true;
             this.startLabel.Location = new System.Drawing.Point(12, 85);
             this.startLabel.Name = "startLabel";
-            this.startLabel.Size = new System.Drawing.Size(169, 25);
+            this.startLabel.Size = new System.Drawing.Size(184, 25);
             this.startLabel.TabIndex = 3;
-            this.startLabel.Text = "Ημερομηνία αρχής:";
+            this.startLabel.Text = "Ημερομηνία έναρξης:";
             // 
             // endLabel
             // 

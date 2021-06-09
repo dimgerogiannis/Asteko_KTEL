@@ -33,7 +33,7 @@ namespace QualityManagerForms
             {
                 resultsListview.Items.Clear();
 
-                startLabel.Text = $"Ημερομηνία αρχής: {_polls[titleCombobox.SelectedIndex].StartingDate.ToString("dd-MM-yyyy")}";
+                startLabel.Text = $"Ημερομηνία έναρξης: {_polls[titleCombobox.SelectedIndex].StartingDate.ToString("dd-MM-yyyy")}";
                 endLabel.Text = $"Ημερομηνία λήξης: {_polls[titleCombobox.SelectedIndex].EndingDate.ToString("dd-MM-yyyy")}";
 
                 var results = _polls[titleCombobox.SelectedIndex].ExtractStats();

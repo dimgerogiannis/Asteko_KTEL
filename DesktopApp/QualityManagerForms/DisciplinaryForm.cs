@@ -23,7 +23,7 @@ namespace QualityManagerForms
 
         private void DisciplinaryCommentRichTextbox_TextChanged(object sender, EventArgs e)
         {
-            disciplinaryCommentLabel.Text = $"Σχόλια συμμόρφωσης ({200 - disciplinaryCommentRichTextbox.Text.Length})";
+            disciplinaryCommentLabel.Text = $"Σχόλιο συμμόρφωσης ({200 - disciplinaryCommentRichTextbox.Text.Length})";
         }
 
         private void SubmitButton_Click(object sender, EventArgs e)
@@ -43,7 +43,7 @@ namespace QualityManagerForms
             }
             else
             {
-                MessageBox.Show("Παρακαλώ συμπληρώστε τα σχόλια συμμόρφωσης.",
+                MessageBox.Show("Παρακαλώ συμπληρώστε το σχόλιο συμμόρφωσης.",
                                 "Σφάλμα",
                                 MessageBoxButtons.OK,
                                 MessageBoxIcon.Error);

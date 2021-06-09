@@ -63,7 +63,7 @@ namespace Project.BusDriverForms
                 }
                 else
                 {
-                    MessageBox.Show("Έχετε ήδη καταχωρήσει μια καταγγελία παραβίασης υγειονομικών μέτρων για τον συγκεκριμένο επιβάτη.",
+                    MessageBox.Show("Έχετε ήδη καταχωρήσει μια καταγγελία παραβίασης υγειονομικών μέτρων για το συγκεκριμένο επιβάτη.",
                                     "Σφάλμα",
                                     MessageBoxButtons.OK,
                                     MessageBoxIcon.Error);                  
