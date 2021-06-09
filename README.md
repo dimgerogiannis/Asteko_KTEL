@@ -73,7 +73,7 @@ public static class ConnectionInfo
   <img src="https://github.com/gstratigopoulos96/Asteko_KTEL/blob/master/Photos/select%20project.png" alt="image"/>
 </p>
 
-Εναλλακτικά μετά την ολοκλήρωση των παραπάνω βημάτων για για τα 2 projects (DekstopApp, MobileApp) θα μπορείτε να ανοίξετε την εφαρμογή χωρίς τη χρήση του Visual Studio 2019 απλά κάνοντας execute τα αρχεία **DesktopApp.exe** ή **MobileApp.exe** που θα δημιουργηθούν στους παρακάτω φακέλους ανάλογα με το αν έχετε κάνει Run σε Debug ή Release mode.
+Εναλλακτικά μετά την ολοκλήρωση των παραπάνω βημάτων για τα 2 projects (DekstopApp, MobileApp) θα μπορείτε να ανοίξετε την εφαρμογή χωρίς τη χρήση του Visual Studio 2019 απλά κάνοντας execute τα αρχεία **DesktopApp.exe** ή **MobileApp.exe** που θα δημιουργηθούν στους παρακάτω φακέλους ανάλογα με το αν έχετε κάνει Run σε Debug ή Release mode.
 
 `...\DesktopApp\bin\Debug\netcoreapp3.1\`  
 `...\DesktopApp\bin\Release\netcoreapp3.1\`  
