@@ -49,8 +49,8 @@ namespace DistributorForms
             this.sizeLabel = new System.Windows.Forms.Label();
             this.sizeCombobox = new System.Windows.Forms.ComboBox();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.createItineraryButton = new System.Windows.Forms.Button();
             this.exitButton = new System.Windows.Forms.Button();
+            this.createItineraryButton = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -190,7 +190,7 @@ namespace DistributorForms
             // 
             // columnHeader6
             // 
-            this.columnHeader6.Text = "Αναγνωριστικό λεωφωρείου";
+            this.columnHeader6.Text = "Αναγνωριστικό λεωφορείου";
             this.columnHeader6.Width = 250;
             // 
             // columnHeader7
@@ -238,16 +238,6 @@ namespace DistributorForms
             this.panel1.Size = new System.Drawing.Size(950, 978);
             this.panel1.TabIndex = 13;
             // 
-            // createItineraryButton
-            // 
-            this.createItineraryButton.Location = new System.Drawing.Point(11, 933);
-            this.createItineraryButton.Name = "createItineraryButton";
-            this.createItineraryButton.Size = new System.Drawing.Size(125, 34);
-            this.createItineraryButton.TabIndex = 13;
-            this.createItineraryButton.Text = "Δημιουργία";
-            this.createItineraryButton.UseVisualStyleBackColor = true;
-            this.createItineraryButton.Click += new System.EventHandler(this.CreateItineraryButton_Click);
-            // 
             // exitButton
             // 
             this.exitButton.Location = new System.Drawing.Point(811, 933);
@@ -258,12 +248,22 @@ namespace DistributorForms
             this.exitButton.UseVisualStyleBackColor = true;
             this.exitButton.Click += new System.EventHandler(this.ExitButton_Click);
             // 
+            // createItineraryButton
+            // 
+            this.createItineraryButton.Location = new System.Drawing.Point(11, 933);
+            this.createItineraryButton.Name = "createItineraryButton";
+            this.createItineraryButton.Size = new System.Drawing.Size(125, 34);
+            this.createItineraryButton.TabIndex = 13;
+            this.createItineraryButton.Text = "Δημιουργία";
+            this.createItineraryButton.UseVisualStyleBackColor = true;
+            this.createItineraryButton.Click += new System.EventHandler(this.CreateItineraryButton_Click);
+            // 
             // ItineraryDistributionForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.ClientSize = new System.Drawing.Size(970, 994);
+            this.ClientSize = new System.Drawing.Size(966, 990);
             this.ControlBox = false;
             this.Controls.Add(this.panel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
