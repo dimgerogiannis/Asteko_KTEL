@@ -42,6 +42,7 @@ namespace QualityManagerForms
             this.reasonRichTextbox.Size = new System.Drawing.Size(545, 282);
             this.reasonRichTextbox.TabIndex = 0;
             this.reasonRichTextbox.Text = "";
+            this.reasonRichTextbox.TextChanged += new System.EventHandler(this.ReasonRichTextbox_TextChanged);
             // 
             // submitButton
             // 
@@ -58,16 +59,16 @@ namespace QualityManagerForms
             this.reasonLabel.AutoSize = true;
             this.reasonLabel.Location = new System.Drawing.Point(12, 19);
             this.reasonLabel.Name = "reasonLabel";
-            this.reasonLabel.Size = new System.Drawing.Size(196, 25);
+            this.reasonLabel.Size = new System.Drawing.Size(241, 25);
             this.reasonLabel.TabIndex = 2;
-            this.reasonLabel.Text = "Αιτιολογία απόρριψης";
+            this.reasonLabel.Text = "Αιτιολογία απόρριψης (200)";
             // 
             // RejectReasonForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.ClientSize = new System.Drawing.Size(569, 388);
+            this.ClientSize = new System.Drawing.Size(565, 384);
             this.ControlBox = false;
             this.Controls.Add(this.reasonLabel);
             this.Controls.Add(this.submitButton);

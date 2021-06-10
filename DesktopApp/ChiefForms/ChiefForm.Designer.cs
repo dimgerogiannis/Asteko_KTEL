@@ -90,6 +90,7 @@ namespace ChiefForms
             this.panel36 = new System.Windows.Forms.Panel();
             this.panel16 = new System.Windows.Forms.Panel();
             this.panel15 = new System.Windows.Forms.Panel();
+            this.panel47 = new System.Windows.Forms.Panel();
             this.panel38 = new System.Windows.Forms.Panel();
             this.panel17 = new System.Windows.Forms.Panel();
             this.panel39 = new System.Windows.Forms.Panel();
@@ -98,7 +99,6 @@ namespace ChiefForms
             this.panel19 = new System.Windows.Forms.Panel();
             this.panel18 = new System.Windows.Forms.Panel();
             this.panel42 = new System.Windows.Forms.Panel();
-            this.panel47 = new System.Windows.Forms.Panel();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.salaryPanel.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -275,7 +275,7 @@ namespace ChiefForms
             this.busDriverFireLabel.Name = "busDriverFireLabel";
             this.busDriverFireLabel.Size = new System.Drawing.Size(253, 25);
             this.busDriverFireLabel.TabIndex = 5;
-            this.busDriverFireLabel.Text = "Αιτήσεις για απόλυση οδηγού";
+            this.busDriverFireLabel.Text = "Μηνύματα απόλυσης οδηγών";
             this.busDriverFireLabel.Click += new System.EventHandler(this.BusDriverFireLabel_Click);
             // 
             // label8
@@ -528,9 +528,9 @@ namespace ChiefForms
             this.busDriverApplicationsLabel.ForeColor = System.Drawing.SystemColors.HighlightText;
             this.busDriverApplicationsLabel.Location = new System.Drawing.Point(29, 13);
             this.busDriverApplicationsLabel.Name = "busDriverApplicationsLabel";
-            this.busDriverApplicationsLabel.Size = new System.Drawing.Size(253, 25);
+            this.busDriverApplicationsLabel.Size = new System.Drawing.Size(213, 25);
             this.busDriverApplicationsLabel.TabIndex = 5;
-            this.busDriverApplicationsLabel.Text = "Μηνύματα απόλυσης οδηγών";
+            this.busDriverApplicationsLabel.Text = "Αιτήσεις αδειών οδηγών";
             this.busDriverApplicationsLabel.Click += new System.EventHandler(this.BusDriverApplicationsLabel_Click);
             // 
             // panel11
@@ -735,6 +735,14 @@ namespace ChiefForms
             this.panel15.Size = new System.Drawing.Size(275, 108);
             this.panel15.TabIndex = 11;
             // 
+            // panel47
+            // 
+            this.panel47.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.panel47.Location = new System.Drawing.Point(13, 24);
+            this.panel47.Name = "panel47";
+            this.panel47.Size = new System.Drawing.Size(21, 3);
+            this.panel47.TabIndex = 12;
+            // 
             // panel38
             // 
             this.panel38.BackColor = System.Drawing.SystemColors.ControlLightLight;
@@ -806,14 +814,6 @@ namespace ChiefForms
             this.panel42.Name = "panel42";
             this.panel42.Size = new System.Drawing.Size(21, 3);
             this.panel42.TabIndex = 12;
-            // 
-            // panel47
-            // 
-            this.panel47.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.panel47.Location = new System.Drawing.Point(13, 24);
-            this.panel47.Name = "panel47";
-            this.panel47.Size = new System.Drawing.Size(21, 3);
-            this.panel47.TabIndex = 12;
             // 
             // ChiefForm
             // 

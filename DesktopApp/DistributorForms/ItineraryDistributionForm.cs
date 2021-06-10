@@ -344,7 +344,7 @@ namespace DistributorForms
                         .ToList();
 
                     var servedClients = clients
-                        .Take(size)
+                        .Take(itinerary.GetMaxSeats())
                         .ToList();
 
                     foreach (var servedClient in servedClients)
@@ -356,7 +356,7 @@ namespace DistributorForms
                         client.AutomaticTicketPurchase(itinerary);
                         client.InsertTransactionToDatabase(client.GetLastTicketID(),
                                                            servedClient.ChargedPrice);
-                        itinerary.DecrementItinerarySeats();
+                        itinerary.DecreaseAvailableSeats();
 
 
                         _distributor.DeleteReservation(servedClient);

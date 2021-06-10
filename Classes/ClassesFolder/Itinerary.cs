@@ -86,7 +86,7 @@ namespace ClassesFolder
             }
         }
 
-        public void DecrementItinerarySeats()
+        public void DecreaseAvailableSeats()
         {
             try
             {
@@ -109,6 +109,19 @@ namespace ClassesFolder
                                  MessageBoxButtons.OK,
                                  MessageBoxIcon.Error);
                 Application.Exit();
+            }
+        }
+    
+        public int GetMaxSeats()
+        {
+            switch (ResponsibleBus.Size)
+            {
+                case BusSize.LARGE:
+                    return 5;
+                case BusSize.MEDIUM:
+                    return 3;
+                default:
+                    return 2;
             }
         }
     }

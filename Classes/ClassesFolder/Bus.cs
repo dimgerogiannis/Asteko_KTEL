@@ -160,7 +160,6 @@ namespace ClassesFolder
             }
         }
 
-
         public bool MeetsRequirements(string date, string startingHour, int duration)
         {
             try

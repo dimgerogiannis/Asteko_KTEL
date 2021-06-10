@@ -1104,7 +1104,7 @@ namespace ClassesFolder
             }
         }
 
-        public void SetPollAsUnavailable(Poll poll)
+        public void SetAsUnavailable(Poll poll)
         {
             _availablePolls.Remove(poll);
         }

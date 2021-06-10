@@ -668,6 +668,7 @@ namespace ClassesFolder
                 return false;
             }
         }
+        
         public bool HasItineraryOnEndTimeAndNoNextItineraryOnSpecificTime(string date, string startingHour, int duration, string startStop)
         {
             try

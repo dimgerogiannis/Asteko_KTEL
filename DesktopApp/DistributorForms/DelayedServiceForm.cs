@@ -285,7 +285,7 @@ namespace DistributorForms
                 client.AutomaticTicketPurchase(itinerary);
                 client.InsertTransactionToDatabase(client.GetLastTicketID(), 
                                                    client.GetStandardTicketPrice());
-                itinerary.DecrementItinerarySeats();
+                itinerary.DecreaseAvailableSeats();
                 
                 client.DeleteLastMinuteTravelRequest(_requests[_selectedRequestIndex]);
                 _requests.RemoveAt(_selectedRequestIndex);
@@ -294,7 +294,7 @@ namespace DistributorForms
                 var requests = _requests
                     .Select(x => x)
                     .Where(x => x.ApplicantClient.CanAffordCost(x.ApplicantClient.GetStandardTicketPrice()) && x.TravelBusLine.Number == _selectedBusLine && x.TravelDatetime == DateTime.Parse(_selectedTravelDatetime))
-                    .Take(--availableSeats)
+                    .Take(itinerary.GetMaxSeats() - 1)
                     .ToList();
 
                 foreach (var request in requests)
@@ -309,7 +309,7 @@ namespace DistributorForms
                     client.AutomaticTicketPurchase(itinerary);
                     client.InsertTransactionToDatabase(client.GetLastTicketID(), 
                                                        client.GetStandardTicketPrice());
-                    itinerary.DecrementItinerarySeats();
+                    itinerary.DecreaseAvailableSeats();
                     client.DeleteLastMinuteTravelRequest(request);
                     _requests.Remove(request);
                     counter++;

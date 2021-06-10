@@ -97,7 +97,7 @@ namespace Project.ClientForms
                                 MessageBoxButtons.OK, 
                                 MessageBoxIcon.Information);
 
-                _client.SetPollAsUnavailable(_client.AvailablePolls.Find(x => x.Title == pollTitle.SelectedItem.ToString()));
+                _client.SetAsUnavailable(_client.AvailablePolls.Find(x => x.Title == pollTitle.SelectedItem.ToString()));
                 pollTitle.Items.Remove(pollTitle.SelectedItem);
 
                 pollQuestionRichTextbox.Text = "";
