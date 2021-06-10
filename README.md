@@ -58,7 +58,7 @@
 </p>
 
 
-### 3ο στάδιο
+### 4ο στάδιο
 Θα πρέπει να φτιάξε ένα αρχείο connectionstring.txt στην επιφάνεια εργασίας σας όπου θα περιέχει το ακόλουθο string ανάλογα με το όνομα του server, το userid, το password που έχετε καταχωρήσει στην MySQL και υποχρεωτικά όνομα βάσης **project_db**. Σε κάθε άλλη περίπτωση δεν θα μπορείτε να τρέξετε την εφαρμογή.
 
 ```
@@ -69,7 +69,7 @@ server=localhost;userid=root;password=1234;database=project_db
   <img src="https://github.com/gstratigopoulos96/Asteko_KTEL/blob/master/Photos/Capture.PNG" alt="image"/>
 </p>
 
-### 3ο στάδιο
+### 5ο στάδιο
 Θα πρέπει να κάνετε τα εξής βήματα:
 
 1. Ανοίγετε το αρχείο **SoftwareTechnologyProject.sln** με τη χρήση του Visual Studio 2019.
