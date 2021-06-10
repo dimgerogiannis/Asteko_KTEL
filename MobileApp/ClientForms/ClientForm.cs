@@ -39,10 +39,12 @@ namespace Project.ClientForms
 
         private void BuyTicketButton_Click(object sender, EventArgs e)
         {
-            _client.FindInformation();
-            currentMoneyLabel.Text = $"{_client.Balance} Ευρώ";
             BuyTicketForm form = new BuyTicketForm(_client);
             form.ShowDialog();
+            _client.FindInformation();
+            currentMoneyLabel.Text = $"{_client.Balance} Ευρώ";
+            _client.InitializeTicketList();
+            currentBoughtTicketsLabel.Text = $"Αγορασμένα εισιτηρία: {_client.TicketList.Select(x => x).Where(y => y.Used == false).Count()}";
         }
 
         private void DiscountApplicationButton_Click(object sender, EventArgs e)

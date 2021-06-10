@@ -81,8 +81,8 @@ namespace ClassesFolder
                 connection.Open();
 
                 var query = @"select itineraryID, travelDatetime, busDriverUsername, busLineNumber, busID, availableSeats
-                              from itinerary
-                              where busDriverUsername = @username and current_timestamp() <= travelDatetime and travelDatetime < date(now() + INTERVAL 7 - weekday(now()) DAY);";
+                              from itinerary inner join BusLine on busLineNumber = BusLine.number
+                              where busDriverUsername = @username and current_timestamp() <= ADDDATE(travelDatetime, INTERVAL duration MINUTE) and travelDatetime < date(now() + INTERVAL 7 - weekday(now()) DAY);";
 
                 using var cmd = new MySqlCommand(query, connection);
                 cmd.Parameters.AddWithValue("@username", _username);
@@ -635,39 +635,6 @@ namespace ClassesFolder
                 return -1;
             }
         }
-
-        public bool DoesntHaveItineraryOnWantedTimeInterval(string date, string startingHour, int duration)
-        {
-            try
-            {
-                using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
-                connection.Open();
-                var query = @"select count(*)
-                          from Itinerary
-                          inner join BusLine on BusLine.number = busLineNumber
-                          where busDriverUsername = @targetUsername and (TIMEDIFF(travelDatetime, ADDDATE(@targetDatetime, INTERVAL @duration MINUTE)) > '00:00:00' AND TIMEDIFF(travelDatetime, ADDDATE(@targetDatetime, INTERVAL @duration MINUTE)) < '00:30:00' OR
-                            TIMEDIFF(travelDatetime, @targetDatetime) < '-30:00:00' AND TIMEDIFF(travelDatetime, @targetDatetime) < '00:00:00');";
-
-                var targetDatetime = $"{date} {startingHour}:00";
-                using var cmd = new MySqlCommand(query, connection);
-                cmd.Parameters.AddWithValue("@targetUsername", _username);
-                cmd.Parameters.AddWithValue("@targetDatetime", targetDatetime);
-                cmd.Parameters.AddWithValue("@duration", duration);
-                using MySqlDataReader reader = cmd.ExecuteReader();
-                reader.Read();
-
-                return reader.GetInt32(0) == 0;
-            }
-            catch (MySqlException)
-            {
-                MessageBox.Show("Προκλήθηκε σφάλμα κατά την σύνδεση με τον server. Η εφαρμογή θα τερματιστεί!",
-                                 "Σφάλμα",
-                                 MessageBoxButtons.OK,
-                                 MessageBoxIcon.Error);
-                Application.Exit();
-                return false;
-            }
-        }
         
         public bool HasItineraryOnEndTimeAndNoNextItineraryOnSpecificTime(string date, string startingHour, int duration, string startStop)
         {
@@ -714,7 +681,7 @@ namespace ClassesFolder
                             from Itinerary
                             inner join BusDriver on BusDriver.username = Itinerary.busDriverUsername
                             inner join BusLine on BusLine.number = busLineNumber
-                            where BusDriver.username = @targetUsername (select stopName from stop where Stop.number = BusLine.number order by Stop.id asc limit 1) != @endStop and 
+                            where BusDriver.username = @targetUsername and (select stopName from stop where Stop.number = BusLine.number order by Stop.id asc limit 1) != @targetStop and 
                             TIMEDIFF(travelDatetime, ADDDATE(@targetDatetime, INTERVAL @duration MINUTE)) > '00:00:00' and 
                             TIMEDIFF(travelDatetime, ADDDATE(@targetDatetime, INTERVAL @duration MINUTE)) < '00:30:00';";
 
@@ -728,7 +695,7 @@ namespace ClassesFolder
                 reader.Read();
 
                 return reader.GetInt32(0) == 0;
-            }
+        }
             catch (MySqlException)
             {
                 MessageBox.Show("Προκλήθηκε σφάλμα κατά την σύνδεση με τον server. Η εφαρμογή θα τερματιστεί!",
@@ -738,7 +705,7 @@ namespace ClassesFolder
                 Application.Exit();
                 return false;
             }
-        }
+}
 
         public bool MeetsRequirements(string date, string startingHour, int duration)
         {
@@ -776,8 +743,7 @@ namespace ClassesFolder
 
         public bool IsRecommended(string date, string startingHour, string startStop, string endStop, int duration)
         {
-            if (DoesntHaveItineraryOnWantedTimeInterval(date, startingHour, duration) &&
-                HasItineraryOnEndTimeAndNoNextItineraryOnSpecificTime(date, startingHour, duration, startStop) &&
+            if (HasItineraryOnEndTimeAndNoNextItineraryOnSpecificTime(date, startingHour, duration, startStop) &&
                 DoesntHaveItineraryAfterTargetItinerary(date, startingHour, duration, endStop))
             {
                 return true;

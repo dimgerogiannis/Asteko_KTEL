@@ -156,7 +156,6 @@ namespace Project.ClientForms
             }
             else if (reservationDates.Contains(dateTimePicker.Value.ToString("dd-MM-yyyy")))
             {
-                // Reservation
                 if (_client.MonthlyCard)
                 {
                     var result = MessageBox.Show("Θέλετε να προχωρήσετε στην αγορά;", 
@@ -187,7 +186,6 @@ namespace Project.ClientForms
                 {
                     decimal ticketPrice = _client.CalculateTicketPrice(price);
 
-                    // Έλεγχος αν ο Client μπορεί να αγοράσει εισητήριο
                     if (_client.CanAffordCost(ticketPrice))
                     {
                         var result = MessageBox.Show("Θέλετε να προχωρήσετε στην αγορά;", 
@@ -197,10 +195,6 @@ namespace Project.ClientForms
 
                         if (result == DialogResult.Yes)
                         {
-                            // Ο Client πληρώνει για το εισητίριο
-                            _client.PayForTicket(ticketPrice);
-
-                            // Γίνεται reservation για δρομολόγιο της επόμενης εβδομάδας
                             Reservation reservation = new Reservation(_client,
                                                                       DateTime.Now,
                                                                       DateTime.Parse($"{dateTimePicker.Value.ToShortDateString()} {timeCombobox.SelectedItem}"),

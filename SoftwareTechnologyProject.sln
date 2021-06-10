@@ -9,20 +9,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DesktopApp", "DesktopApp\De
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MobileApp", "MobileApp\MobileApp.csproj", "{0C73C441-FC46-412E-B339-25CEE4424ACF}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Technical Reports", "Technical Reports", "{0A15F1DE-4C75-4CDE-9828-2D2AFB132953}"
-	ProjectSection(SolutionItems) = preProject
-		C:\Users\User\AppData\Local\Temp\Rar$DRa11008.16774\1059616_1059701_1020489_1062662_6\Class-diagram-v1.0.pdf = C:\Users\User\AppData\Local\Temp\Rar$DRa11008.16774\1059616_1059701_1020489_1062662_6\Class-diagram-v1.0.pdf
-		C:\Users\User\AppData\Local\Temp\Rar$DRa11008.16774\1059616_1059701_1020489_1062662_6\Domain-model-v1.0.pdf = C:\Users\User\AppData\Local\Temp\Rar$DRa11008.16774\1059616_1059701_1020489_1062662_6\Domain-model-v1.0.pdf
-		C:\Users\User\AppData\Local\Temp\Rar$DRa11008.16774\1059616_1059701_1020489_1062662_6\Project-code-v1.0.pdf = C:\Users\User\AppData\Local\Temp\Rar$DRa11008.16774\1059616_1059701_1020489_1062662_6\Project-code-v1.0.pdf
-		C:\Users\User\AppData\Local\Temp\Rar$DRa11008.16774\1059616_1059701_1020489_1062662_6\Project-description-v1.0.pdf = C:\Users\User\AppData\Local\Temp\Rar$DRa11008.16774\1059616_1059701_1020489_1062662_6\Project-description-v1.0.pdf
-		C:\Users\User\AppData\Local\Temp\Rar$DRa11008.16774\1059616_1059701_1020489_1062662_6\Project-plan-v1.0.pdf = C:\Users\User\AppData\Local\Temp\Rar$DRa11008.16774\1059616_1059701_1020489_1062662_6\Project-plan-v1.0.pdf
-		C:\Users\User\AppData\Local\Temp\Rar$DRa11008.16774\1059616_1059701_1020489_1062662_6\Risk-assessment-v1.0.pdf = C:\Users\User\AppData\Local\Temp\Rar$DRa11008.16774\1059616_1059701_1020489_1062662_6\Risk-assessment-v1.0.pdf
-		C:\Users\User\AppData\Local\Temp\Rar$DRa11008.16774\1059616_1059701_1020489_1062662_6\Robustness-diagrams-v1.0.pdf = C:\Users\User\AppData\Local\Temp\Rar$DRa11008.16774\1059616_1059701_1020489_1062662_6\Robustness-diagrams-v1.0.pdf
-		C:\Users\User\AppData\Local\Temp\Rar$DRa11008.16774\1059616_1059701_1020489_1062662_6\Sequence-diagrams-v1.0.pdf = C:\Users\User\AppData\Local\Temp\Rar$DRa11008.16774\1059616_1059701_1020489_1062662_6\Sequence-diagrams-v1.0.pdf
-		C:\Users\User\AppData\Local\Temp\Rar$DRa11008.16774\1059616_1059701_1020489_1062662_6\Team-plan-v1.0.pdf = C:\Users\User\AppData\Local\Temp\Rar$DRa11008.16774\1059616_1059701_1020489_1062662_6\Team-plan-v1.0.pdf
-		C:\Users\User\AppData\Local\Temp\Rar$DRa11008.16774\1059616_1059701_1020489_1062662_6\Use-cases-v1.0.pdf = C:\Users\User\AppData\Local\Temp\Rar$DRa11008.16774\1059616_1059701_1020489_1062662_6\Use-cases-v1.0.pdf
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

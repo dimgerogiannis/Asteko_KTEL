@@ -54,40 +54,7 @@ namespace ClassesFolder
             }
         }
 
-        public bool DoesntHaveItineraryOnWantedTimeInterval(string date, string startingHour, int duration)
-        {
-            try
-            {
-                using var connection = new MySqlConnection(ConnectionInfo.ConnectionString);
-                connection.Open();
-                var query = @"select count(*)
-                          from Itinerary
-                          inner join BusLine on BusLine.number = busLineNumber
-                          inner join Bus on Itinerary.busID = Bus.busID  
-                          where Bus.busID = @busID and  (TIMEDIFF(travelDatetime, ADDDATE(@targetDatetime, INTERVAL @duration MINUTE)) > '00:00:00' AND TIMEDIFF(travelDatetime, ADDDATE(@targetDatetime, INTERVAL @duration MINUTE)) < '00:30:00' OR
-                            TIMEDIFF(travelDatetime, @targetDatetime) < '-30:00:00' AND TIMEDIFF(travelDatetime, @targetDatetime) < '00:00:00');";
-
-                var targetDatetime = $"{date} {startingHour}:00";
-                using var cmd = new MySqlCommand(query, connection);
-                cmd.Parameters.AddWithValue("@busID", _id);
-                cmd.Parameters.AddWithValue("@targetDatetime", targetDatetime);
-                cmd.Parameters.AddWithValue("@duration", duration);
-                using MySqlDataReader reader = cmd.ExecuteReader();
-                reader.Read();
-
-                return reader.GetInt32(0) == 0;
-            }
-            catch (MySqlException)
-            {
-                MessageBox.Show("Προκλήθηκε σφάλμα κατά την σύνδεση με τον server. Η εφαρμογή θα τερματιστεί!",
-                                 "Σφάλμα",
-                                 MessageBoxButtons.OK,
-                                 MessageBoxIcon.Error);
-                Application.Exit();
-                return false;
-            }
-        }
-   
+       
         public bool HasItineraryOnEndTimeAndNoNextItineraryOnSpecificTime(string date, string startingHour, int duration, string targetStop)
         {
             try
@@ -111,7 +78,7 @@ namespace ClassesFolder
                 reader.Read();
 
                 return reader.GetInt32(0) == 1;
-            }
+        }
             catch (MySqlException)
             {
                 MessageBox.Show("Προκλήθηκε σφάλμα κατά την σύνδεση με τον server. Η εφαρμογή θα τερματιστεί!",
@@ -121,7 +88,7 @@ namespace ClassesFolder
                 Application.Exit();
                 return false;
             }
-        }
+}
 
         public bool DoesntHaveItineraryAfterTargetItinerary(string date, string startingHour, int duration, string targetStop)
         {
@@ -134,7 +101,7 @@ namespace ClassesFolder
                         inner join BusLine on BusLine.number = busLineNumber
                         inner join Bus on Itinerary.busID = Bus.busID  
                         where Bus.busID = @busID AND 
-                        (select stopName from stop where Stop.number = BusLine.number order by Stop.id asc limit 1) != @endStop and 
+                        (select stopName from stop where Stop.number = BusLine.number order by Stop.id asc limit 1) != @targetStop and 
                         TIMEDIFF(travelDatetime, ADDDATE(@targetDatetime, INTERVAL @duration MINUTE)) > '00:00:00' and 
                         TIMEDIFF(travelDatetime, ADDDATE(@targetDatetime, INTERVAL @duration MINUTE)) < '00:30:00';";
 
@@ -148,7 +115,7 @@ namespace ClassesFolder
                 reader.Read();
 
                 return reader.GetInt32(0) == 0;
-            }
+        }
             catch (MySqlException)
             {
                 MessageBox.Show("Προκλήθηκε σφάλμα κατά την σύνδεση με τον server. Η εφαρμογή θα τερματιστεί!",
@@ -158,7 +125,7 @@ namespace ClassesFolder
                 Application.Exit();
                 return false;
             }
-        }
+}
 
         public bool MeetsRequirements(string date, string startingHour, int duration)
         {
@@ -197,8 +164,7 @@ namespace ClassesFolder
         
         public bool IsRecommended(string date, string startingHour, string startStop, string endStop, int duration)
         {
-            if (DoesntHaveItineraryOnWantedTimeInterval(date, startingHour, duration) &&
-                HasItineraryOnEndTimeAndNoNextItineraryOnSpecificTime(date, startingHour, duration, startStop) &&
+            if (HasItineraryOnEndTimeAndNoNextItineraryOnSpecificTime(date, startingHour, duration, startStop) &&
                 DoesntHaveItineraryAfterTargetItinerary(date, startingHour, duration, endStop))
             {
                 return true;

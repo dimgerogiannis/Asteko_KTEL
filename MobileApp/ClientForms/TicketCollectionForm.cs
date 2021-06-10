@@ -56,7 +56,7 @@ namespace Project.ClientForms
                 allTicketsListview.Items.Add(new ListViewItem(new string[]
                 {
                         ticket.CorrespondingItinerary.TravelDatetime.ToString("HH:mm:ss dd-MM-yyyy"),
-                        ticket.CorrespondingItinerary.ResponsibleBus.ID.ToString()
+                        ticket.CorrespondingItinerary.ItineraryLine.Number.ToString()
                 }));
             }
         }
