@@ -98,6 +98,7 @@ namespace ChiefForms
             this.panel19 = new System.Windows.Forms.Panel();
             this.panel18 = new System.Windows.Forms.Panel();
             this.panel42 = new System.Windows.Forms.Panel();
+            this.panel47 = new System.Windows.Forms.Panel();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.salaryPanel.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -527,9 +528,9 @@ namespace ChiefForms
             this.busDriverApplicationsLabel.ForeColor = System.Drawing.SystemColors.HighlightText;
             this.busDriverApplicationsLabel.Location = new System.Drawing.Point(29, 13);
             this.busDriverApplicationsLabel.Name = "busDriverApplicationsLabel";
-            this.busDriverApplicationsLabel.Size = new System.Drawing.Size(267, 25);
+            this.busDriverApplicationsLabel.Size = new System.Drawing.Size(253, 25);
             this.busDriverApplicationsLabel.TabIndex = 5;
-            this.busDriverApplicationsLabel.Text = "Ανασκόπηση αιτήσεων οδηγών";
+            this.busDriverApplicationsLabel.Text = "Μηνύματα απόλυσης οδηγών";
             this.busDriverApplicationsLabel.Click += new System.EventHandler(this.BusDriverApplicationsLabel_Click);
             // 
             // panel11
@@ -727,6 +728,7 @@ namespace ChiefForms
             this.panel15.BackColor = System.Drawing.SystemColors.Highlight;
             this.panel15.Controls.Add(this.label12);
             this.panel15.Controls.Add(this.label13);
+            this.panel15.Controls.Add(this.panel47);
             this.panel15.Controls.Add(this.panel38);
             this.panel15.Location = new System.Drawing.Point(0, 42);
             this.panel15.Name = "panel15";
@@ -804,6 +806,14 @@ namespace ChiefForms
             this.panel42.Name = "panel42";
             this.panel42.Size = new System.Drawing.Size(21, 3);
             this.panel42.TabIndex = 12;
+            // 
+            // panel47
+            // 
+            this.panel47.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.panel47.Location = new System.Drawing.Point(13, 24);
+            this.panel47.Name = "panel47";
+            this.panel47.Size = new System.Drawing.Size(21, 3);
+            this.panel47.TabIndex = 12;
             // 
             // ChiefForm
             // 
@@ -930,5 +940,6 @@ namespace ChiefForms
         private System.Windows.Forms.Panel panel40;
         private System.Windows.Forms.Panel panel41;
         private System.Windows.Forms.Panel panel42;
+        private System.Windows.Forms.Panel panel47;
     }
 }

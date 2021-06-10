@@ -102,9 +102,9 @@ namespace Project.ClientForms
             this.usableTickets.AutoSize = true;
             this.usableTickets.Location = new System.Drawing.Point(11, 9);
             this.usableTickets.Name = "usableTickets";
-            this.usableTickets.Size = new System.Drawing.Size(237, 25);
+            this.usableTickets.Size = new System.Drawing.Size(232, 25);
             this.usableTickets.TabIndex = 3;
-            this.usableTickets.Text = "Χρησιμοποιήσημα εισιτήρια";
+            this.usableTickets.Text = "Χρησιμοποιήσιμα εισιτήρια";
             // 
             // TicketCollectionForm
             // 

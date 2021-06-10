@@ -13,6 +13,7 @@ using ClassesFolder;
 using QualityManagerForms;
 using DistributorForms;
 using static ClassesFolder.Enums;
+using System.Diagnostics;
 
 namespace LoginFolder
 {
@@ -217,6 +218,51 @@ namespace LoginFolder
                                 MessageBoxIcon.Error);
                 this.Close();
                 return null;
+            }
+        }
+
+        private void LoginForm_Load(object sender, EventArgs e)
+        {
+            RetrieveConnectionString();
+
+            if (!ConnectionInfo.CheckConnection())
+            {
+                MessageBox.Show("Δεν είναι δυνατή η σύνδεση με την βάση δεδομένων επειδή υπάρχει λάθος στο ConnectionString. Η εφαρμογή θα τερματιστεί.",
+                                "Σφάλμα",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Error);
+                this.Close();
+            }
+        }
+
+        private void RetrieveConnectionString()
+        {
+            string path = $"{Environment.GetFolderPath(Environment.SpecialFolder.Desktop)}\\connectionstring.txt";
+            if (!System.IO.File.Exists(path))
+            {
+                MessageBox.Show("Θα πρέπει να ρυθμίσετε το αρχείο connectionstring.txt που δημιουργήθηκε στην επιφάνεια εργασίας σύμφωνα με τις οδηγίες στο README.md στο github." +
+                                "Εμείς θα δημιουργήσουμε το αρχείο για εσάς όμώς με τις ρυθμίσεις που χρησιμοποιήσαμε εμείς, οπότε θα πρέπει να κάνετε τις απαραίτητες αλλαγές.",
+                                "Σφάλμα",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Error);
+
+                try
+                {
+                    System.IO.File.WriteAllText(path, "server=localhost;userid=root;password=1234;database=project_db");
+                    Process.Start("explorer.exe", path);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Προκλήθηκε μη αναμενόμενο σφάλμα με μήνυμα: {ex}",
+                                    "Σφάλμα",
+                                    MessageBoxButtons.OK,
+                                    MessageBoxIcon.Error);
+                }
+                this.Close();
+            }
+            else
+            {
+                ConnectionInfo.ConnectionString = System.IO.File.ReadAllText(path);
             }
         }
     }
