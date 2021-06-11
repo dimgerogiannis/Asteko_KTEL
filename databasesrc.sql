@@ -363,6 +363,13 @@ INSERT INTO SanitaryComplaint (targetUsername, summary, category, busDriverUsern
 INSERT INTO ClientComplaint (targetUsername, checked, summary, category, ClientUsername) VALUES
 	('user1', false,'Ο οδηγός ήταν αγενής.', 'rude_bus_driver', 'user9'),
     ('user1', false,'Ο οδηγός ήταν προσβλητικός.', 'rude_bus_driver', 'user8'),
+    ('user1', false,'Ο οδηγός άργησε χωρίς λόγο.', 'late_for_no_reason', 'user6'),
+    ('user1', false,'Ο οδηγός ήταν αγενής.', 'rude_bus_driver', 'user10'),
+    ('user1', false,'Ο οδηγός ήταν προσβλητικός.', 'rude_bus_driver', 'user8'),
+    ('user1', false,'Ο οδηγός άργησε χωρίς λόγο.', 'late_for_no_reason', 'user6'),
+    ('user1', false,'Ο οδηγός ήταν αγενής.', 'rude_bus_driver', 'user9'),
+    ('user1', false,'Ο οδηγός ήταν προσβλητικός.', 'rude_bus_driver', 'user8'),
+    ('user1', false,'Ο οδηγός άργησε χωρίς λόγο.', 'late_for_no_reason', 'user6'),
     ('user1', false,'Ο οδηγός άργησε χωρίς λόγο.', 'late_for_no_reason', 'user6');
 
 INSERT INTO Bus (size) VALUES
@@ -428,20 +435,8 @@ DELIMITER ;
 
 Call InsertItineraries();
 
-/*INSERT INTO Ticket (delayedItinerary, used, issued, clientUsername, itineraryID) VALUES 
-	(false, 1, false, 'user6', 1);
-INSERT INTO Ticket (delayedItinerary, used, issued, clientUsername, itineraryID) VALUES 
-	(false, 1, false, 'user7', 1);
-INSERT INTO Ticket (delayedItinerary, used, issued, clientUsername, itineraryID) VALUES 
-	(false, 1, false, 'user7', 3);
-    
-INSERT INTO Transaction (ticketID, price, purchaseDatetime) VALUES 
-	(1, 2.5, DatetimeAdder(-3, 10, 10)),
-	(2, 2.5, DatetimeAdder(-3, 10, 0)),
-	(3, 2.5, DatetimeAdder(-3, 10, 0));*/
- 
-DROP PROCEDURE IF EXISTS InsertTransactionsAndTickets;
 
+DROP PROCEDURE IF EXISTS InsertTransactionsAndTickets;
 DELIMITER $$
 CREATE PROCEDURE InsertTransactionsAndTickets()
 BEGIN
@@ -595,13 +590,13 @@ INSERT INTO Stop (number, stopName) VALUES
 	(1 , 'Χαρίλαου Τρικόπη 7'),
 	(1 , 'Πολυτέκων 47'      ),
 	(1 , 'Σιδηροδρόμων 284'  ),
-	(2 , 'Παπαδόπουλου 56'   ),
+	(2 , 'Σιδηροδρόμων 284'   ),
 	(2 , 'Ναυαρίνου 23'      ),
 	(2 , 'Καβάλας 89'        ),
 	(2 , 'Μαυρομιχάλη 84'    ),
 	(2 , 'Δ. Ράλλη 76'       ),
 	(2 , 'Ναυαρίνου 23'      ),
-	(3 , 'Αλεξάνδριας 43'    ),
+	(3 , 'Ναυαρίνου 23'    ),
 	(3 , 'Ύδρας 98'          ),
 	(3 , 'Αγίου Γεωργίου 32' ),
 	(3 , 'ΕΛ. Βενιζέλου 90' ),
@@ -613,15 +608,14 @@ INSERT INTO Stop (number, stopName) VALUES
 	(4 , 'Κοραή 43'         ),
 	(4 , 'Τερψιθέας 90'     ),
 	(4 , 'Αλεξάνδριας 43'   );
-    
 
 INSERT INTO Poll (title, expired, startingDate, endingDate, question, qualityManagerUsername) VALUES 
-	('Adding new stops.', true, DatetimeAdder(-10, 0, 0), DatetimeAdder(10, 0, 0), 'Θα θέλατε το δρομολόγιο 1 να έχει περισσότερες στάσεις;', 'user5');
+	('Προσθήκη νέων στάσεων.', true, DatetimeAdder(-10, 0, 0), DatetimeAdder(-2, 0, 0), 'Θα θέλατε το δρομολόγιο 1 να έχει περισσότερες στάσεις;', 'user5');
 
 INSERT INTO PollChoice (choice, title) VALUES 
-	('Ναι'  , 'Adding new stops.'),
-	('Όχι'   , 'Adding new stops.'),
-	('Δεν το χρησιμοποιώ', 'Adding new stops.');
+	('Ναι'  , 'Προσθήκη νέων στάσεων.'),
+	('Όχι'   , 'Προσθήκη νέων στάσεων.'),
+	('Δεν το χρησιμοποιώ', 'Προσθήκη νέων στάσεων.');
 
 INSERT INTO PollVote VALUES
 	(1, 'user6'),
@@ -795,3 +789,15 @@ DO
 		CALL SetOldTicketsAsUsed();
 	END$$
 DELIMITER ;
+
+DROP EVENT IF EXISTS ResetComplaintCounter;
+DELIMITER $$
+CREATE EVENT ResetComplaintCounter
+	ON SCHEDULE AT '2021-12-31 23:59:59' + INTERVAL 1 YEAR
+	ON COMPLETION PRESERVE
+DO
+	BEGIN
+		UPDATE BusDriver SET complaintsCounter = 0;
+	END$$
+DELIMITER ;
+
