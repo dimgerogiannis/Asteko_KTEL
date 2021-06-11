@@ -110,7 +110,7 @@ namespace Project.BusDriverForms
 
         private void ReasonRichTextbox_TextChanged(object sender, EventArgs e)
         {
-            reasonLabel.Text = $"Περιγράψτε το λόγο αίτησης για άδεια {300 - reasonRichTextbox.Text.Length}";
+            reasonLabel.Text = $"Περιγράψτε το λόγο αίτησης για άδεια ({300 - reasonRichTextbox.Text.Length})";
         }
     }
 }
